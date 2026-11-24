@@ -2,8 +2,9 @@
 //
 //   node scripts/release.mjs next <patch|minor|major|current|X.Y.Z>   prints the next version
 //   node scripts/release.mjs apply <version> [--notes FILE]
-//       sets the version everywhere (branding.json, Cargo and npm manifests, Cargo.lock),
-//       regenerates the branded files, and turns "## Unreleased" in CHANGELOG.md into
+//       sets the version everywhere (branding/branding.json, Cargo and npm manifests, Cargo.lock,
+//       the README's download links),
+//       regenerates the branded files, and turns "## Unreleased" in docs/CHANGELOG.md into
 //       "## <version> (<date>)"; --notes writes that section to FILE
 //   node scripts/release.mjs publish <tag>      (CI: needs gh, GH_TOKEN and GH_REPO)
 //       writes latest.json for the in-app updater (signed bundles, notes, contributors),
@@ -17,6 +18,7 @@ import { fileURLToPath } from "node:url";
 import {
   bumpCargoLock,
   bumpCargoToml,
+  bumpReadme,
   changelogNotes,
   contributorsFrom,
   latestJson,
@@ -28,7 +30,7 @@ import {
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (rel) => readFileSync(join(root, rel), "utf8");
 const write = (rel, text) => writeFileSync(join(root, rel), text);
-const branding = () => JSON.parse(read("branding.json"));
+const branding = () => JSON.parse(read("branding/branding.json"));
 const run = (cmd, args, opts = {}) =>
   execFileSync(cmd, args, { cwd: root, encoding: "utf8", maxBuffer: 64 << 20, ...opts });
 
@@ -43,9 +45,9 @@ function apply(version, notesFile) {
   const from = b.version;
   const today = new Date().toISOString().slice(0, 10);
   // the changelog first: without notes there is no release
-  const { text, notes } = stampChangelog(read("CHANGELOG.md"), version, today);
+  const { text, notes } = stampChangelog(read("docs/CHANGELOG.md"), version, today);
   if (from !== version) {
-    setJsonVersion("branding.json", version);
+    setJsonVersion("branding/branding.json", version);
     setJsonVersion("package.json", version);
     for (const p of readdirSync(join(root, "packages"))) {
       setJsonVersion(`packages/${p}/package.json`, version);
@@ -57,9 +59,10 @@ function apply(version, notesFile) {
     ];
     for (const t of tomls) write(t, bumpCargoToml(read(t), from, version));
     write("Cargo.lock", bumpCargoLock(read("Cargo.lock"), b.cratePrefix, from, version));
+    write("README.md", bumpReadme(read("README.md"), from, version));
     run("node", ["scripts/gen-branding.mjs"], { stdio: "inherit" });
   }
-  write("CHANGELOG.md", text);
+  write("docs/CHANGELOG.md", text);
   if (notesFile) writeFileSync(notesFile, `${notes}\n`);
   console.log(`release ${version}${from !== version ? ` (was ${from})` : ""}`);
 }
@@ -76,7 +79,7 @@ function publish(tag) {
   const repo = process.env.GH_REPO;
   if (!repo) throw new Error("Set GH_REPO (owner/name)");
   const version = tag.replace(/^v/, "");
-  const notes = changelogNotes(read("CHANGELOG.md"), version);
+  const notes = changelogNotes(read("docs/CHANGELOG.md"), version);
 
   // who made it: commits since the previous release tag (or all of them, the first time)
   let prev = null;

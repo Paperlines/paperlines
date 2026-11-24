@@ -4,8 +4,8 @@ use std::path::Path;
 /// (the before-dev/before-build hooks run scripts/build-cli.mjs first); for plain `cargo check`,
 /// `clippy` or `test` on a fresh checkout an empty placeholder is enough.
 fn ensure_sidecar_placeholder() {
-    println!("cargo:rerun-if-changed=../branding.json");
-    let Ok(text) = std::fs::read_to_string("../branding.json") else {
+    println!("cargo:rerun-if-changed=../branding/branding.json");
+    let Ok(text) = std::fs::read_to_string("../branding/branding.json") else {
         return;
     };
     let Ok(b) = serde_json::from_str::<serde_json::Value>(&text) else {

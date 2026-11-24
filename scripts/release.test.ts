@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   bumpCargoLock,
   bumpCargoToml,
+  bumpReadme,
   changelogNotes,
   contributorsFrom,
   latestJson,
@@ -45,6 +46,14 @@ describe("release helpers", () => {
     expect(
       bumpCargoToml('a = { version = "0.1.0", path = "../a" }\nb = "0.1.0"', "0.1.0", "0.2.0"),
     ).toBe('a = { version = "0.2.0", path = "../a" }\nb = "0.1.0"');
+  });
+
+  it("moves the README's download links to the new version", () => {
+    const readme =
+      "Download Paperlines **0.1.0**, or see\n| [a](https://x/releases/download/v0.1.0/P_0.1.0_x64.dmg) |\nNode 0.1.0 elsewhere";
+    expect(bumpReadme(readme, "0.1.0", "0.2.0")).toBe(
+      "Download Paperlines **0.2.0**, or see\n| [a](https://x/releases/download/v0.2.0/P_0.2.0_x64.dmg) |\nNode 0.1.0 elsewhere",
+    );
   });
 
   it("maps release assets to updater platforms", () => {

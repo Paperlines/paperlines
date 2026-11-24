@@ -5,7 +5,7 @@ const SEMVER = /^(\d+)\.(\d+)\.(\d+)$/;
 /** The next version: "patch" | "minor" | "major" | "current" (unchanged) | an exact "X.Y.Z". */
 export function nextVersion(current, bump) {
   const m = SEMVER.exec(current);
-  if (!m) throw new Error(`branding.json has an invalid version: ${current}`);
+  if (!m) throw new Error(`branding/branding.json has an invalid version: ${current}`);
   const [maj, min, pat] = m.slice(1).map(Number);
   switch (bump) {
     case "current":
@@ -37,7 +37,7 @@ export function stampChangelog(text, version, date) {
   const at = lines.findIndex((l) => l.startsWith("## "));
   if (at < 0 || !UNRELEASED.test(lines[at])) {
     throw new Error(
-      'CHANGELOG.md needs a "## Unreleased" section at the top with what changed in this version.',
+      'docs/CHANGELOG.md needs a "## Unreleased" section at the top with what changed in this version.',
     );
   }
   lines[at] = `## ${version} (${date})`;
@@ -127,4 +127,16 @@ export function releaseBody(notes, contributors) {
   if (!contributors.length) return notes;
   const who = contributors.map((c) => (c.login ? `@${c.login}` : c.name)).join(", ");
   return `${notes}\n\n**Contributors:** ${who}`;
+}
+
+/** Points the README's download links (and the version next to them) at the new release. */
+export function bumpReadme(text, from, to) {
+  return text
+    .split("\n")
+    .map((l) =>
+      l.includes("/releases/download/") || l.startsWith("Download Paperlines")
+        ? l.replaceAll(from, to)
+        : l,
+    )
+    .join("\n");
 }

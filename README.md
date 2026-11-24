@@ -38,13 +38,17 @@ The only network access is metadata, reference and citing-paper lookups (Crossre
 
 ## Install
 
-Download the latest version from **[Releases](https://github.com/Paperlines/paperlines/releases/latest)**:
+Download Paperlines **0.1.0**, or see every file on the **[Releases page](https://github.com/Paperlines/paperlines/releases/latest)**:
 
-| Platform | Files |
-| --- | --- |
-| macOS (Apple Silicon / Intel) | `Paperlines_<version>_aarch64.pkg` (installer) or `.dmg` (drag to Applications); `_x64` for Intel |
-| Windows 10/11 (x64) | `Paperlines_<version>_x64-setup.exe` (per-user, no admin) or `.msi` |
-| Linux x86_64 / aarch64 | `.AppImage`, `.deb`, `.rpm`, plus `paperlines-<triple>` (the CLI) |
+<!-- the release workflow updates these links to each new version -->
+| Platform | Installer | Other formats |
+| --- | --- | --- |
+| **macOS**, Apple Silicon (M1 and later) | [Paperlines_0.1.0_aarch64.pkg](https://github.com/Paperlines/paperlines/releases/download/v0.1.0/Paperlines_0.1.0_aarch64.pkg) | [.dmg](https://github.com/Paperlines/paperlines/releases/download/v0.1.0/Paperlines_0.1.0_aarch64.dmg) |
+| **macOS**, Intel | [Paperlines_0.1.0_x64.pkg](https://github.com/Paperlines/paperlines/releases/download/v0.1.0/Paperlines_0.1.0_x64.pkg) | [.dmg](https://github.com/Paperlines/paperlines/releases/download/v0.1.0/Paperlines_0.1.0_x64.dmg) |
+| **Windows** 10/11, x64 | [Paperlines_0.1.0_x64-setup.exe](https://github.com/Paperlines/paperlines/releases/download/v0.1.0/Paperlines_0.1.0_x64-setup.exe) (no admin needed) | [.msi](https://github.com/Paperlines/paperlines/releases/download/v0.1.0/Paperlines_0.1.0_x64_en-US.msi) |
+| **Linux**, x86_64 | [Paperlines_0.1.0_amd64.AppImage](https://github.com/Paperlines/paperlines/releases/download/v0.1.0/Paperlines_0.1.0_amd64.AppImage) | [.deb](https://github.com/Paperlines/paperlines/releases/download/v0.1.0/Paperlines_0.1.0_amd64.deb) · [.rpm](https://github.com/Paperlines/paperlines/releases/download/v0.1.0/Paperlines-0.1.0-1.x86_64.rpm) · [CLI](https://github.com/Paperlines/paperlines/releases/download/v0.1.0/paperlines-x86_64-unknown-linux-gnu) |
+| **Linux**, aarch64 | [Paperlines_0.1.0_aarch64.AppImage](https://github.com/Paperlines/paperlines/releases/download/v0.1.0/Paperlines_0.1.0_aarch64.AppImage) | [.deb](https://github.com/Paperlines/paperlines/releases/download/v0.1.0/Paperlines_0.1.0_arm64.deb) · [.rpm](https://github.com/Paperlines/paperlines/releases/download/v0.1.0/Paperlines-0.1.0-1.aarch64.rpm) · [CLI](https://github.com/Paperlines/paperlines/releases/download/v0.1.0/paperlines-aarch64-unknown-linux-gnu) |
+| **NixOS** | `nix profile install github:Paperlines/paperlines` | [see below](#nixos) |
 
 **Updates.** When a new version is released, Paperlines tells you the next time it opens: what's new, who worked on it, and **Update now** or **Later**. Updates are signed, and the app checks the signature before installing. The macOS app, the Windows installers and the AppImage update themselves; with a `.deb`, `.rpm` or Nix install, update through your package manager (the app links to the download page). **Help & About → Check for updates** checks at any time; **Settings → General** turns the automatic check off, and offline mode never checks.
 
@@ -54,7 +58,9 @@ Download the latest version from **[Releases](https://github.com/Paperlines/pape
 
 **Linux.** The `.deb` and `.rpm` packages install the CLI as `paperlines`. For the AppImage, put the separate `paperlines-<triple>` file on your PATH, or use **Settings → Command line → Install command-line tool**.
 
-**NixOS.** The repository is a flake that builds the app and the CLI from source (x86_64 and aarch64):
+### NixOS
+
+The repository is a flake that builds the app and the CLI from source (x86_64 and aarch64):
 
 ```sh
 nix run github:Paperlines/paperlines            # try it
@@ -165,16 +171,16 @@ Unsigned builds work everywhere; signing is optional and driven by environment v
 | `APPLE_ID`, `APPLE_PASSWORD`, `APPLE_TEAM_ID` | notarization: Apple ID, an app-specific password, team ID |
 | `APPLE_INSTALLER_IDENTITY` | signs the `.pkg`: `Developer ID Installer: Your Name (TEAMID)` (the certificate must be in your keychain) |
 | `APPLE_INSTALLER_CERTIFICATE`, `APPLE_INSTALLER_CERTIFICATE_PASSWORD` | CI only: base64 `.p12` of that installer certificate and its password |
-| `TAURI_SIGNING_PRIVATE_KEY`, `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` | release workflow: signs the in-app updates (the public key is `updaterPubkey` in `branding.json`) |
+| `TAURI_SIGNING_PRIVATE_KEY`, `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` | release workflow: signs the in-app updates (the public key is `updaterPubkey` in `branding/branding.json`) |
 
 Locally, export them and run `pnpm tauri build`. The hardened runtime is enabled, as notarization requires. In CI, add them as repository secrets and the workflow picks them up. Linux packages are not signed.
 
 ## Renaming and icons
 
-All brand strings live in `branding.json`.
+All brand strings live in `branding/branding.json`.
 
 ```sh
-node scripts/rename.mjs "New Name"     # rewrites branding.json, crate/package names, bundle ID, .desktop file, docs
+node scripts/rename.mjs "New Name"     # rewrites branding/branding.json, crate/package names, bundle ID, .desktop file, docs
 pnpm install                           # refresh the lockfile
 pnpm tauri icon branding/icon-1024.png # regenerate src-tauri/icons (icns, ico, Linux PNG sizes)
 ```
@@ -183,7 +189,7 @@ Colors are CSS variables in `src/tokens.css`. A rebrand only changes that palett
 
 ## Contributing
 
-Bug reports, ideas and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for setting up, the checks to run and how releases are made, and [open an issue](https://github.com/Paperlines/paperlines/issues) for problems.
+Bug reports, ideas and pull requests are welcome. See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for setting up, the checks to run and how releases are made, and [open an issue](https://github.com/Paperlines/paperlines/issues) for problems.
 
 ## Trademarks
 

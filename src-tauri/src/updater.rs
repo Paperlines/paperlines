@@ -31,7 +31,7 @@ pub struct UpdateInfo {
     pub current_version: String,
     /// RFC 3339, from `pub_date`.
     pub date: Option<String>,
-    /// Markdown: this version's section of CHANGELOG.md.
+    /// Markdown: this version's section of docs/CHANGELOG.md.
     pub notes: String,
     pub contributors: Vec<Contributor>,
     /// False where the app can't replace itself (deb/rpm/Nix, a dev build): the UI offers the

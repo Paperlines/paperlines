@@ -10,7 +10,7 @@ Thanks for helping. Paperlines is a local-first reference manager: a Tauri app (
 
 ## Setting up
 
-You need Node 26+, pnpm 12.21 (the exact version is in `package.json`) and Rust through rustup (the toolchain is pinned in `rust-toolchain.toml`). Linux needs the WebKitGTK libraries, and Windows needs WebView2; see [docs/development.md](docs/development.md) for each system, and for Nix (`nix develop`).
+You need Node 26+, pnpm 12.21 (the exact version is in `package.json`) and Rust through rustup (the toolchain is pinned in `rust-toolchain.toml`). Linux needs the WebKitGTK libraries, and Windows needs WebView2; see [docs/development.md](../docs/development.md) for each system, and for Nix (`nix develop`).
 
 ```sh
 pnpm install
@@ -20,7 +20,7 @@ pnpm dev            # the UI alone in a browser, on an in-memory fake backend
 
 The browser build is the quickest way to work on the UI. `/?demo=2000` loads a big graph, `/?dups` adds a duplicate, `/?tour` starts the tour and `/?update` pretends a new version is out.
 
-Read [docs/architecture.md](docs/architecture.md) before larger changes. It explains the layers (crates, `src-tauri`, `packages/*`, `src/`) and the conventions.
+Read [docs/architecture.md](../docs/architecture.md) before larger changes. It explains the layers (crates, `src-tauri`, `packages/*`, `src/`) and the conventions.
 
 ## Making a change
 
@@ -33,7 +33,7 @@ Read [docs/architecture.md](docs/architecture.md) before larger changes. It expl
    5. the CLI or MCP server, when that's useful;
    6. an end-to-end test in `e2e/`.
 3. Keep explanations next to the setting in the UI (the ⓘ buttons, `components/InfoTip.tsx`), and user-facing text in `src/i18n/en.ts`.
-4. Add a line about your change to the `## Unreleased` section at the top of `CHANGELOG.md`, written for users. Create the section if it isn't there. These lines become the release notes and the "What's new" text in the update dialog.
+4. Add a line about your change to the `## Unreleased` section at the top of [`docs/CHANGELOG.md`](../docs/CHANGELOG.md), written for users. Create the section if it isn't there. These lines become the release notes and the "What's new" text in the update dialog.
 
 ### Rules worth knowing
 
@@ -60,7 +60,7 @@ If you change `pnpm-lock.yaml`, also update `pnpmDeps.hash` in `nix/package.nix`
 
 - Describe what changed and why, and how you tested it. Add screenshots for UI changes (`SCREENSHOT_DIR=… pnpm test:e2e` can take them).
 - Keep commits readable. Use your own GitHub account, so you're credited as a contributor in the release notes and the in-app update dialog.
-- By contributing, you agree that your contribution is licensed under the project's licence, the [GNU AGPL v3.0 or later](LICENSE).
+- By contributing, you agree that your contribution is licensed under the project's licence, the [GNU AGPL v3.0 or later](../LICENSE).
 
 ## Releases (maintainers)
 
@@ -71,4 +71,4 @@ Releases are made with the **Release** workflow: Actions → Release → Run wor
 - builds and signs every platform;
 - publishes the GitHub release with `latest.json`.
 
-Installed apps then offer the update the next time they open. [docs/development.md](docs/development.md#releasing) has the details and the secrets it needs.
+Installed apps then offer the update the next time they open. [docs/development.md](../docs/development.md#releasing) has the details and the secrets it needs.

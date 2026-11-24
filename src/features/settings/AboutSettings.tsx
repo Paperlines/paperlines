@@ -18,7 +18,7 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import { type ReactNode, useMemo, useState } from "react";
-import changelog from "../../../CHANGELOG.md?raw";
+import changelog from "../../../docs/CHANGELOG.md?raw";
 import logo2x from "../../assets/logo-128.png";
 import { backend } from "../../backend";
 import { branding } from "../../branding.generated";
@@ -28,7 +28,7 @@ import { useTour } from "../../store/tour";
 
 const BUILD =
   typeof __BUILD__ !== "undefined" ? __BUILD__ : { version: "dev", commit: null, date: "" };
-/** Project links from branding.json (empty until published: their rows stay hidden). */
+/** Project links from branding/branding.json (empty until published: their rows stay hidden). */
 const PROJECT: { repository: string; website: string; license: string; author: string } = {
   repository: branding.repository,
   website: branding.website,

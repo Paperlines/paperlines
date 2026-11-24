@@ -1,5 +1,5 @@
 // Usage: node scripts/rename.mjs <NewName>
-// Rewrites branding.json, then replaces old brand strings in tracked sources and regenerates.
+// Rewrites branding/branding.json, then replaces old brand strings in tracked sources and regenerates.
 
 import { execFileSync } from "node:child_process";
 import {
@@ -21,7 +21,7 @@ if (!name || !/^[A-Za-z][A-Za-z0-9 ]*$/.test(name)) {
   );
   process.exit(1);
 }
-const old = JSON.parse(readFileSync(join(root, "branding.json"), "utf8"));
+const old = JSON.parse(readFileSync(join(root, "branding", "branding.json"), "utf8"));
 const bin = name.toLowerCase().replace(/\s+/g, "");
 const next = {
   ...old,
@@ -74,7 +74,7 @@ let changed = 0;
   }
 })(root);
 
-writeFileSync(join(root, "branding.json"), JSON.stringify(next, null, 2) + "\n");
+writeFileSync(join(root, "branding", "branding.json"), JSON.stringify(next, null, 2) + "\n");
 execFileSync("node", [join(root, "scripts", "gen-branding.mjs")], { stdio: "inherit" });
 // longer or shorter crate names change line lengths
 try {

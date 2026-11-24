@@ -7,7 +7,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const b = JSON.parse(readFileSync(join(root, "branding.json"), "utf8"));
+const b = JSON.parse(readFileSync(join(root, "branding", "branding.json"), "utf8"));
 const args = process.argv.slice(2);
 const debug = args.includes("--debug") || process.env.TAURI_ENV_DEBUG === "true";
 const ti = args.indexOf("--target");

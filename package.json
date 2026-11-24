@@ -16,7 +16,7 @@
     "lint": "biome check .",
     "test": "vitest run",
     "tauri": "tauri",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test --config e2e/playwright.config.ts",
     "build:pkg": "node scripts/build-pkg.mjs"
   },
   "dependencies": {

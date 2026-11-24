@@ -4,7 +4,7 @@ import { expect, type Page, test } from "@playwright/test";
 const shots = process.env.SCREENSHOT_DIR;
 // the version being built (releases bump it); the fake backend offers the next minor as an update
 const VERSION = (
-  JSON.parse(readFileSync(new URL("../branding.json", import.meta.url), "utf8")) as {
+  JSON.parse(readFileSync(new URL("../branding/branding.json", import.meta.url), "utf8")) as {
     version: string;
   }
 ).version;

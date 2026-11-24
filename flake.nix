@@ -6,7 +6,7 @@
   outputs =
     { self, nixpkgs }:
     let
-      branding = builtins.fromJSON (builtins.readFile ./branding.json);
+      branding = builtins.fromJSON (builtins.readFile ./branding/branding.json);
       systems = [
         "x86_64-linux"
         "aarch64-linux"

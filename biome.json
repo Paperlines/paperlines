@@ -5,8 +5,9 @@
       "packages/**",
       "scripts/**",
       "e2e/**",
-      "playwright.config.ts",
       "*.json",
+      "branding/*.json",
+      "vite.config.ts",
       "!**/*.generated.ts",
       "!src-tauri/gen",
       "!src-tauri/tauri.conf.json"

@@ -23,7 +23,7 @@ if (process.platform !== "darwin") {
 }
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const b = JSON.parse(readFileSync(join(root, "branding.json"), "utf8"));
+const b = JSON.parse(readFileSync(join(root, "branding", "branding.json"), "utf8"));
 const args = process.argv.slice(2);
 const arg = (name) => {
   const i = args.indexOf(name);

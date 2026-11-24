@@ -1,8 +1,8 @@
 name: Release
 
 # Actions → Release → Run workflow. Bumps the version everywhere, dates the "## Unreleased"
-# section of CHANGELOG.md, tags the commit, builds and signs every platform, and publishes a
-# GitHub release with latest.json, which the app's updater reads. See CONTRIBUTING.md.
+# section of docs/CHANGELOG.md, tags the commit, builds and signs every platform, and publishes a
+# GitHub release with latest.json, which the app's updater reads. See .github/CONTRIBUTING.md.
 on:
   workflow_dispatch:
     inputs:
