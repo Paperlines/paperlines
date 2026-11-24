@@ -1,6 +1,15 @@
+import { readFileSync } from "node:fs";
 import { expect, type Page, test } from "@playwright/test";
 
 const shots = process.env.SCREENSHOT_DIR;
+// the version being built (releases bump it); the fake backend offers the next minor as an update
+const VERSION = (
+  JSON.parse(readFileSync(new URL("../branding.json", import.meta.url), "utf8")) as {
+    version: string;
+  }
+).version;
+const [major, minor] = VERSION.split(".").map(Number);
+const NEXT = `${major}.${minor + 1}.0`;
 const mod = process.platform === "darwin" ? "Meta" : "Control";
 const list = (page: Page) => page.getByRole("listbox", { name: "Library" });
 const sideTab = (page: Page, name: string) =>
@@ -892,7 +901,7 @@ test("settings: Help & About: build, what's new, citing, shortcuts", async ({ pa
   await dlg.getByRole("button", { name: "Help & About", exact: true }).click();
   const card = dlg.getByRole("region", { name: "Paperlines", exact: true });
   await expect(card.getByRole("heading")).toContainText("Paperlines");
-  await expect(card).toContainText(/v0\.1\.0/);
+  await expect(card).toContainText(`v${VERSION}`);
   // the contributors first, then who started it
   await expect(card).toContainText(
     "Made by the Paperlines contributors, started by Yoav Yosif-Or.",
@@ -900,13 +909,16 @@ test("settings: Help & About: build, what's new, citing, shortcuts", async ({ pa
   await expect(card).toContainText(
     "the Paperlines contributors and Yoav Yosif-Or · AGPL-3.0-or-later",
   );
-  // no repository yet: no GitHub, update or licence rows
-  await expect(dlg.getByRole("button", { name: /Check for updates/ })).toHaveCount(0);
-  await expect(dlg.getByRole("region", { name: "Project" })).toHaveCount(0);
+  // the GitHub repository: project row, and an update check that finds nothing new here
+  await expect(dlg.getByRole("region", { name: "Project" })).toContainText(
+    "Star and explore on GitHub",
+  );
+  await dlg.getByRole("button", { name: "Check for updates" }).click();
+  await expect(dlg.getByRole("status")).toHaveText(`You have the latest version (${VERSION}).`);
   // how to cite it
   const cite = dlg.getByRole("region", { name: "Cite Paperlines in your paper" });
   await expect(cite.getByLabel("BibTeX", { exact: true })).toContainText("@software{paperlines,");
-  await expect(cite.getByLabel("BibTeX", { exact: true })).toContainText("version = {0.1.0}");
+  await expect(cite.getByLabel("BibTeX", { exact: true })).toContainText(`version = {${VERSION}}`);
   await expect(cite.getByLabel("BibTeX", { exact: true })).toContainText(
     "{{The Paperlines contributors} and Yoav Yosif-Or}",
   );
@@ -922,9 +934,6 @@ test("settings: Help & About: build, what's new, citing, shortcuts", async ({ pa
   await expect(log.getByRole("heading", { name: "Library" })).toBeVisible();
   await expect(log).toContainText("Export a whole library");
   await dlg.getByRole("button", { name: "Back" }).click();
-  // report a problem copies the details while there is no repository
-  await dlg.getByRole("button", { name: /Report a problem/ }).click();
-  await expect(dlg.getByRole("status")).toContainText("Version and system details copied");
   // keyboard shortcuts: the command palette
   await dlg.getByRole("button", { name: /Keyboard shortcuts/ }).click();
   await expect(page.getByPlaceholder("Type a command or search…")).toBeVisible();
@@ -978,4 +987,33 @@ test("a highlight made from the PDF's text is placed when the PDF opens", async 
     await reader.locator(".pv-page[data-page='2']").scrollIntoViewIfNeeded();
     await page.screenshot({ path: `${shots}/x-placed.png` });
   }
+});
+
+test("a new version: offered when the app opens, with its changes and who made it", async ({
+  page,
+}) => {
+  await page.goto("/?update");
+  const dlg = page.getByRole("dialog", { name: `Paperlines ${NEXT} is available` });
+  await expect(dlg).toBeVisible();
+  await expect(dlg).toContainText(`You have version ${VERSION}`);
+  const notes = dlg.getByRole("region", { name: "What's new" });
+  await expect(notes.getByRole("heading", { name: "Library" })).toBeVisible();
+  await expect(notes).toContainText("Faster search");
+  const people = dlg.getByRole("region", { name: "Made by" });
+  await expect(people.getByRole("link", { name: "Ada Lovelace" })).toBeVisible();
+  await expect(people).toContainText("Grace Hopper");
+  if (shots) await dlg.screenshot({ path: `${shots}/x-update.png` });
+  // Later: closes, nothing installed
+  await dlg.getByRole("button", { name: "Later" }).click();
+  await expect(dlg).toHaveCount(0);
+  // Help & About finds it again; Update now downloads and installs
+  await page.getByRole("button", { name: "Settings", exact: true }).first().click();
+  const settings = page.getByRole("dialog", { name: "Settings" });
+  await settings.getByRole("button", { name: "Help & About", exact: true }).click();
+  await settings.getByRole("button", { name: "Check for updates" }).click();
+  await expect(dlg).toBeVisible();
+  await dlg.getByRole("button", { name: "Update now" }).click();
+  await expect(dlg.getByRole("status")).toContainText(/Downloading… \d+%|Installing/);
+  await expect(dlg.getByRole("status")).toContainText("Installing, then Paperlines restarts…");
+  await expect(dlg.getByRole("button", { name: "Later" })).toBeDisabled();
 });

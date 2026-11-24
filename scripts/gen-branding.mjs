@@ -146,6 +146,17 @@ const conf = {
       },
     ],
   },
+  // In-app updates: the release workflow publishes signed bundles and latest.json on GitHub
+  // Releases (it also turns on bundle.createUpdaterArtifacts, so local builds need no key).
+  plugins: {
+    updater: {
+      pubkey: b.updaterPubkey ?? "",
+      endpoints: b.repository
+        ? [`${b.repository.replace(/\/$/, "")}/releases/latest/download/latest.json`]
+        : [],
+      windows: { installMode: "passive" },
+    },
+  },
 };
 out("src-tauri/tauri.conf.json", JSON.stringify(conf, null, 2) + "\n");
 

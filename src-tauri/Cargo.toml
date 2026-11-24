@@ -27,6 +27,8 @@ paperlines-mcp = { path = "../crates/mcp" }
 paperlines-agent = { path = "../crates/agent" }
 tauri-plugin-single-instance = "2.5.5"
 tauri-plugin-clipboard-manager = "2.5.0"
+tauri-plugin-updater = "2"
+serde_json = "1.0.154"
 
 # Linux: the XDG desktop portal (light/dark mode on COSMIC, GNOME, KDE); type-checked on all Unix
 [target.'cfg(unix)'.dependencies]

@@ -1083,6 +1083,29 @@ export const en = {
   "discover.mapDescription": "Mapped from the search “{q}”",
   "help.discover":
     "Searches OpenAlex, Semantic Scholar, arXiv, PubMed and Crossref together; the same paper from several sources is shown once, with its sources listed. Only your search words are sent. Add sends papers through the usual review. Map makes a project named after the search, adds the chosen papers to it and opens its citation graph; their reference lists are fetched so the links fill in.",
+  "settings.checkUpdates": "Check for updates when the app opens",
+  "settings.checkUpdatesHint": "Shows what's new in a newer version and asks before installing it.",
+  "help.checkUpdates":
+    "When the app opens, it asks GitHub whether a newer version has been released. Nothing about you or your library is sent, and nothing is installed until you click Update now. Never in offline mode.",
+  "about.checking": "Checking…",
+  "about.upToDate": "You have the latest version ({v}).",
+  "update.title": "{name} {v} is available",
+  "update.subtitle": "You have version {current}",
+  "update.subtitleDate": "You have version {current} · released {date}",
+  "update.changes": "What's new",
+  "update.noNotes": "No notes for this version.",
+  "update.contributors": "Made by",
+  "update.thanks": "Thanks to everyone who worked on this version.",
+  "update.onGithub": "Release on GitHub",
+  "update.now": "Update now",
+  "update.later": "Later",
+  "update.download": "Open download page",
+  "update.packaged":
+    "This copy was installed by a package manager or built from source, so it can't update itself. Update it there, or download the new version.",
+  "update.downloading": "Downloading… {pct}%",
+  "update.downloadingSize": "Downloading… {mb} MB",
+  "update.installing": "Installing, then {name} restarts…",
+  "update.failed": "The update couldn't be installed: {error}",
 } as const;
 
 export type MessageKey = keyof typeof en;

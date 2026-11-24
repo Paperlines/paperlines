@@ -6,6 +6,7 @@ mod library;
 mod linux;
 mod maintenance;
 mod platform;
+mod updater;
 
 use paperlines_core::db::Db;
 use paperlines_core::highlights::{self, Highlight, HighlightPatch, NewHighlight};
@@ -398,6 +399,8 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_clipboard_manager::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .manage(updater::Pending::default())
         .manage(state)
         .manage(agent::Runtime::default())
         .manage(maintenance::PendingOpens(std::sync::Mutex::new(platform::file_args(
@@ -556,6 +559,8 @@ pub fn run() {
             library::set_library_location,
             library::copy_citation,
             library::export_formatted,
+            updater::update_check,
+            updater::update_install,
             get_settings,
             update_settings,
             import_preview_paths,

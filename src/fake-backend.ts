@@ -29,6 +29,7 @@ import type {
 } from "@paperlines/backend-port";
 import { toInput } from "@paperlines/backend-port";
 import { inRange, parse, parseRange } from "@paperlines/search-query";
+import { branding } from "./branding.generated";
 import { samplePdf } from "./sample-pdf";
 
 const LOREM = [
@@ -179,6 +180,7 @@ export function createFakeBackend(opts: { seed?: boolean } = {}): BackendPort {
     grobidUrl: null,
     citationStyle: "apa",
     trashDays: 30,
+    checkForUpdates: true,
   };
   // --- citations: cached reference lists per citekey; edges are derived like the real backend ---
   type Ref = { doi?: string; arxivId?: string; title?: string; year?: number };
@@ -1865,6 +1867,37 @@ export function createFakeBackend(opts: { seed?: boolean } = {}): BackendPort {
     },
     async pickSavePath(name) {
       return `/demo/${name}`;
+    },
+    async checkForUpdate() {
+      if (settings.offlineMode) throw new Error("Offline mode is on, so updates aren't checked.");
+      // ?update pretends a newer version is out
+      if (typeof location === "undefined" || !new URLSearchParams(location.search).has("update"))
+        return null;
+      return {
+        version: branding.version.replace(
+          /^(\d+)\.(\d+)\..*$/,
+          (_, a, b) => `${a}.${Number(b) + 1}.0`,
+        ),
+        currentVersion: branding.version,
+        date: "2026-12-01T10:00:00Z",
+        notes:
+          "### Library\n- **Faster search** across big libraries.\n- Drag papers between projects.\n\n### Fixes\n- The graph keeps its zoom after a filter changes.",
+        contributors: [
+          { login: "ada-l", name: "Ada Lovelace" },
+          { login: null, name: "Grace Hopper" },
+        ],
+        canInstall: true,
+      };
+    },
+    async installUpdate() {
+      const emit = (p: { done: number; total: number | null }) => {
+        for (const cb of listeners.get("update-progress") ?? []) cb(p);
+      };
+      for (let done = 0; done <= 4; done++) {
+        emit({ done: done * 1_000_000, total: 4_000_000 });
+        await new Promise((r) => setTimeout(r, 150));
+      }
+      // the real app restarts here
     },
     async openExternal(url) {
       window.open(url, "_blank", "noopener");

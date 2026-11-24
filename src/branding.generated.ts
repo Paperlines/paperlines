@@ -7,7 +7,7 @@ export const branding = {
   "description": "Local-first reference manager",
   "version": "0.1.0",
   "summary": "Collect papers and their PDFs, read and highlight, take notes with links and formulas, map how papers cite and build on each other, and let your AI assistant work with it all, on your own computer.",
-  "repository": "",
+  "repository": "https://github.com/Paperlines/paperlines",
   "website": "",
   "license": "AGPL-3.0-or-later",
   "author": "Yoav Yosif-Or"

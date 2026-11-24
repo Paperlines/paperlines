@@ -117,5 +117,16 @@
         "rank": "Alternate"
       }
     ]
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEFENTM5NTFERTBCNTRFREYKUldUZlRyWGdIWlZUclc5bUtScjRyZkhHZjNpbnZsSStxd1N6Vng0TzJyU1JjeFovQmNmcUJiVjMK",
+      "endpoints": [
+        "https://github.com/Paperlines/paperlines/releases/latest/download/latest.json"
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
+    }
   }
 }

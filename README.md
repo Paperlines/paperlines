@@ -1,5 +1,9 @@
 # Paperlines
 
+[![CI](https://github.com/Paperlines/paperlines/actions/workflows/ci.yml/badge.svg)](https://github.com/Paperlines/paperlines/actions/workflows/ci.yml)
+[![Latest release](https://img.shields.io/github/v/release/Paperlines/paperlines)](https://github.com/Paperlines/paperlines/releases/latest)
+[![Licence: AGPL v3+](https://img.shields.io/badge/licence-AGPL--3.0--or--later-blue)](LICENSE)
+
 A local-first reference manager for macOS, Windows and Linux: a library like Zotero, notes like Obsidian, and a citation graph like Connected Papers, in one desktop app. No account, no cloud, no telemetry.
 
 The name and icon are placeholders. See [Renaming](#renaming-and-icons).
@@ -30,16 +34,19 @@ The name and icon are placeholders. See [Renaming](#renaming-and-icons).
 - **Safety.** A daily backup with one-click restore, a backup before every schema upgrade, transactions everywhere, and `doctor`.
 - **Command line and MCP.** The `paperlines` CLI, and an MCP server so Claude Code or Claude Desktop can search your library and add bullets to paper notes. It runs locally over stdio, never on the network.
 
-The only network access is metadata, reference and citing-paper lookups (Crossref, OpenAlex, Semantic Scholar, arXiv), and only when you add papers or ask for them. Only identifiers (DOI, arXiv ID) are sent. A free OpenAlex API key (Settings → Citations) gives your own daily allowance; without one, lookups share a small one with your network. **Settings → Offline mode** turns all of it off.
+The only network access is metadata, reference and citing-paper lookups (Crossref, OpenAlex, Semantic Scholar, arXiv), and only when you add papers or ask for them, plus one request to GitHub when the app opens to see whether a new version is out (Settings → General turns it off). Only identifiers (DOI, arXiv ID) are sent. A free OpenAlex API key (Settings → Citations) gives your own daily allowance; without one, lookups share a small one with your network. **Settings → Offline mode** turns all of it off.
 
 ## Install
 
-Download a build from the CI artifacts of this repository:
+Download the latest version from **[Releases](https://github.com/Paperlines/paperlines/releases/latest)**:
 
 | Platform | Files |
 | --- | --- |
 | macOS (Apple Silicon / Intel) | `Paperlines_<version>_aarch64.pkg` (installer) or `.dmg` (drag to Applications); `_x64` for Intel |
+| Windows 10/11 (x64) | `Paperlines_<version>_x64-setup.exe` (per-user, no admin) or `.msi` |
 | Linux x86_64 / aarch64 | `.AppImage`, `.deb`, `.rpm`, plus `paperlines-<triple>` (the CLI) |
+
+**Updates.** When a new version is released, Paperlines tells you the next time it opens: what's new, who worked on it, and **Update now** or **Later**. Updates are signed, and the app checks the signature before installing. The macOS app, the Windows installers and the AppImage update themselves; with a `.deb`, `.rpm` or Nix install, update through your package manager (the app links to the download page). **Help & About → Check for updates** checks at any time; **Settings → General** turns the automatic check off, and offline mode never checks.
 
 **macOS installer.** Open the `.pkg` and follow the steps. It installs Paperlines into Applications and the `paperlines` command into `/usr/local/bin`. To uninstall, delete the app and `/usr/local/bin/paperlines`; your library stays where it is.
 
@@ -158,6 +165,7 @@ Unsigned builds work everywhere; signing is optional and driven by environment v
 | `APPLE_ID`, `APPLE_PASSWORD`, `APPLE_TEAM_ID` | notarization: Apple ID, an app-specific password, team ID |
 | `APPLE_INSTALLER_IDENTITY` | signs the `.pkg`: `Developer ID Installer: Your Name (TEAMID)` (the certificate must be in your keychain) |
 | `APPLE_INSTALLER_CERTIFICATE`, `APPLE_INSTALLER_CERTIFICATE_PASSWORD` | CI only: base64 `.p12` of that installer certificate and its password |
+| `TAURI_SIGNING_PRIVATE_KEY`, `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` | release workflow: signs the in-app updates (the public key is `updaterPubkey` in `branding.json`) |
 
 Locally, export them and run `pnpm tauri build`. The hardened runtime is enabled, as notarization requires. In CI, add them as repository secrets and the workflow picks them up. Linux packages are not signed.
 
@@ -172,6 +180,10 @@ pnpm tauri icon branding/icon-1024.png # regenerate src-tauri/icons (icns, ico, 
 ```
 
 Colors are CSS variables in `src/tokens.css`. A rebrand only changes that palette.
+
+## Contributing
+
+Bug reports, ideas and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for setting up, the checks to run and how releases are made, and [open an issue](https://github.com/Paperlines/paperlines/issues) for problems.
 
 ## Trademarks
 

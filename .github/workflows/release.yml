@@ -1,0 +1,202 @@
+name: Release
+
+# Actions → Release → Run workflow. Bumps the version everywhere, dates the "## Unreleased"
+# section of CHANGELOG.md, tags the commit, builds and signs every platform, and publishes a
+# GitHub release with latest.json, which the app's updater reads. See CONTRIBUTING.md.
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: "patch, minor, major, current (release the version as it is) or an exact X.Y.Z"
+        required: true
+        default: patch
+
+concurrency: release
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.bump.outputs.version }}
+      tag: ${{ steps.bump.outputs.tag }}
+      release_id: ${{ steps.draft.outputs.id }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      BUMP: ${{ inputs.bump }}
+    steps:
+      - name: Only from main
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "::error::Run the release from main"
+          exit 1
+
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+
+      - name: CI passed on this commit
+        run: |
+          conclusion=$(gh run list --workflow ci.yml --commit "$GITHUB_SHA" --event push \
+            --json conclusion --jq '.[0].conclusion')
+          if [ "$conclusion" != "success" ]; then
+            echo "::error::CI has not passed on $GITHUB_SHA (${conclusion:-no run yet}). Wait for it, or fix it first."
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with: { node-version: 26 }
+      - name: Rust toolchain (checks Cargo.lock after the bump)
+        run: rustup show
+
+      - name: Set the version and date the changelog
+        id: bump
+        run: |
+          version=$(node scripts/release.mjs next "$BUMP")
+          tag="v$version"
+          if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+            echo "::error::$tag already exists"
+            exit 1
+          fi
+          node scripts/release.mjs apply "$version" --notes "$RUNNER_TEMP/notes.md"
+          cargo metadata --locked --format-version 1 >/dev/null
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Commit, tag and push
+        env:
+          TAG: ${{ steps.bump.outputs.tag }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Release $TAG"
+          git tag -a "$TAG" -m "Paperlines ${TAG#v}"
+          git push origin HEAD:main "$TAG"
+
+      - name: Draft release
+        id: draft
+        env:
+          TAG: ${{ steps.bump.outputs.tag }}
+        run: |
+          gh release create "$TAG" --draft --verify-tag --title "Paperlines ${TAG#v}" \
+            --notes-file "$RUNNER_TEMP/notes.md"
+          id=$(gh api "repos/$GH_REPO/releases" --jq ".[] | select(.tag_name == \"$TAG\") | .id")
+          echo "id=$id" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: prepare
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: macos-latest, name: macos-arm64 }
+          - { os: macos-15-intel, name: macos-x64 }
+          - { os: ubuntu-22.04, name: linux-x64 }
+          - { os: ubuntu-22.04-arm, name: linux-arm64 }
+          - { os: windows-latest, name: windows-x64 }
+    runs-on: ${{ matrix.os }}
+    name: build ${{ matrix.name }}
+    env:
+      APPIMAGE_EXTRACT_AND_RUN: "1"
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TAG: ${{ needs.prepare.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: "${{ needs.prepare.outputs.tag }}" }
+
+      - name: Linux system dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev libsecret-1-dev patchelf rpm file
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 26, cache: pnpm }
+      - name: Rust toolchain (from rust-toolchain.toml)
+        run: rustup show
+      - uses: Swatinem/rust-cache@v2
+      - run: pnpm install --frozen-lockfile
+
+      # Optional signing and notarization: only when the secrets exist. See README "Signing".
+      - name: macOS signing environment
+        if: runner.os == 'macOS'
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          if [ -n "$APPLE_CERTIFICATE" ]; then
+            {
+              echo "APPLE_CERTIFICATE=$APPLE_CERTIFICATE"
+              echo "APPLE_CERTIFICATE_PASSWORD=$APPLE_CERTIFICATE_PASSWORD"
+              echo "APPLE_SIGNING_IDENTITY=$APPLE_SIGNING_IDENTITY"
+            } >> "$GITHUB_ENV"
+          fi
+          if [ -n "$APPLE_ID" ]; then
+            {
+              echo "APPLE_ID=$APPLE_ID"
+              echo "APPLE_PASSWORD=$APPLE_PASSWORD"
+              echo "APPLE_TEAM_ID=$APPLE_TEAM_ID"
+            } >> "$GITHUB_ENV"
+          fi
+
+      # builds and uploads the bundles and their updater signatures (.sig) to the draft release
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          releaseId: ${{ needs.prepare.outputs.release_id }}
+          args: --config src-tauri/release.conf.json
+          # latest.json is written once, by the publish job, from every platform's signature
+          includeUpdaterJson: false
+
+      - name: macOS installer package
+        if: runner.os == 'macOS'
+        env:
+          APPLE_INSTALLER_CERTIFICATE: ${{ secrets.APPLE_INSTALLER_CERTIFICATE }}
+          APPLE_INSTALLER_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_INSTALLER_CERTIFICATE_PASSWORD }}
+          APPLE_INSTALLER_IDENTITY: ${{ secrets.APPLE_INSTALLER_IDENTITY }}
+        run: |
+          if [ -n "$APPLE_INSTALLER_CERTIFICATE" ]; then
+            KC="$RUNNER_TEMP/installer.keychain-db"
+            security create-keychain -p ci "$KC"
+            security set-keychain-settings -lut 3600 "$KC"
+            security unlock-keychain -p ci "$KC"
+            echo "$APPLE_INSTALLER_CERTIFICATE" | base64 --decode > "$RUNNER_TEMP/installer.p12"
+            security import "$RUNNER_TEMP/installer.p12" -k "$KC" -P "$APPLE_INSTALLER_CERTIFICATE_PASSWORD" -T /usr/bin/productbuild
+            security list-keychains -d user -s "$KC" $(security list-keychains -d user | tr -d '"')
+          else
+            unset APPLE_INSTALLER_IDENTITY
+          fi
+          pnpm build:pkg
+          gh release upload "$TAG" target/release/bundle/pkg/*.pkg --clobber
+
+      # the command-line tool on its own (Linux: ship it next to the AppImage)
+      - name: Command-line tool
+        shell: bash
+        run: gh release upload "$TAG" src-tauri/binaries/* --clobber
+
+  publish:
+    needs: [prepare, build]
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.tag }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with: { node-version: 26 }
+      - name: latest.json, release notes with contributors, publish
+        run: node scripts/release.mjs publish "${{ needs.prepare.outputs.tag }}"

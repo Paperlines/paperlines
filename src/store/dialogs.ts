@@ -12,7 +12,8 @@ export type DialogName =
   | "export"
   | "updateDetails"
   | "connection"
-  | "connectionTypes";
+  | "connectionTypes"
+  | "appUpdate";
 
 interface DialogState {
   open: DialogName | null;

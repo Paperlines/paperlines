@@ -90,6 +90,8 @@ pub struct Settings {
     pub citation_style: String,
     /// Papers in the Trash are deleted for good after this many days (0 = never).
     pub trash_days: i64,
+    /// Look for a new version on GitHub when the app opens (not in offline mode).
+    pub check_for_updates: bool,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
@@ -105,6 +107,7 @@ pub struct SettingsPatch {
     pub grobid_url: Option<String>,
     pub citation_style: Option<String>,
     pub trash_days: Option<i64>,
+    pub check_for_updates: Option<bool>,
 }
 
 fn get(conn: &Connection, key: &str) -> Result<Option<String>> {
@@ -137,6 +140,7 @@ pub fn load(conn: &Connection) -> Result<Settings> {
             .filter(|s| !s.is_empty())
             .unwrap_or_else(|| "apa".into()),
         trash_days: get(conn, "trash_days")?.and_then(|d| d.parse().ok()).unwrap_or(30),
+        check_for_updates: get(conn, "check_for_updates")?.as_deref() != Some("false"),
     })
 }
 
@@ -168,6 +172,9 @@ pub fn apply(conn: &Connection, patch: &SettingsPatch) -> Result<Settings> {
     }
     if let Some(v) = patch.auto_find_pdfs {
         set(conn, "auto_find_pdfs", b(v))?;
+    }
+    if let Some(v) = patch.check_for_updates {
+        set(conn, "check_for_updates", b(v))?;
     }
     if let Some(v) = &patch.citation_style {
         set(conn, "citation_style", v.trim())?;
@@ -214,6 +221,16 @@ mod tests {
         assert!(s.offline_mode && s.vim_mode);
         assert!(s.auto_fetch_references && s.grobid_url.is_none());
         assert!(s.auto_find_pdfs, "on by default");
+        assert!(s.check_for_updates, "on by default");
+        let s = apply(
+            &db.conn,
+            &SettingsPatch {
+                check_for_updates: Some(false),
+                ..Default::default()
+            },
+        )
+        .unwrap();
+        assert!(!s.check_for_updates);
         let s = apply(
             &db.conn,
             &SettingsPatch {

@@ -216,6 +216,7 @@ export function AboutSettings({ info }: { info: PlatformInfo }) {
   const [view, setView] = useState<"main" | "changelog">("main");
   const [copied, copy] = useCopied();
   const [msg, setMsg] = useState<string | null>(null);
+  const [checking, setChecking] = useState(false);
   const os = t(`about.os.${info.os}`);
   const version = BUILD.commit
     ? t("about.versionBuild", { v: BUILD.version, commit: BUILD.commit, date: BUILD.date })
@@ -242,6 +243,20 @@ export function AboutSettings({ info }: { info: PlatformInfo }) {
         />
       </div>
     );
+
+  const checkUpdates = async () => {
+    setChecking(true);
+    setMsg(null);
+    try {
+      const update = await backend.checkForUpdate();
+      if (update) useDialogs.getState().show("appUpdate", update);
+      else setMsg(t("about.upToDate", { v: BUILD.version }));
+    } catch (e) {
+      setMsg(String(e instanceof Error ? e.message : e));
+    } finally {
+      setChecking(false);
+    }
+  };
 
   const report = () => {
     if (REPO) {
@@ -302,9 +317,11 @@ export function AboutSettings({ info }: { info: PlatformInfo }) {
               <button
                 type="button"
                 className="btn btn-soft"
-                onClick={() => open(`${REPO}/releases/latest`)}
+                disabled={checking}
+                onClick={checkUpdates}
               >
-                <RefreshCw size={14} aria-hidden="true" /> {t("about.checkUpdates")}
+                <RefreshCw size={14} aria-hidden="true" />{" "}
+                {checking ? t("about.checking") : t("about.checkUpdates")}
               </button>
             )}
             <button type="button" className="btn-link" onClick={() => setView("changelog")}>

@@ -39,3 +39,4 @@ The first version: everything below is new.
 - Copy citations and bibliographies in about 80 styles; BibTeX files that stay up to date.
 - macOS, Windows (installer .exe and .msi) and Linux (NixOS flake, COSMIC and other Wayland desktops); a `paperlines` command line and an MCP server.
 - Daily backups, one-click restore, and a library check.
+- **Updates from inside the app**: when a new version is out, the app shows what's new and who made it, and updates itself when you click Update now (or later). Turn the check off in Settings ▸ General.

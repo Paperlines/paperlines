@@ -170,6 +170,27 @@ export interface Settings {
   citationStyle: string;
   /** Papers stay this many days in the Trash (0 = until emptied). */
   trashDays: number;
+  /** Look for a new version when the app opens (never in offline mode). */
+  checkForUpdates: boolean;
+}
+
+export interface Contributor {
+  /** GitHub login, when the commits are linked to an account. */
+  login: string | null;
+  name: string;
+}
+
+/** A newer version published on GitHub Releases. */
+export interface AppUpdate {
+  version: string;
+  currentVersion: string;
+  /** RFC 3339 release date. */
+  date: string | null;
+  /** Markdown: this version's part of the changelog. */
+  notes: string;
+  contributors: Contributor[];
+  /** False for deb/rpm/Nix installs and dev builds: offer the download page instead. */
+  canInstall: boolean;
 }
 
 export interface CitationStyle {
@@ -624,6 +645,8 @@ export interface BackendEvents {
   /** Papers were added without a file; free PDFs are being looked for (count). */
   "pdfs-searching": number;
   "pdfs-found": FindPdfReport;
+  /** Bytes of the update downloaded so far (total unknown: null). */
+  "update-progress": { done: number; total: number | null };
 }
 
 export type Unsubscribe = () => void;
@@ -836,6 +859,10 @@ export interface BackendPort {
   pickSavePath(defaultName: string, extension?: string): Promise<string | null>;
   /** Opens an http(s) URL in the system browser. */
   openExternal(url: string): Promise<void>;
+  /** Asks GitHub Releases for a newer version (null: up to date). Fails in offline mode. */
+  checkForUpdate(): Promise<AppUpdate | null>;
+  /** Downloads and installs the update from the last check, then restarts the app. */
+  installUpdate(): Promise<void>;
   listSavedSearches(): Promise<SavedSearch[]>;
   createSavedSearch(name: string, query: string): Promise<number>;
   deleteSavedSearch(id: number): Promise<void>;

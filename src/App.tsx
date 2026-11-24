@@ -1,4 +1,4 @@
-import type { PlatformInfo } from "@paperlines/backend-port";
+import type { AppUpdate, PlatformInfo } from "@paperlines/backend-port";
 import { useShallow } from "zustand/react/shallow";
 import { AgentPanel } from "./features/agent/AgentPanel";
 import { Tour } from "./features/tour/Tour";
@@ -33,6 +33,7 @@ import { TopBar } from "./features/shell/TopBar";
 import { RightTabs } from "./features/tabs/RightTabs";
 import { ManageTagsDialog } from "./features/tags/ManageTagsDialog";
 import { TagPickerDialog } from "./features/tags/TagPickerDialog";
+import { UpdateDialog } from "./features/updates/UpdateDialog";
 import { DuplicatesView } from "./features/views/DuplicatesView";
 import { TrashView } from "./features/views/TrashView";
 import { t } from "./i18n";
@@ -203,6 +204,23 @@ export function App() {
       typeof location !== "undefined" && new URLSearchParams(location.search).has("tour");
     if (inTauri || asked) useTour.getState().start();
   }, [loaded]);
+  // when the app opens, look for a newer version and offer it (not over the first-run tour or
+  // another dialog; offline or GitHub unreachable: say nothing and try again next time)
+  const settingsLoaded = settings !== null;
+  useEffect(() => {
+    if (!loaded || !settingsLoaded) return;
+    const s = useSettings.getState().settings;
+    if (!s?.checkForUpdates || s.offlineMode) return;
+    const timer = setTimeout(() => {
+      backend
+        .checkForUpdate()
+        .then((u) => {
+          if (u && !useDialogs.getState().open && !useTour.getState().open) show("appUpdate", u);
+        })
+        .catch(() => {});
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [loaded, settingsLoaded, show]);
   const selected = items.find((i) => i.id === selectedId) ?? null;
   const middle =
     view === "trash" ? (
@@ -291,6 +309,9 @@ export function App() {
       )}
       {open === "updateDetails" && typeof arg === "number" && (
         <UpdateDetailsDialog itemId={arg} onClose={close} />
+      )}
+      {open === "appUpdate" && arg !== null && (
+        <UpdateDialog update={arg as AppUpdate} onClose={close} />
       )}
       {open === "export" && (
         <ExportDialog
