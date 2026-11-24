@@ -42,7 +42,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     fetcherVersion = 5;
     # After changing pnpm-lock.yaml: build once, copy the "got:" hash from the error here
     # (CI prints it too). See docs/development.md, "Nix".
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash = "sha256-1guHda1uUFCS4notWsOpn/rsMQMJ0d1sTFm2UHC9SfE=";
   };
 
   nativeBuildInputs = [

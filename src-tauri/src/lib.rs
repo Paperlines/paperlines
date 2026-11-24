@@ -24,7 +24,7 @@ use paperlines_search::SearchResult;
 use serde::Serialize;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex, MutexGuard};
-use tauri::{Emitter, Manager, RunEvent, WindowEvent};
+use tauri::{Emitter, Manager, WindowEvent};
 
 struct AppState {
     db: Arc<Mutex<Db>>,
@@ -572,7 +572,7 @@ pub fn run() {
     app.run(|app, ev| {
         // files dropped on the Dock icon or opened via Finder's "Open With"
         #[cfg(target_os = "macos")]
-        if let RunEvent::Opened { urls } = &ev {
+        if let tauri::RunEvent::Opened { urls } = &ev {
             let paths = urls
                 .iter()
                 .filter_map(|u| u.to_file_path().ok())
@@ -581,7 +581,7 @@ pub fn run() {
             maintenance::open_files(app, paths);
         }
         #[cfg(target_os = "macos")]
-        if let RunEvent::Reopen { .. } = ev {
+        if let tauri::RunEvent::Reopen { .. } = ev {
             if let Some(w) = app.get_webview_window("main") {
                 let _ = w.show();
                 let _ = w.set_focus();
