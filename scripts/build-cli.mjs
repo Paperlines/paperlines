@@ -22,7 +22,11 @@ function build(t) {
   const cargoArgs = ["build", "-p", `${b.cratePrefix}-cli`, ...(debug ? [] : ["--release"])];
   if (t !== host) cargoArgs.push("--target", t);
   execFileSync("cargo", cargoArgs, { cwd: root, stdio: "inherit" });
-  return join(root, "target", ...(t !== host ? [t] : []), profile, `${b.binaryName}${exe}`);
+  // cargo writes to target/<triple>/ whenever a target is given, on the command line or through
+  // CARGO_BUILD_TARGET (the Nix build sets it), and CARGO_TARGET_DIR moves target/ itself
+  const targetDir = resolve(root, process.env.CARGO_TARGET_DIR || "target");
+  const explicit = t !== host || Boolean(process.env.CARGO_BUILD_TARGET);
+  return join(targetDir, ...(explicit ? [t] : []), profile, `${b.binaryName}${exe}`);
 }
 
 if (triple === "universal-apple-darwin") {
