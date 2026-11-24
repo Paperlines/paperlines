@@ -1,0 +1,272 @@
+/* Flattened subset of PDF.js's text layer CSS (the stock file uses CSS nesting, which older webviews lack). */
+.pv-root {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-subtle);
+}
+.pv-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  flex-wrap: wrap;
+}
+.pv-scroll {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+  outline: none;
+}
+.pv-pages {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  min-width: min-content;
+}
+.pv-page {
+  position: relative;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.18);
+  flex: none;
+}
+.pv-page canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.pv-hl-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  /* the layer is its own stacking context, so the multiply has to happen here, against the page
+     canvas below; on the groups inside it would blend with the empty layer and lighten the text */
+  mix-blend-mode: multiply;
+}
+.pv-hl-group {
+  position: absolute;
+  inset: 0;
+}
+/* a highlight is a light wash of its colour, multiplied onto the page (see .pv-hl-layer) so the
+   text underneath stays black; transparent as a whole so overlapping line boxes don't darken */
+.pv-hl-group.k-highlight {
+  opacity: 0.38;
+}
+.pv-hl-group.k-highlight.active {
+  opacity: 0.55;
+}
+.pv-hl {
+  position: absolute;
+  border-radius: 2px;
+}
+.pv-hl.k-highlight {
+  background: var(--hl);
+}
+.pv-hl.k-underline {
+  border-bottom: 2px solid var(--hl);
+}
+.pv-hl.k-rect {
+  border: 2px solid var(--hl);
+  background: color-mix(in srgb, var(--hl) 12%, transparent);
+}
+.pv-hl.active:not(.k-highlight) {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.pv-hl.flash {
+  animation: pv-flash 1.2s ease-out 1;
+}
+@keyframes pv-flash {
+  0% {
+    outline: 3px solid var(--accent);
+    outline-offset: 4px;
+  }
+  100% {
+    outline: 0 solid transparent;
+    outline-offset: 1px;
+  }
+}
+.pv-draw {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  cursor: crosshair;
+}
+.pv-drawing {
+  position: absolute;
+  border: 2px dashed var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.pv-text {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 1;
+  line-height: 1;
+  z-index: 2;
+  text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  transform-origin: 0 0;
+  caret-color: CanvasText;
+  width: 100% !important;
+  height: 100% !important;
+  --min-font-size: 1;
+  --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size));
+  --min-font-size-inv: calc(1 / var(--min-font-size));
+}
+.pv-text span,
+.pv-text br {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.pv-text > :not(.markedContent),
+.pv-text .markedContent span:not(.markedContent) {
+  z-index: 1;
+  --font-height: 0;
+  font-size: calc(var(--text-scale-factor) * var(--font-height));
+  --scale-x: 1;
+  --rotate: 0deg;
+  transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv));
+}
+.pv-text .markedContent {
+  display: contents;
+}
+.pv-text span[role="img"] {
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+.pv-text ::selection {
+  background: rgb(0 90 255 / 0.28);
+  color: transparent;
+}
+.pv-text br::selection {
+  background: transparent;
+}
+.pv-text .endOfContent {
+  display: block;
+  position: absolute;
+  inset: 100% 0 0;
+  z-index: 0;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.pv-text.selecting .endOfContent {
+  top: 0;
+}
+
+.pv-popup {
+  position: absolute;
+  z-index: 10;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgb(0 0 0 / 0.2);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 220px;
+}
+.pv-colors {
+  display: flex;
+  gap: 6px;
+}
+.pv-color {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background: var(--hl);
+  padding: 0;
+}
+.pv-color.on,
+.pv-color:focus-visible {
+  border-color: var(--fg);
+}
+.pv-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+.pv-status {
+  padding: 24px;
+  color: var(--fg-muted);
+  text-align: center;
+}
+
+/* find in PDF */
+.pv-findbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-subtle);
+}
+.pv-find-input {
+  flex: 1;
+  min-width: 80px;
+  max-width: 320px;
+  padding: 4px 8px;
+}
+.pv-find-count {
+  min-width: 72px;
+  padding: 0 6px;
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+.pv-opt {
+  min-width: 28px;
+  height: 26px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: none;
+  color: var(--fg-muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+.pv-opt:hover {
+  background: var(--bg-hover);
+}
+.pv-opt.on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.pv-find-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.pv-find {
+  position: absolute;
+  border-radius: 2px;
+  background: rgb(255 196 0 / 0.38);
+  mix-blend-mode: multiply;
+}
+.pv-find.active {
+  background: rgb(255 120 0 / 0.55);
+  outline: 2px solid rgb(234 88 12 / 0.9);
+  outline-offset: 1px;
+}
+.pv-toolbar .icon-btn.on {
+  background: var(--accent-soft);
+  color: var(--accent);
+}

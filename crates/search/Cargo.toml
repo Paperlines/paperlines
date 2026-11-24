@@ -1,0 +1,12 @@
+[package]
+name = "paperlines-search"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+paperlines-core = { path = "../core" }
+serde = { version = "1", features = ["derive"] }
+
+[dev-dependencies]
+serde_json = "1.0.154"

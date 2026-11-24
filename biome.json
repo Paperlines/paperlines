@@ -1,0 +1,17 @@
+{
+  "files": {
+    "includes": [
+      "src/**",
+      "packages/**",
+      "scripts/**",
+      "e2e/**",
+      "playwright.config.ts",
+      "*.json",
+      "!**/*.generated.ts",
+      "!src-tauri/gen",
+      "!src-tauri/tauri.conf.json"
+    ]
+  },
+  "formatter": { "indentStyle": "space", "lineWidth": 100 },
+  "linter": { "enabled": true, "rules": { "preset": "none" } }
+}

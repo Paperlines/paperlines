@@ -1,0 +1,33 @@
+[package]
+name = "paperlines-app"
+version.workspace = true
+edition.workspace = true
+description = "Local-first reference manager"
+license.workspace = true
+
+[lib]
+name = "paperlines_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+serde_json = "1.0.154"
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+paperlines-core = { path = "../crates/core" }
+tauri-plugin-dialog = "2.8.4"
+paperlines-import = { version = "0.1.0", path = "../crates/import" }
+paperlines-search = { version = "0.1.0", path = "../crates/search" }
+tauri-plugin-opener = "2.7.3"
+paperlines-citations = { version = "0.1.0", path = "../crates/citations" }
+paperlines-ops = { version = "0.1.0", path = "../crates/ops" }
+paperlines-mcp = { path = "../crates/mcp" }
+paperlines-agent = { path = "../crates/agent" }
+tauri-plugin-single-instance = "2.5.5"
+tauri-plugin-clipboard-manager = "2.5.0"
+
+# Linux: the XDG desktop portal (light/dark mode on COSMIC, GNOME, KDE); type-checked on all Unix
+[target.'cfg(unix)'.dependencies]
+zbus = { version = "5", default-features = false, features = ["blocking-api", "async-io"] }

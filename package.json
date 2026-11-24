@@ -1,0 +1,63 @@
+{
+  "name": "paperlines",
+  "private": true,
+  "license": "AGPL-3.0-or-later",
+  "repository": "github:Paperlines/paperlines",
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "pnpm@12.21.0",
+  "engines": {
+    "node": ">=26"
+  },
+  "scripts": {
+    "gen:branding": "node scripts/gen-branding.mjs",
+    "dev": "vite",
+    "build": "pnpm gen:branding && tsc -b && vite build",
+    "lint": "biome check .",
+    "test": "vitest run",
+    "tauri": "tauri",
+    "test:e2e": "playwright test",
+    "build:pkg": "node scripts/build-pkg.mjs"
+  },
+  "dependencies": {
+    "@codemirror/autocomplete": "^6.20.4",
+    "@codemirror/commands": "^6.11.1",
+    "@codemirror/lang-markdown": "^6.5.2",
+    "@codemirror/language": "^6.13.1",
+    "@codemirror/state": "^6.7.6",
+    "@codemirror/view": "^6.43.15",
+    "@replit/codemirror-vim": "^6.4.0",
+    "@tauri-apps/api": "^2.12.5",
+    "@tauri-apps/plugin-dialog": "^2.8.4",
+    "@tauri-apps/plugin-opener": "^2.7.3",
+    "cytoscape": "^3.35.0",
+    "d3-force": "3.0.0",
+    "katex": "^0.19.1",
+    "lucide-react": "^1.74.0",
+    "markdown-it": "^15.0.3",
+    "pdfjs-dist": "^6.5.438",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "zustand": "^5.1.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.6.8",
+    "@playwright/test": "^1.65.1",
+    "@paperlines/backend-port": "workspace:*",
+    "@paperlines/graph": "workspace:*",
+    "@paperlines/notes-editor": "workspace:*",
+    "@paperlines/pdf-viewer": "workspace:*",
+    "@paperlines/registry": "workspace:*",
+    "@paperlines/search-query": "workspace:*",
+    "@tauri-apps/cli": "^2.12.5",
+    "@types/d3-force": "3.0.10",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "jsdom": "^31.0.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  }
+}

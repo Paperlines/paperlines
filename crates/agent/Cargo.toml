@@ -1,0 +1,15 @@
+[package]
+name = "paperlines-agent"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+paperlines-core = { path = "../core" }
+paperlines-ops = { path = "../ops" }
+paperlines-mcp = { path = "../mcp" }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+
+[dev-dependencies]
+tempfile = "3.27.0"

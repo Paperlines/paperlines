@@ -1,0 +1,112 @@
+/* Design tokens. A rebrand only changes this palette: airy white surfaces, cool greys, soft
+   borders, generous radii. The accent here is the blue option; app.css sets the others (teal is
+   the default) from Settings ▸ Appearance. */
+:root {
+  --bg: #ffffff;
+  --bg-subtle: #f7f8fa;
+  --bg-hover: #f0f2f5;
+  --bg-selected: #e8effd;
+  --bg-sidebar: #fbfbfc;
+  --fg: #17191e;
+  --fg-muted: #6b7280;
+  --fg-faint: #9aa1ad;
+  --border: #e5e7eb;
+  --border-strong: #d6d9df;
+  --accent: #2f6df6;
+  --accent-hover: #2560e2;
+  --accent-soft: #e9f0fe;
+  --accent-fg: #ffffff;
+  --danger: #d6363c;
+  --warn: #b45309;
+  --ok: #16a34a;
+  --status-unread: #a1a8b3;
+  --status-reading: #e8a317;
+  --status-read: #22a35a;
+  --radius: 8px;
+  --radius-lg: 14px;
+  --shadow: 0 12px 40px rgb(15 23 42 / 0.16), 0 2px 6px rgb(15 23 42 / 0.06);
+  --shadow-sm: 0 1px 2px rgb(15 23 42 / 0.06);
+  --font:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Inter, Roboto, Cantarell, Ubuntu,
+    "Open Sans", "Fira Sans", "Noto Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, "DejaVu Sans Mono", monospace;
+  --tag-red: #e5484d;
+  --tag-orange: #f76b15;
+  --tag-yellow: #e2b203;
+  --tag-green: #30a46c;
+  --tag-teal: #12a594;
+  --tag-blue: #2f6df6;
+  --tag-purple: #8e4ec6;
+  --tag-gray: #8b8d98;
+  --hl-yellow: #ffe066;
+  --hl-red: #ff8f8f;
+  --hl-green: #8ce99a;
+  --hl-blue: #8cc8ff;
+  --hl-purple: #d4c2ff;
+  --hl-orange: #ffc078;
+  --hl-pink: #ffa8d2;
+  --hl-teal: #7fdcd2;
+  --hl-lime: #c5ec7a;
+  --hl-brown: #d6b48f;
+  --hl-gray: #c4c8cf;
+  --graph-edge: #b5bcc7;
+  --graph-incoming: #ea580c;
+  --graph-spine: #c98a12;
+  --graph-spine-fill: #f6dfa6;
+  --graph-spine-text: #3d2a00;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: #15171b;
+  --bg-subtle: #1b1e23;
+  --bg-hover: #23272e;
+  --bg-selected: #1e2c4a;
+  --bg-sidebar: #181a1f;
+  --fg: #e7e9ee;
+  --fg-muted: #9aa3b2;
+  --fg-faint: #6c7480;
+  --border: #2a2e35;
+  --border-strong: #363b44;
+  --accent: #6b9bff;
+  --accent-hover: #86adff;
+  --accent-soft: #1d2a45;
+  --accent-fg: #0b1020;
+  --danger: #ff6b6b;
+  --warn: #f0a640;
+  --graph-edge: #4a505c;
+  --graph-incoming: #ff922b;
+  --graph-spine: #f2b33d;
+  --graph-spine-fill: #f3d58e;
+  --graph-spine-text: #1f1500;
+  --shadow: 0 16px 48px rgb(0 0 0 / 0.5);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15171b;
+    --bg-subtle: #1b1e23;
+    --bg-hover: #23272e;
+    --bg-selected: #1e2c4a;
+    --bg-sidebar: #181a1f;
+    --fg: #e7e9ee;
+    --fg-muted: #9aa3b2;
+    --fg-faint: #6c7480;
+    --border: #2a2e35;
+    --border-strong: #363b44;
+    --accent: #6b9bff;
+    --accent-hover: #86adff;
+    --accent-soft: #1d2a45;
+    --accent-fg: #0b1020;
+    --danger: #ff6b6b;
+    --warn: #f0a640;
+    --graph-edge: #4a505c;
+    --graph-incoming: #ff922b;
+    --graph-spine: #f2b33d;
+    --graph-spine-fill: #f3d58e;
+    --graph-spine-text: #1f1500;
+    --shadow: 0 16px 48px rgb(0 0 0 / 0.5);
+    color-scheme: dark;
+  }
+}

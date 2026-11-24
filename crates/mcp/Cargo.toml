@@ -1,0 +1,13 @@
+[package]
+name = "paperlines-mcp"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+paperlines-core = { path = "../core" }
+paperlines-ops = { path = "../ops" }
+serde_json = "1.0.154"
+
+[dev-dependencies]
+tempfile = "3.27.0"

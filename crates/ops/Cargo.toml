@@ -1,0 +1,19 @@
+[package]
+name = "paperlines-ops"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+paperlines-core = { path = "../core" }
+paperlines-import = { path = "../import" }
+paperlines-search = { path = "../search" }
+paperlines-citations = { path = "../citations" }
+serde = { version = "1.0.229", features = ["derive"] }
+# preserve_order: other apps' config files keep their key order when we add our server
+serde_json = { version = "1.0.154", features = ["preserve_order"] }
+toml_edit = "0.25"
+hayagriva = { version = "0.10.1", default-features = false, features = ["archive", "csl-json"] }
+
+[dev-dependencies]
+tempfile = "3.27.0"

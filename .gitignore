@@ -1,0 +1,44 @@
+# dependencies / build
+node_modules/
+target/
+dist/
+src-tauri/gen/
+src-tauri/binaries/
+*.tsbuildinfo
+result
+result-*
+.direnv/
+.vite/
+coverage/
+
+# tests
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# env & secrets (signing certs, API keys)
+.env
+.env.*
+!.env.example
+*.p12
+*.pem
+*.key
+*.mobileprovision
+
+# editors / OS
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+Thumbs.db
+
+# logs
+*.log
+
+# local Claude Code settings
+.claude/settings.local.json
+
+# private notes, kept out of the public repository
+docs/session-log.md

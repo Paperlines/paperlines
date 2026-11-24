@@ -1,0 +1,26 @@
+[
+  { "q": "attention", "terms": [{ "neg": false, "key": null, "value": "attention", "phrase": false }] },
+  { "q": "\"graph neural\" -old", "terms": [
+    { "neg": false, "key": null, "value": "graph neural", "phrase": true },
+    { "neg": true, "key": null, "value": "old", "phrase": false }
+  ] },
+  { "q": "Tag:ml/nlp project:\"My thesis\" -tag:survey", "terms": [
+    { "neg": false, "key": "tag", "value": "ml/nlp", "phrase": false },
+    { "neg": false, "key": "project", "value": "My thesis", "phrase": false },
+    { "neg": true, "key": "tag", "value": "survey", "phrase": false }
+  ] },
+  { "q": "year:>=2020 is:unread cited-by:devlin2019bert", "terms": [
+    { "neg": false, "key": "year", "value": ">=2020", "phrase": false },
+    { "neg": false, "key": "is", "value": "unread", "phrase": false },
+    { "neg": false, "key": "cited-by", "value": "devlin2019bert", "phrase": false }
+  ] },
+  { "q": "note:x a-b", "terms": [
+    { "neg": false, "key": null, "value": "note:x", "phrase": false },
+    { "neg": false, "key": null, "value": "a-b", "phrase": false }
+  ] },
+  { "q": "tag: - \"\"", "terms": [{ "neg": false, "key": null, "value": "-", "phrase": false }] },
+  { "q": "  author:hinton   deep  ", "terms": [
+    { "neg": false, "key": "author", "value": "hinton", "phrase": false },
+    { "neg": false, "key": null, "value": "deep", "phrase": false }
+  ] }
+]
