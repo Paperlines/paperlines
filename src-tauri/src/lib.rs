@@ -24,7 +24,10 @@ use paperlines_search::SearchResult;
 use serde::Serialize;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex, MutexGuard};
-use tauri::{Emitter, Manager, WindowEvent};
+use tauri::{Emitter, WindowEvent};
+// window lookups happen only in the macOS and Linux code paths
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+use tauri::Manager;
 
 struct AppState {
     db: Arc<Mutex<Db>>,

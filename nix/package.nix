@@ -21,6 +21,7 @@
   libsecret,
   openssl,
   dbus,
+  sqlite,
   src,
   branding,
 }:
@@ -63,7 +64,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
     libsecret
     openssl
     dbus
-  ];
+  ]
+  # the library crates link SQLite; in the Nix sandbox libsqlite3-sys uses the system library
+  ++ [ sqlite ];
 
   env = {
     # package.json pins pnpm and Node versions for contributors; in the sandbox use nixpkgs' own
