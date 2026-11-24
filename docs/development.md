@@ -8,7 +8,7 @@ Linux also needs: `libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-d
     pnpm tauri dev                 # run the app
     pnpm dev                       # UI only, in a browser, on the fake backend
 
-Checks (CI runs all of these):
+Checks (CI runs all of these; the Playwright tests run on the macOS arm64 runner only, since some of them measure timing):
 
     pnpm lint && pnpm build && pnpm test
     pnpm exec playwright install webkit && pnpm test:e2e

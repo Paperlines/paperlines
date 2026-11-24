@@ -1,0 +1,6 @@
+# LF everywhere, so formatting checks pass on Windows checkouts too
+* text=auto eol=lf
+*.png binary
+*.icns binary
+*.ico binary
+*.pdf binary

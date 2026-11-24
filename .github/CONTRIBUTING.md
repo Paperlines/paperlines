@@ -44,7 +44,7 @@ Read [docs/architecture.md](../docs/architecture.md) before larger changes. It e
 
 ## Checks
 
-CI runs all of these on macOS, Linux and Windows. Please run them before you open a pull request:
+CI runs these on macOS, Linux and Windows (the end-to-end tests on macOS). Please run them before you open a pull request:
 
 ```sh
 pnpm lint && pnpm build && pnpm test

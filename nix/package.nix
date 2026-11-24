@@ -39,7 +39,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   pnpmDeps = fetchDeps {
     inherit (finalAttrs) pname version src;
     inherit pnpm;
-    fetcherVersion = 2;
+    fetcherVersion = 5;
     # After changing pnpm-lock.yaml: build once, copy the "got:" hash from the error here
     # (CI prints it too). See docs/development.md, "Nix".
     hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
