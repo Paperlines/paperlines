@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="184" height="52" viewBox="0 0 184 52" role="img" aria-label="Download for Linux">
+  <title>Download for Linux</title>
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14919b"/><stop offset="1" stop-color="#0e7490"/></linearGradient></defs>
+  <rect x="0.5" y="0.5" width="183" height="51" rx="12" fill="url(#g)" stroke="#0b5e73"/>
+  <g transform="translate(16 13) scale(1.08)"><path fill="#fff" d="M12 2.5c-2 0-3.3 1.7-3.3 4.2 0 1.3.3 2.2-.4 3.4-.9 1.4-2.6 3.6-2.6 6.2 0 .6.1 1.1.3 1.6-.9.4-1.8.9-1.8 1.7 0 1.1 2 1.3 3.3 1.8 1.1.4 1.8.8 2.6.8.9 0 1.4-.6 1.9-.6s1 .6 1.9.6c.8 0 1.5-.4 2.6-.8 1.3-.5 3.3-.7 3.3-1.8 0-.8-.9-1.3-1.8-1.7.2-.5.3-1 .3-1.6 0-2.6-1.7-4.8-2.6-6.2-.7-1.2-.4-2.1-.4-3.4 0-2.5-1.3-4.2-3.3-4.2zm-1.4 3.6c.4 0 .7.5.7 1.1s-.3 1.1-.7 1.1-.7-.5-.7-1.1.3-1.1.7-1.1zm2.8 0c.4 0 .7.5.7 1.1s-.3 1.1-.7 1.1-.7-.5-.7-1.1.3-1.1.7-1.1zM12 9c.9 0 2 .5 2 1s-1.1 1.2-2 1.2-2-.7-2-1.2S11.1 9 12 9z"/></g>
+  <text x="54" y="22" fill="#d7f3f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11.5">Download for</text>
+  <text x="54" y="40" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="17" font-weight="600">Linux</text>
+</svg>

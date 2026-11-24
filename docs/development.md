@@ -69,3 +69,31 @@ The module compiles on every Unix, so `cargo clippy` on macOS checks it; only Li
 Windows 10/11 (x64). Install Rust (rustup, MSVC toolchain), Node 26 with pnpm, and the WebView2 runtime (preinstalled on Windows 11). Then `pnpm install && pnpm tauri dev`. `pnpm tauri build` makes `target/release/bundle/nsis/*-setup.exe` (per-user install, no admin) and `target/release/bundle/msi/*.msi`; the `paperlines.exe` command-line tool is installed next to the app (Settings ▸ Command Line shows its path; add that folder to PATH to use it in a terminal).
 
 Where things live: library and settings in `%APPDATA%\Paperlines`, cache in `%LOCALAPPDATA%\Paperlines\cache`, API keys in Windows Credential Manager. Agents installed with npm are found as `claude.cmd` / `codex.cmd` in `%APPDATA%\npm`; background commands start without a console window. CI (`.github/workflows/ci.yml`) builds and tests on `windows-latest` alongside macOS and Linux. A Mac can't check Windows locally (`ring` and SQLite need the Windows SDK headers), so CI is where Windows is verified.
+
+## Signing and notarization
+
+Unsigned builds work everywhere; signing is optional and driven by environment variables (GitHub secrets in CI):
+
+| Variable | Purpose |
+| --- | --- |
+| `APPLE_CERTIFICATE` | base64 of your "Developer ID Application" `.p12` (`base64 -i cert.p12`) |
+| `APPLE_CERTIFICATE_PASSWORD` | the `.p12` password |
+| `APPLE_SIGNING_IDENTITY` | e.g. `Developer ID Application: Your Name (TEAMID)` |
+| `APPLE_ID`, `APPLE_PASSWORD`, `APPLE_TEAM_ID` | notarization: Apple ID, an app-specific password, team ID |
+| `APPLE_INSTALLER_IDENTITY` | signs the `.pkg`: `Developer ID Installer: Your Name (TEAMID)` (the certificate must be in your keychain) |
+| `APPLE_INSTALLER_CERTIFICATE`, `APPLE_INSTALLER_CERTIFICATE_PASSWORD` | CI only: base64 `.p12` of that installer certificate and its password |
+| `TAURI_SIGNING_PRIVATE_KEY`, `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` | release workflow: signs the in-app updates (the public key is `updaterPubkey` in `branding/branding.json`) |
+
+Locally, export them and run `pnpm tauri build`. The hardened runtime is enabled, as notarization requires. In CI, add them as repository secrets and the workflow picks them up. Linux packages are not signed.
+
+## Renaming and icons
+
+All brand strings live in `branding/branding.json`.
+
+```sh
+node scripts/rename.mjs "New Name"     # rewrites branding/branding.json, crate/package names, bundle ID, .desktop file, docs
+pnpm install                           # refresh the lockfile
+pnpm tauri icon branding/icon-1024.png # regenerate src-tauri/icons (icns, ico, Linux PNG sizes)
+```
+
+Colors are CSS variables in `src/tokens.css`. A rebrand only changes that palette.

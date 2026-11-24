@@ -121,7 +121,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - run: pnpm install --frozen-lockfile
 
-      # Optional signing and notarization: only when the secrets exist. See README "Signing".
+      # Optional signing and notarization: only when the secrets exist. See docs/development.md, "Signing and notarization".
       - name: macOS signing environment
         if: runner.os == 'macOS'
         env:
