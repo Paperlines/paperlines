@@ -308,12 +308,3 @@ If Paperlines helps your research, a ⭐ on GitHub helps other researchers find 
 Copyright © 2026 the Paperlines contributors and Yoav Yosif-Or. Paperlines is free software under the [GNU Affero General Public License v3.0 or later](LICENSE): you may use, study, share and change it, and if you distribute a changed version (including running it as a network service), you must share your changes under the same licence.
 
 <sub>Claude, Codex, Gemini, Antigravity, Grok and Cursor are trademarks of their respective owners. Their names and icons appear only to show which tools Paperlines works with, not an endorsement. The assistant icons come from [Lobe Icons](https://github.com/lobehub/lobe-icons) (MIT licence, see `src/assets/agents/LICENSE-lobe-icons.txt`).</sub>
-
-## Star history
-
-<a href="https://star-history.com/#Paperlines/paperlines&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Paperlines/paperlines&type=Date&theme=dark" />
-    <img alt="Star history" src="https://api.star-history.com/svg?repos=Paperlines/paperlines&type=Date" width="100%" />
-  </picture>
-</a>
