@@ -1,6 +1,6 @@
 # What's new
 
-## 0.1.0 (not released yet)
+## 0.1.0 (2026-11-25)
 
 The first version: everything below is new.
 
