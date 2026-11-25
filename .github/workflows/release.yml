@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       bump:
-        description: "patch, minor, major, current (release the version as it is) or an exact X.Y.Z"
+        description: "patch, minor, major, current (release the version as it is), an exact X.Y.Z, or rebuild (build the existing draft release again)"
         required: true
         default: patch
 
@@ -20,9 +20,9 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.bump.outputs.version }}
-      tag: ${{ steps.bump.outputs.tag }}
-      release_id: ${{ steps.draft.outputs.id }}
+      version: ${{ steps.release.outputs.version }}
+      tag: ${{ steps.release.outputs.tag }}
+      release_id: ${{ steps.release.outputs.id }}
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
@@ -38,6 +38,7 @@ jobs:
         with: { fetch-depth: 0 }
 
       - name: CI passed on this commit
+        if: inputs.bump != 'rebuild'
         run: |
           conclusion=$(gh run list --workflow ci.yml --commit "$GITHUB_SHA" --event push \
             --json conclusion --jq '.[0].conclusion')
@@ -47,12 +48,15 @@ jobs:
           fi
 
       - uses: actions/setup-node@v4
+        if: inputs.bump != 'rebuild'
         with: { node-version: 26 }
       - name: Rust toolchain (checks Cargo.lock after the bump)
+        if: inputs.bump != 'rebuild'
         run: rustup show
 
       - name: Set the version and date the changelog
         id: bump
+        if: inputs.bump != 'rebuild'
         run: |
           version=$(node scripts/release.mjs next "$BUMP")
           tag="v$version"
@@ -62,10 +66,10 @@ jobs:
           fi
           node scripts/release.mjs apply "$version" --notes "$RUNNER_TEMP/notes.md"
           cargo metadata --locked --format-version 1 >/dev/null
-          echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
       - name: Commit, tag and push
+        if: inputs.bump != 'rebuild'
         env:
           TAG: ${{ steps.bump.outputs.tag }}
         run: |
@@ -76,14 +80,35 @@ jobs:
           git push origin HEAD:main "$TAG"
 
       - name: Draft release
-        id: draft
+        if: inputs.bump != 'rebuild'
         env:
           TAG: ${{ steps.bump.outputs.tag }}
         run: |
           gh release create "$TAG" --draft --verify-tag --title "Paperlines ${TAG#v}" \
             --notes-file "$RUNNER_TEMP/notes.md"
-          id=$(gh api "repos/$GH_REPO/releases" --jq ".[] | select(.tag_name == \"$TAG\") | .id")
-          echo "id=$id" >> "$GITHUB_OUTPUT"
+
+      # rebuild: the version on main, which must already be tagged with a draft release
+      - name: The release to build
+        id: release
+        run: |
+          tag="v$(jq -r .version branding/branding.json)"
+          # a fresh draft can take a few seconds to appear: try for up to a minute
+          info=""
+          for _ in $(seq 1 12); do
+            info=$(gh release view "$tag" --json databaseId,isDraft 2>/dev/null) && break
+            sleep 5
+          done
+          if [ -z "$info" ]; then
+            echo "::error::There is no release $tag to build"
+            exit 1
+          fi
+          if [ "$(jq -r .isDraft <<<"$info")" != "true" ]; then
+            echo "::error::$tag is already published"
+            exit 1
+          fi
+          echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "id=$(jq -r .databaseId <<<"$info")" >> "$GITHUB_OUTPUT"
 
   build:
     needs: prepare
@@ -152,6 +177,13 @@ jobs:
           fi
 
       # builds and uploads the bundles and their updater signatures (.sig) to the draft release
+      - name: The draft release to upload to
+        run: |
+          if [ -z "${{ needs.prepare.outputs.release_id }}" ]; then
+            echo "::error::No release id from the prepare job: tauri-action would build without uploading"
+            exit 1
+          fi
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ github.token }}
