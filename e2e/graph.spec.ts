@@ -16,7 +16,8 @@ async function openGraph(page: Page, query = "") {
 /** The live layout has come to rest (nodes stay where they are measured). */
 async function settled(page: Page) {
   await page.waitForFunction(() => window.__paperlinesGraph?.stats().moving === false, undefined, {
-    timeout: 20_000,
+    // CI machines are slower than a developer's
+    timeout: process.env.CI ? 60_000 : 20_000,
   });
 }
 

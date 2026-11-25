@@ -177,7 +177,7 @@ const scenes: { name: string; go(page: Page): Promise<void> }[] = [
         () => window.__paperlinesGraph?.stats().moving === false,
         undefined,
         {
-          timeout: 20_000,
+          timeout: process.env.CI ? 60_000 : 20_000,
         },
       );
     },

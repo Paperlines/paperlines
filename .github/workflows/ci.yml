@@ -10,7 +10,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { os: macos-15, name: macos-arm64 }
+          # Apple Silicon is cross-compiled on the Intel image: GitHub's arm64 macOS runners are
+          # often out of capacity and the job is then cancelled without running
+          - { os: macos-15-intel, name: macos-arm64, target: aarch64-apple-darwin }
           # macos-13 is retired; macos-15-intel is GitHub's x86_64 macOS image
           - { os: macos-15-intel, name: macos-x64 }
           # Ubuntu 22.04: an older glibc keeps the AppImage/.deb/.rpm usable on more distributions
@@ -38,17 +40,20 @@ jobs:
         with: { node-version: 26, cache: pnpm }
       - name: Rust toolchain (from rust-toolchain.toml)
         run: rustup show
+      - name: Cross-compilation target
+        if: matrix.target
+        run: rustup target add ${{ matrix.target }}
       - uses: Swatinem/rust-cache@v2
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm build
       - run: pnpm test
-      # the UI tests run against the in-browser fake backend, the same on every system; they include
-      # timing checks (drag, a 2,000-paper graph) that need a fast runner, so they run on Apple Silicon
-      - if: matrix.name == 'macos-arm64'
+      # the UI tests run against the in-browser fake backend, the same on every system, so once is
+      # enough; macOS WebKit is the closest to the app's own web view
+      - if: matrix.name == 'macos-x64'
         run: pnpm exec playwright install --with-deps webkit
-      - if: matrix.name == 'macos-arm64'
+      - if: matrix.name == 'macos-x64'
         run: pnpm test:e2e
       - run: cargo fmt --all -- --check
       - run: cargo clippy --workspace --all-targets -- -D warnings
@@ -85,7 +90,7 @@ jobs:
           fi
 
       # builds the CLI sidecar first (beforeBuildCommand), then .app/.dmg or .deb/.rpm/AppImage
-      - run: pnpm tauri build
+      - run: pnpm tauri build ${{ matrix.target && format('--target {0}', matrix.target) || '' }}
 
       # the .pkg installer (app into /Applications, CLI into /usr/local/bin); signed when an
       # installer certificate is configured
@@ -95,6 +100,7 @@ jobs:
           APPLE_INSTALLER_CERTIFICATE: ${{ secrets.APPLE_INSTALLER_CERTIFICATE }}
           APPLE_INSTALLER_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_INSTALLER_CERTIFICATE_PASSWORD }}
           APPLE_INSTALLER_IDENTITY: ${{ secrets.APPLE_INSTALLER_IDENTITY }}
+          TARGET: ${{ matrix.target }}
         run: |
           if [ -n "$APPLE_INSTALLER_CERTIFICATE" ]; then
             KC="$RUNNER_TEMP/installer.keychain-db"
@@ -107,13 +113,19 @@ jobs:
           else
             unset APPLE_INSTALLER_IDENTITY
           fi
-          pnpm build:pkg
+          if [ -n "$TARGET" ]; then
+            pnpm build:pkg --app "target/$TARGET/release/bundle/macos/$(jq -r .displayName branding/branding.json).app" --arch aarch64
+          else
+            pnpm build:pkg
+          fi
 
       - uses: actions/upload-artifact@v4
         with:
           name: bundles-${{ matrix.name }}
           path: |
             target/release/bundle/dmg/*.dmg
+            target/*/release/bundle/dmg/*.dmg
+            target/*/release/bundle/macos/*.app
             target/release/bundle/pkg/*.pkg
             target/release/bundle/macos/*.app
             target/release/bundle/deb/*.deb

@@ -91,7 +91,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { os: macos-15, name: macos-arm64 }
+          # cross-compiled on the Intel image (see ci.yml)
+          - { os: macos-15-intel, name: macos-arm64, target: aarch64-apple-darwin }
           - { os: macos-15-intel, name: macos-x64 }
           - { os: ubuntu-22.04, name: linux-x64 }
           - { os: ubuntu-22.04-arm, name: linux-arm64 }
@@ -118,6 +119,9 @@ jobs:
         with: { node-version: 26, cache: pnpm }
       - name: Rust toolchain (from rust-toolchain.toml)
         run: rustup show
+      - name: Cross-compilation target
+        if: matrix.target
+        run: rustup target add ${{ matrix.target }}
       - uses: Swatinem/rust-cache@v2
       - run: pnpm install --frozen-lockfile
 
@@ -155,7 +159,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           releaseId: ${{ needs.prepare.outputs.release_id }}
-          args: --config src-tauri/release.conf.json
+          args: --config src-tauri/release.conf.json ${{ matrix.target && format('--target {0}', matrix.target) || '' }}
           # latest.json is written once, by the publish job, from every platform's signature
           includeUpdaterJson: false
 
@@ -165,6 +169,7 @@ jobs:
           APPLE_INSTALLER_CERTIFICATE: ${{ secrets.APPLE_INSTALLER_CERTIFICATE }}
           APPLE_INSTALLER_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_INSTALLER_CERTIFICATE_PASSWORD }}
           APPLE_INSTALLER_IDENTITY: ${{ secrets.APPLE_INSTALLER_IDENTITY }}
+          TARGET: ${{ matrix.target }}
         run: |
           if [ -n "$APPLE_INSTALLER_CERTIFICATE" ]; then
             KC="$RUNNER_TEMP/installer.keychain-db"
@@ -177,7 +182,11 @@ jobs:
           else
             unset APPLE_INSTALLER_IDENTITY
           fi
-          pnpm build:pkg
+          if [ -n "$TARGET" ]; then
+            pnpm build:pkg --app "target/$TARGET/release/bundle/macos/$(jq -r .displayName branding/branding.json).app" --arch aarch64
+          else
+            pnpm build:pkg
+          fi
           gh release upload "$TAG" target/release/bundle/pkg/*.pkg --clobber
 
       # the command-line tool on its own (Linux: ship it next to the AppImage)
