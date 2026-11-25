@@ -2,6 +2,8 @@
 
 <img src="src/assets/logo-128.png" alt="Paperlines logo" width="112" height="112" />
 
+<sub><em>Nanos gigantum humeris insidentes</em></sub>
+
 # Paperlines
 
 **Your papers, your notes and how they cite each other, in one local app.**
