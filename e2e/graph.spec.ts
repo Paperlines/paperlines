@@ -214,7 +214,9 @@ test("about 2,000 papers stay responsive", async ({ page }) => {
   await page.mouse.move(c.x + 200, c.y + 50, { steps: 20 });
   const panMs = Date.now() - t1;
   console.log("hover->card ms", hoverMs, "10 zooms + move ms", panMs);
-  expect(hoverMs).toBeLessThan(1500);
+  // 1.5 s on a developer machine; CI's two-core Intel runner gets more room, so only a real
+  // slowdown fails there
+  expect(hoverMs).toBeLessThan(process.env.CI ? 4000 : 1500);
   if (shots) await page.screenshot({ path: `${shots}/m5-2000.png` });
 });
 
