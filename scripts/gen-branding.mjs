@@ -160,6 +160,20 @@ const conf = {
 };
 out("src-tauri/tauri.conf.json", JSON.stringify(conf, null, 2) + "\n");
 
+// Windows: no system title bar or menu; the top bar draws minimize, maximize and close, and is
+// the drag area (Tauri merges this file over tauri.conf.json when building for Windows)
+const [mainWindow] = conf.app.windows;
+const {
+  titleBarStyle: _t,
+  hiddenTitle: _h,
+  trafficLightPosition: _p,
+  ...windowsWindow
+} = mainWindow;
+out(
+  "src-tauri/tauri.windows.conf.json",
+  JSON.stringify({ app: { windows: [{ ...windowsWindow, decorations: false }] } }, null, 2) + "\n",
+);
+
 // Linux .desktop entry (deb/rpm template; the Nix package installs it as <identifier>.desktop).
 // StartupWMClass is the Wayland app ID, which enableGTKAppId sets to the identifier.
 const mime = conf.bundle.fileAssociations.map((a) => a.mimeType).join(";");

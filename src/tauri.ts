@@ -2,6 +2,7 @@ import type { AgentEvent, BackendEvents, BackendPort, Unsubscribe } from "@paper
 import { Channel, invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWebview } from "@tauri-apps/api/webview";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 import { ask, open, save } from "@tauri-apps/plugin-dialog";
 import { openUrl } from "@tauri-apps/plugin-opener";
 
@@ -159,6 +160,14 @@ export const tauriBackend: BackendPort = {
   updateSettings: (patch) => invoke("update_settings", { patch }),
   checkForUpdate: () => invoke("update_check"),
   installUpdate: () => invoke("update_install"),
+  windowControl: (action) => {
+    const w = getCurrentWindow();
+    return action === "minimize"
+      ? w.minimize()
+      : action === "close"
+        ? w.close()
+        : w.toggleMaximize();
+  },
   importPreviewPaths: (paths) => invoke("import_preview_paths", { paths }),
   importPreviewText: (text) => invoke("import_preview_text", { text }),
   importCommit: (decisions) => invoke("import_commit", { decisions }),

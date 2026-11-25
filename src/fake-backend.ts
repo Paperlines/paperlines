@@ -656,7 +656,13 @@ export function createFakeBackend(opts: { seed?: boolean } = {}): BackendPort {
   return {
     async platformInfo() {
       return {
-        os: navigator.platform.toLowerCase().includes("mac") ? "macos" : "linux",
+        // ?windows: the Windows layout (window buttons in the top bar)
+        os:
+          typeof location !== "undefined" && new URLSearchParams(location.search).has("windows")
+            ? "windows"
+            : navigator.platform.toLowerCase().includes("mac")
+              ? "macos"
+              : "linux",
         dirs: { data: "/demo/data", config: "/demo/config", cache: "/demo/cache" },
         library: "/demo/data",
         credentialStore: "macOS Keychain",
@@ -1898,6 +1904,10 @@ export function createFakeBackend(opts: { seed?: boolean } = {}): BackendPort {
         await new Promise((r) => setTimeout(r, 150));
       }
       // the real app restarts here
+    },
+    async windowControl(action) {
+      // the browser has no window to move: record the click for the tests
+      (window as unknown as { __windowControl?: string }).__windowControl = action;
     },
     async openExternal(url) {
       window.open(url, "_blank", "noopener");

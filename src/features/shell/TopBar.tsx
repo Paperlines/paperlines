@@ -9,16 +9,20 @@ import {
   FolderPlus,
   Import,
   LayoutList,
+  Minus,
   MoonStar,
   PackageOpen,
   Plus,
   Quote,
+  Square,
   SquareSlash,
   SunMedium,
   Telescope,
   Waypoints,
+  X,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { backend } from "../../backend";
 import { SparkIcon } from "../../components/SparkIcon";
 import { registry } from "../../contributions/commands";
 import { t } from "../../i18n";
@@ -118,6 +122,39 @@ function QuickAdd() {
   );
 }
 
+/** Windows: the window has no system frame, so the top bar carries its buttons, Windows-style. */
+function WindowControls() {
+  return (
+    <div className="window-controls" role="group" aria-label={t("window.controls")}>
+      <button
+        type="button"
+        aria-label={t("window.minimize")}
+        title={t("window.minimize")}
+        onClick={() => backend.windowControl("minimize")}
+      >
+        <Minus size={16} strokeWidth={1.25} aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        aria-label={t("window.maximize")}
+        title={t("window.maximize")}
+        onClick={() => backend.windowControl("toggleMaximize")}
+      >
+        <Square size={12} strokeWidth={1.25} aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        className="close"
+        aria-label={t("window.close")}
+        title={t("window.close")}
+        onClick={() => backend.windowControl("close")}
+      >
+        <X size={17} strokeWidth={1.25} aria-hidden="true" />
+      </button>
+    </div>
+  );
+}
+
 export function TopBar() {
   const platform = usePlatform((s) => s.platform);
   const { layout, setLayout, theme, setTheme, selectedIds } = useUi();
@@ -130,7 +167,10 @@ export function TopBar() {
   };
   const ThemeIcon = theme === "dark" ? MoonStar : theme === "light" ? SunMedium : Contrast;
   return (
-    <header className={`topbar${platform?.os === "macos" ? " mac" : ""}`} data-tauri-drag-region>
+    <header
+      className={`topbar${platform?.os === "macos" ? " mac" : ""}${platform?.windowControls ? " framed" : ""}`}
+      data-tauri-drag-region
+    >
       <div className="segmented icons" role="group" aria-label={t("layout.label")}>
         {LAYOUTS.map(({ id, icon: Icon }) => (
           <button
@@ -219,6 +259,7 @@ export function TopBar() {
           <span className="tb-label">{t("tb.settings")}</span>
         </button>
       </div>
+      {platform?.windowControls && <WindowControls />}
     </header>
   );
 }

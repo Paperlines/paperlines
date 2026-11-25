@@ -1,9 +1,13 @@
 //! Desktop-shell behavior that differs per OS. Shared crates never branch on the OS.
+#[cfg(not(target_os = "windows"))]
 use tauri::menu::{Menu, MenuItem, PredefinedMenuItem, Submenu};
+#[cfg(not(target_os = "windows"))]
 use tauri::{AppHandle, Runtime};
 
 pub const SETTINGS_MENU_ID: &str = "settings";
 
+/// The app menu (macOS) or window menu (Linux). Windows has none: see `run` in lib.rs.
+#[cfg(not(target_os = "windows"))]
 pub fn build_menu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Menu<R>> {
     let name = paperlines_core::branding::DISPLAY_NAME;
     let settings = MenuItem::with_id(app, SETTINGS_MENU_ID, "Settings…", true, Some("CmdOrCtrl+,"))?;

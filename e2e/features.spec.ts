@@ -1017,3 +1017,24 @@ test("a new version: offered when the app opens, with its changes and who made i
   await expect(dlg.getByRole("status")).toContainText("Installing, then Paperlines restarts…");
   await expect(dlg.getByRole("button", { name: "Later" })).toBeDisabled();
 });
+
+test("Windows: no system frame; the top bar has the window buttons", async ({ page }) => {
+  await page.goto("/?windows");
+  const controls = page.getByRole("group", { name: "Window" });
+  await expect(controls.getByRole("button")).toHaveCount(3);
+  const last = () =>
+    page.evaluate(() => (window as unknown as { __windowControl?: string }).__windowControl);
+  await controls.getByRole("button", { name: "Minimize" }).click();
+  expect(await last()).toBe("minimize");
+  await controls.getByRole("button", { name: "Maximize or restore" }).click();
+  expect(await last()).toBe("toggleMaximize");
+  await controls.getByRole("button", { name: "Close" }).click();
+  expect(await last()).toBe("close");
+  // the buttons sit at the window's right edge, in the draggable top bar
+  const box = await controls.boundingBox();
+  expect(Math.round((box?.x ?? 0) + (box?.width ?? 0))).toBe(page.viewportSize()?.width);
+  await expect(page.locator("header.topbar[data-tauri-drag-region]")).toBeVisible();
+  // and nowhere else
+  await page.goto("/");
+  await expect(page.getByRole("group", { name: "Window" })).toHaveCount(0);
+});

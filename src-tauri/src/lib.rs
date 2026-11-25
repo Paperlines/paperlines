@@ -394,7 +394,7 @@ pub fn run() {
     #[cfg(target_os = "linux")]
     linux::webkit_env();
     let state = open_state().expect("could not open the library");
-    let app = tauri::Builder::default()
+    let builder = tauri::Builder::default()
         // a second launch (e.g. "Open with" on Linux) forwards its files to the running window
         .plugin(tauri_plugin_single_instance::init(|app, args, _cwd| {
             maintenance::open_files(app, platform::file_args(&args));
@@ -426,8 +426,12 @@ pub fn run() {
             maintenance::start_daily_backups(app.handle());
             library::start_background(app.handle());
             Ok(())
-        })
-        .menu(platform::build_menu)
+        });
+    // Windows: no menu bar. Everything in it has a shortcut or a button in the app, and the window
+    // has no system frame there (tauri.windows.conf.json): the top bar draws the window buttons
+    #[cfg(not(target_os = "windows"))]
+    let builder = builder.menu(platform::build_menu);
+    let app = builder
         .on_menu_event(|app, ev| {
             if ev.id() == platform::SETTINGS_MENU_ID {
                 let _ = app.emit("open-settings", ());

@@ -863,6 +863,8 @@ export interface BackendPort {
   checkForUpdate(): Promise<AppUpdate | null>;
   /** Downloads and installs the update from the last check, then restarts the app. */
   installUpdate(): Promise<void>;
+  /** The window buttons the app draws itself where the system frame is off (Windows). */
+  windowControl(action: "minimize" | "toggleMaximize" | "close"): Promise<void>;
   listSavedSearches(): Promise<SavedSearch[]>;
   createSavedSearch(name: string, query: string): Promise<number>;
   deleteSavedSearch(id: number): Promise<void>;

@@ -4,10 +4,12 @@ import type { Os } from "@paperlines/backend-port";
 export interface Platform {
   os: Os;
   modSymbol: string;
+  /** The window has no system frame (Windows): the top bar draws minimize, maximize and close. */
+  windowControls: boolean;
 }
 
 export function platformFor(os: Os): Platform {
-  return { os, modSymbol: os === "macos" ? "⌘" : "Ctrl" };
+  return { os, modSymbol: os === "macos" ? "⌘" : "Ctrl", windowControls: os === "windows" };
 }
 
 /** Formats "mod+k" for display: ⌘K on macOS, Ctrl+K elsewhere. */

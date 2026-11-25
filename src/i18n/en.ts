@@ -1106,6 +1106,10 @@ export const en = {
   "update.downloadingSize": "Downloading… {mb} MB",
   "update.installing": "Installing, then {name} restarts…",
   "update.failed": "The update couldn't be installed: {error}",
+  "window.controls": "Window",
+  "window.minimize": "Minimize",
+  "window.maximize": "Maximize or restore",
+  "window.close": "Close",
 } as const;
 
 export type MessageKey = keyof typeof en;

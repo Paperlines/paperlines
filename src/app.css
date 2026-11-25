@@ -1613,6 +1613,42 @@ textarea.input:focus {
 .topbar.mac {
   --window-buttons: 60px;
 }
+/* Windows: no system frame; the window buttons sit at the right edge, full height, Windows-style */
+.topbar.framed {
+  grid-template-columns: minmax(0, 1fr) auto minmax(max-content, 1fr) auto;
+  padding-right: 0;
+}
+.window-controls {
+  grid-column: 4;
+  align-self: stretch;
+  display: flex;
+  margin-left: 4px;
+}
+.window-controls button {
+  width: 46px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--fg);
+  cursor: default;
+}
+.window-controls button:hover {
+  background: color-mix(in srgb, var(--fg) 9%, transparent);
+}
+.window-controls button:active {
+  background: color-mix(in srgb, var(--fg) 15%, transparent);
+}
+.window-controls button.close:hover,
+.window-controls button.close:active {
+  background: #c42b1c;
+  color: #fff;
+}
+.window-controls button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
 .topbar > .segmented.icons {
   grid-column: 2;
 }
