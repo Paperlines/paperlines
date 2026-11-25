@@ -179,6 +179,7 @@ jobs:
 
       # builds and uploads the bundles and their updater signatures (.sig) to the draft release
       - name: The draft release to upload to
+        shell: bash
         run: |
           if [ -z "${{ needs.prepare.outputs.release_id }}" ]; then
             echo "::error::No release id from the prepare job: tauri-action would build without uploading"
