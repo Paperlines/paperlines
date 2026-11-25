@@ -1,5 +1,10 @@
 # What's new
 
+## Unreleased
+
+### Windows
+- **A cleaner window.** The separate title bar and the File / Edit / View / Window menu are gone: Paperlines' own top bar now holds the minimize, maximize and close buttons, and you drag it to move the window (double-click to maximize). Settings is still Ctrl+, or the gear button.
+
 ## 0.1.0 (2026-11-25)
 
 The first version: everything below is new.
