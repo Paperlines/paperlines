@@ -19,6 +19,7 @@
   openssl,
   dbus,
   sqlite,
+  nix-update-script,
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
@@ -80,6 +81,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
         || mv "$f" "$out/share/applications/dev.example.paperlines.desktop"
     done
   '';
+
+  # lets nixpkgs' update bot (r-ryantm) and `nix-update` refresh the version and all three hashes
+  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "Local-first reference manager with a citation graph, PDF annotations and linked notes";

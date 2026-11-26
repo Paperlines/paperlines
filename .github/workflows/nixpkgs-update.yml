@@ -1,0 +1,126 @@
+name: nixpkgs update
+
+# After each release: opens a pull request on NixOS/nixpkgs that updates pkgs/by-name/pa/paperlines
+# to the new version (nix-update recomputes the source, Cargo and pnpm hashes), after building it.
+# Needs the repository secret NIXPKGS_TOKEN: a classic personal access token of the package's
+# maintainer with the `public_repo` scope (GitHub's own workflow token can't open pull requests on
+# another repository). Without the secret, the job explains what to do and stops.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to submit to nixpkgs, e.g. 0.1.4 (default: the latest release)"
+        required: false
+
+permissions:
+  contents: read
+
+concurrency: nixpkgs-update
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.NIXPKGS_TOKEN }}
+      FORK_OWNER: yoav-yosifor
+      ATTR: paperlines
+    steps:
+      - name: Which version
+        id: v
+        env:
+          INPUT: ${{ inputs.version }}
+          TAG: ${{ github.event.release.tag_name }}
+          REPO_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::warning::No NIXPKGS_TOKEN secret: nixpkgs is not updated automatically. See .github/workflows/nixpkgs-update.yml."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          version="${INPUT:-${TAG#v}}"
+          if [ -z "$version" ]; then
+            version=$(GH_TOKEN=$REPO_TOKEN gh release view -R "$GITHUB_REPOSITORY" --json tagName -q .tagName)
+            version="${version#v}"
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Paperlines $version"
+
+      - name: Fresh nixpkgs from the fork
+        if: steps.v.outputs.skip != 'true'
+        id: nixpkgs
+        env:
+          VERSION: ${{ steps.v.outputs.version }}
+        run: |
+          # an update pull request for this version already open (ours or nixpkgs' bot's)?
+          open=$(gh pr list -R NixOS/nixpkgs --state open --search "$ATTR $VERSION in:title" --json url -q '.[0].url')
+          if [ -n "$open" ]; then
+            echo "Already proposed: $open"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          gh repo sync "$FORK_OWNER/nixpkgs" --branch master
+          git clone --depth 1 --branch master "https://x-access-token:$GH_TOKEN@github.com/$FORK_OWNER/nixpkgs.git" nixpkgs
+          cd nixpkgs
+          if [ ! -f "pkgs/by-name/${ATTR:0:2}/$ATTR/package.nix" ]; then
+            echo "::warning::$ATTR is not in nixpkgs yet (the first pull request isn't merged): nothing to update."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          old=$(grep -oE 'version = "[^"]+"' "pkgs/by-name/${ATTR:0:2}/$ATTR/package.nix" | head -1 | cut -d'"' -f2)
+          if [ "$old" = "$VERSION" ]; then
+            echo "nixpkgs already has $VERSION"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "old=$old" >> "$GITHUB_OUTPUT"
+
+      - uses: cachix/install-nix-action@v31
+        if: steps.v.outputs.skip != 'true' && steps.nixpkgs.outputs.skip != 'true'
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Update and build
+        if: steps.v.outputs.skip != 'true' && steps.nixpkgs.outputs.skip != 'true'
+        working-directory: nixpkgs
+        env:
+          VERSION: ${{ steps.v.outputs.version }}
+        run: |
+          # nix-update sets the version and recomputes every hash (source, cargoHash, pnpmDeps)
+          nix run github:NixOS/nixpkgs/nixos-unstable#nix-update -- "$ATTR" --version "$VERSION" --build
+          git diff --stat
+          ./result/bin/paperlines --version
+
+      - name: Open the pull request
+        if: steps.v.outputs.skip != 'true' && steps.nixpkgs.outputs.skip != 'true'
+        working-directory: nixpkgs
+        env:
+          VERSION: ${{ steps.v.outputs.version }}
+          OLD: ${{ steps.nixpkgs.outputs.old }}
+        run: |
+          branch="$ATTR-$VERSION"
+          git config user.name "Yoav Yosif-Or"
+          git config user.email "352421336+yoav-yosifor@users.noreply.github.com"
+          git checkout -b "$branch"
+          git commit -am "$ATTR: $OLD -> $VERSION"
+          git push --force origin "$branch"
+          body=$(cat <<EOF
+          Update Paperlines from $OLD to $VERSION.
+
+          - Release: https://github.com/Paperlines/paperlines/releases/tag/v$VERSION
+          - Changelog: https://github.com/Paperlines/paperlines/blob/v$VERSION/docs/CHANGELOG.md
+
+          Opened by Paperlines' release workflow after building the package with \`nix-update --build\` on x86_64-linux.
+
+          ## Things done
+
+          - Built on platform:
+            - [x] x86_64-linux
+          - [x] Tested basic functionality of the binary (\`paperlines --version\`)
+          - [x] Fits [CONTRIBUTING.md](https://github.com/NixOS/nixpkgs/blob/master/CONTRIBUTING.md)
+          EOF
+          )
+          gh pr create -R NixOS/nixpkgs --base master --head "$FORK_OWNER:$branch" \
+            --title "$ATTR: $OLD -> $VERSION" --body "$body"
