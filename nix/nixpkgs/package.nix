@@ -25,6 +25,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
   pname = "paperlines";
   version = "0.1.3";
 
+  __structuredAttrs = true;
+
   src = fetchFromGitHub {
     owner = "Paperlines";
     repo = "paperlines";
