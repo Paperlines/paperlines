@@ -14,6 +14,8 @@ export interface PlatformInfo {
   library: string;
   /** e.g. "macOS Keychain" or "Secret Service". */
   credentialStore: string;
+  /** Installed by a package manager (Nix, deb, rpm), which updates it: no automatic update checks. */
+  packaged: boolean;
 }
 
 export interface Author {

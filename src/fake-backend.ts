@@ -666,6 +666,9 @@ export function createFakeBackend(opts: { seed?: boolean } = {}): BackendPort {
         dirs: { data: "/demo/data", config: "/demo/config", cache: "/demo/cache" },
         library: "/demo/data",
         credentialStore: "macOS Keychain",
+        // ?packaged: as if installed by Nix or a deb/rpm package
+        packaged:
+          typeof location !== "undefined" && new URLSearchParams(location.search).has("packaged"),
       };
     },
     async listItems() {

@@ -209,6 +209,15 @@ pub fn fit_to_screen<R: tauri::Runtime>(w: &tauri::WebviewWindow<R>) {
     }
 }
 
+/// Installed by a package manager (Linux: Nix, deb, rpm, Flatpak). Such installs are updated by it,
+/// never by the app.
+pub fn packaged() -> bool {
+    #[cfg(target_os = "linux")]
+    return std::env::current_exe().is_ok_and(|exe| crate::linux::packaged(&exe));
+    #[cfg(not(target_os = "linux"))]
+    false
+}
+
 #[cfg(test)]
 mod fit_tests {
     use super::fit_size;

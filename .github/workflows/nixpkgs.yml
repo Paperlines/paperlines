@@ -1,0 +1,90 @@
+name: nixpkgs package
+
+# Actions → nixpkgs package → Run workflow: builds nix/nixpkgs/package.nix (the file submitted to
+# NixOS/nixpkgs as pkgs/by-name/pa/paperlines/package.nix) against nixos-unstable for a released
+# version, fills in its source, Cargo and pnpm hashes, checks the result and saves the finished
+# file as an artifact.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Released version to package, e.g. 0.1.3"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Fill in the hashes and build
+        run: |
+          mkdir -p "$RUNNER_TEMP/pkg"
+          pkg="$RUNNER_TEMP/pkg/package.nix"
+          sed "s/version = \".*\";/version = \"$VERSION\";/" nix/nixpkgs/package.nix > "$pkg"
+          # the maintainer entry only exists in nixpkgs once the PR adds it
+          sed 's/maintainers = with lib.maintainers; \[ yoav-yosifor \];/maintainers = [ ];/' "$pkg" > "$pkg.eval"
+          expr="let pkgs = (builtins.getFlake \"github:NixOS/nixpkgs/nixos-unstable\").legacyPackages.x86_64-linux; in pkgs.callPackage $pkg.eval { }"
+          for attempt in 1 2 3 4 5; do
+            if nix build --impure -L --out-link "$RUNNER_TEMP/result" --expr "$expr" 2> "$RUNNER_TEMP/log"; then
+              echo "built on attempt $attempt"
+              break
+            fi
+            got=$(grep -oE 'got: +sha256-[A-Za-z0-9+/=]+' "$RUNNER_TEMP/log" | head -1 | awk '{print $2}')
+            drv=$(grep -oE "hash mismatch in fixed-output derivation '[^']+'" "$RUNNER_TEMP/log" | head -1)
+            if [ -z "$got" ]; then
+              tail -80 "$RUNNER_TEMP/log"
+              echo "::error::The build failed for a reason other than a hash"
+              exit 1
+            fi
+            echo "$drv -> $got"
+            # which placeholder: the source download, the Cargo vendor directory or the pnpm store
+            case "$drv" in
+              *-source.drv*) which=src ;;
+              *pnpm-deps*) which=pnpm ;;
+              *vendor*) which=cargo ;;
+              *) tail -40 "$RUNNER_TEMP/log"; echo "::error::Unknown fixed-output derivation: $drv"; exit 1 ;;
+            esac
+            for f in "$pkg" "$pkg.eval"; do
+              python3 - "$f" "$which" "$got" <<'PY'
+          import re, sys
+          path, which, got = sys.argv[1:]
+          s = open(path).read()
+          if which == "cargo":
+              s = s.replace("cargoHash = lib.fakeHash;", f'cargoHash = "{got}";', 1)
+          else:
+              # the source's hash is the first `hash = lib.fakeHash;`, pnpm's the one after it
+              parts = s.split("hash = lib.fakeHash;")
+              i = 0 if which == "src" else len(parts) - 2
+              s = "hash = lib.fakeHash;".join(parts[: i + 1]) + f'hash = "{got}";' + "hash = lib.fakeHash;".join(parts[i + 1 :])
+          open(path, "w").write(s)
+          PY
+            done
+          done
+          test -e "$RUNNER_TEMP/result" || { echo "::error::Still not built after 5 attempts"; exit 1; }
+          if grep -q fakeHash "$pkg"; then echo "::error::A hash is still a placeholder"; exit 1; fi
+          echo "----- package.nix -----"
+          cat "$pkg"
+
+      - name: Check the package
+        run: |
+          r="$RUNNER_TEMP/result"
+          ls "$r/bin" "$r/share/applications"
+          "$r/bin/paperlines" --version
+          test -x "$r/bin/paperlines-app"
+          test -f "$r/share/applications/dev.example.paperlines.desktop"
+          ls "$r/share/icons/hicolor" | head
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: nixpkgs-package-${{ inputs.version }}
+          path: ${{ runner.temp }}/pkg/package.nix

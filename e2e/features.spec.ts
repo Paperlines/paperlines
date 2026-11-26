@@ -1040,3 +1040,17 @@ test("Windows and Linux: no system frame; the top bar has the window buttons", a
     await expect(page.getByRole("group", { name: "Window" })).toHaveCount(0);
   }
 });
+
+test("installed by a package manager (Nix, deb, rpm): no automatic update check", async ({
+  page,
+}) => {
+  await page.goto("/?update&packaged");
+  await expect(page.getByRole("listbox", { name: "Library" }).getByRole("option")).toHaveCount(5);
+  await page.waitForTimeout(2500);
+  await expect(page.getByRole("dialog", { name: /is available/ })).toHaveCount(0);
+  // and no switch for a check that never runs
+  await page.getByRole("button", { name: "Settings", exact: true }).first().click();
+  const settings = page.getByRole("dialog", { name: "Settings" });
+  await expect(settings.getByText("Offline mode")).toBeVisible();
+  await expect(settings.getByText("Check for updates when the app opens")).toHaveCount(0);
+});

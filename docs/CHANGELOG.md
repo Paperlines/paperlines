@@ -1,5 +1,10 @@
 # What's new
 
+## Unreleased
+
+- **Installed with Nix, a .deb or an .rpm?** Your package manager keeps Paperlines up to date, so the app no longer checks for new versions by itself there (Help & About ▸ Check for updates still works).
+- Help & About shows where your API keys are kept again.
+
 ## 0.1.2 (2026-11-26)
 
 - **Paperlines speaks your language:** Español, Français, Deutsch, 简体中文, 日本語 and हिन्दी, besides English. It follows your computer's language; change it in Settings ▸ General ▸ Language.

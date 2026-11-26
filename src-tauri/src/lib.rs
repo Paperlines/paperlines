@@ -40,11 +40,15 @@ impl AppState {
 }
 
 #[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
 struct PlatformInfo {
     os: Os,
     dirs: AppDirs,
     library: String,
     credential_store: String,
+    /// Installed by a package manager (Nix, deb, rpm): it updates the app, so the app doesn't
+    /// look for new versions by itself.
+    packaged: bool,
 }
 
 #[derive(Serialize, Clone)]
@@ -60,6 +64,7 @@ fn platform_info(state: tauri::State<AppState>) -> PlatformInfo {
         dirs: state.dirs.clone(),
         library: state.lib.root.to_string_lossy().into(),
         credential_store: os::credential_store_name().into(),
+        packaged: platform::packaged(),
     }
 }
 

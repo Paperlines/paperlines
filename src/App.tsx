@@ -205,10 +205,12 @@ export function App() {
     if (inTauri || asked) useTour.getState().start();
   }, [loaded]);
   // when the app opens, look for a newer version and offer it (not over the first-run tour or
-  // another dialog; offline or GitHub unreachable: say nothing and try again next time)
+  // another dialog; offline or GitHub unreachable: say nothing and try again next time). A
+  // package manager (Nix, deb, rpm) updates the app itself, so those installs never check.
   const settingsLoaded = settings !== null;
+  const packaged = info?.packaged;
   useEffect(() => {
-    if (!loaded || !settingsLoaded) return;
+    if (!loaded || !settingsLoaded || packaged !== false) return;
     const s = useSettings.getState().settings;
     if (!s?.checkForUpdates || s.offlineMode) return;
     const timer = setTimeout(() => {
@@ -220,7 +222,7 @@ export function App() {
         .catch(() => {});
     }, 1500);
     return () => clearTimeout(timer);
-  }, [loaded, settingsLoaded, show]);
+  }, [loaded, settingsLoaded, packaged, show]);
   const selected = items.find((i) => i.id === selectedId) ?? null;
   const middle =
     view === "trash" ? (

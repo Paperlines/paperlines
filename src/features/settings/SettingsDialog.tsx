@@ -333,13 +333,15 @@ export function SettingsDialog({ settings, info, onChange, onClose }: Props) {
                 checked={settings.offlineMode}
                 onChange={(v) => onChange({ offlineMode: v })}
               />
-              <Toggle
-                label={t("settings.checkUpdates")}
-                hint={t("settings.checkUpdatesHint")}
-                help={t("help.checkUpdates")}
-                checked={settings.checkForUpdates}
-                onChange={(v) => onChange({ checkForUpdates: v })}
-              />
+              {!info.packaged && (
+                <Toggle
+                  label={t("settings.checkUpdates")}
+                  hint={t("settings.checkUpdatesHint")}
+                  help={t("help.checkUpdates")}
+                  checked={settings.checkForUpdates}
+                  onChange={(v) => onChange({ checkForUpdates: v })}
+                />
+              )}
             </>
           )}
           {section === "appearance" && <AppearanceSettings />}
