@@ -1,6 +1,6 @@
 # What's new
 
-## Unreleased
+## 0.1.2 (2026-11-26)
 
 - **Paperlines speaks your language:** Español, Français, Deutsch, 简体中文, 日本語 and हिन्दी, besides English. It follows your computer's language; change it in Settings ▸ General ▸ Language.
 - **Linux: a cleaner window,** as on Windows: no separate title bar or File / Edit / View / Window menu. Paperlines' own top bar holds the minimize, maximize and close buttons, and you drag it to move the window.
