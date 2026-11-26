@@ -12,6 +12,7 @@ import {
 } from "./find";
 import { type Box, hitTest, mergeLines, normalizeRects, rectFromPoints } from "./geometry";
 import { loadPdf, type PDFDocumentProxy } from "./pdf";
+import { anchoredScroll, clampZoom, wheelFactor, ZOOM_STEP } from "./zoom";
 import "./viewer.css";
 
 export interface ViewerHighlight {
@@ -347,6 +348,118 @@ export function PdfViewer(props: PdfViewerProps) {
     setSizes({});
   }, [scale]);
 
+  // --- zoom: trackpad pinch, ctrl/⌘ + wheel, keys and buttons, around a fixed point ---
+  const zoomRef = useRef(zoom);
+  zoomRef.current = zoom;
+  const scaleRef = useRef(scale);
+  /** Where to keep still once the new scale is laid out: pointer in the box, old scroll and scale. */
+  const anchor = useRef<{
+    px: number;
+    py: number;
+    left: number;
+    top: number;
+    scale: number;
+  } | null>(null);
+  /** A pinch in progress: drawn as a CSS scale of the pages, rendered sharp when it ends. */
+  const pinch = useRef<{ ratio: number; px: number; py: number; timer?: number } | null>(null);
+
+  /** Sets the zoom so the point at (px, py) in the scroll box stays where it is. */
+  const zoomTo = (target: number, px?: number, py?: number) => {
+    const sc = scrollRef.current;
+    const next = clampZoom(target);
+    if (!sc || next === zoomRef.current) return;
+    anchor.current = {
+      px: px ?? sc.clientWidth / 2,
+      py: py ?? sc.clientHeight / 2,
+      left: sc.scrollLeft,
+      top: sc.scrollTop,
+      scale: scaleRef.current,
+    };
+    setZoom(next);
+  };
+
+  useLayoutEffect(() => {
+    const a = anchor.current;
+    const sc = scrollRef.current;
+    scaleRef.current = scale;
+    if (!a || !sc) return;
+    anchor.current = null;
+    const ratio = scale / a.scale;
+    sc.scrollLeft = anchoredScroll(a.left, a.px, ratio, 16);
+    sc.scrollTop = anchoredScroll(a.top, a.py, ratio, 16);
+  }, [scale]);
+
+  useEffect(() => {
+    const sc = scrollRef.current;
+    if (!sc) return;
+    const preview = () => {
+      const g = pinch.current;
+      const pages = pagesRef.current;
+      if (!g || !pages) return;
+      // clamp the preview like the real zoom, so it never shows a size it can't keep
+      const shown = clampZoom(zoomRef.current * g.ratio) / zoomRef.current;
+      pages.style.transformOrigin = `${sc.scrollLeft + g.px}px ${sc.scrollTop + g.py}px`;
+      pages.style.transform = `scale(${shown})`;
+    };
+    const commit = () => {
+      const g = pinch.current;
+      const pages = pagesRef.current;
+      pinch.current = null;
+      if (!g) return;
+      window.clearTimeout(g.timer);
+      if (pages) {
+        pages.style.transform = "";
+        pages.style.transformOrigin = "";
+      }
+      zoomTo(zoomRef.current * g.ratio, g.px, g.py);
+    };
+    const at = (clientX: number, clientY: number) => {
+      const r = sc.getBoundingClientRect();
+      return { px: clientX - r.left, py: clientY - r.top };
+    };
+    // Windows and Linux report a trackpad pinch as a wheel event with ctrlKey; ctrl/⌘ + mouse
+    // wheel zooms too. Rendered when the events stop.
+    const onWheel = (e: WheelEvent) => {
+      if (!e.ctrlKey && !e.metaKey) return;
+      e.preventDefault();
+      const { px, py } = at(e.clientX, e.clientY);
+      const g = pinch.current ?? { ratio: 1, px, py };
+      g.ratio *= wheelFactor(e.deltaY, e.deltaMode);
+      window.clearTimeout(g.timer);
+      g.timer = window.setTimeout(commit, 160);
+      pinch.current = g;
+      preview();
+    };
+    // macOS (WKWebView) reports a pinch as WebKit gesture events, with the scale since it began
+    type Gesture = UIEvent & { scale: number; clientX: number; clientY: number };
+    const onGestureStart = (e: Event) => {
+      e.preventDefault();
+      const g = e as Gesture;
+      pinch.current = { ratio: 1, ...at(g.clientX, g.clientY) };
+    };
+    const onGestureChange = (e: Event) => {
+      e.preventDefault();
+      if (!pinch.current) return;
+      pinch.current.ratio = (e as Gesture).scale;
+      preview();
+    };
+    const onGestureEnd = (e: Event) => {
+      e.preventDefault();
+      commit();
+    };
+    sc.addEventListener("wheel", onWheel, { passive: false });
+    sc.addEventListener("gesturestart", onGestureStart);
+    sc.addEventListener("gesturechange", onGestureChange);
+    sc.addEventListener("gestureend", onGestureEnd);
+    return () => {
+      sc.removeEventListener("wheel", onWheel);
+      sc.removeEventListener("gesturestart", onGestureStart);
+      sc.removeEventListener("gesturechange", onGestureChange);
+      sc.removeEventListener("gestureend", onGestureEnd);
+    };
+    // the listeners only read refs and the stable setZoom, so they are added once
+  }, []);
+
   useEffect(() => {
     if (!doc) return;
     observer.current?.disconnect();
@@ -567,6 +680,18 @@ export function PdfViewer(props: PdfViewerProps) {
         e.preventDefault();
         e.stopPropagation();
         openFind();
+      } else if (isMod(e) && !e.altKey && (k === "=" || k === "+" || e.code === "Equal")) {
+        e.preventDefault();
+        e.stopPropagation();
+        zoomTo(zoomRef.current * ZOOM_STEP);
+      } else if (isMod(e) && !e.altKey && (k === "-" || e.code === "Minus")) {
+        e.preventDefault();
+        e.stopPropagation();
+        zoomTo(zoomRef.current / ZOOM_STEP);
+      } else if (isMod(e) && !e.altKey && (k === "0" || e.code === "Digit0")) {
+        e.preventDefault();
+        e.stopPropagation();
+        zoomTo(1);
       } else if (isMod(e) && k === "g" && findOpen) {
         e.preventDefault();
         e.stopPropagation();
@@ -707,11 +832,11 @@ export function PdfViewer(props: PdfViewerProps) {
           className="icon-btn"
           aria-label={s.zoomOut}
           title={s.zoomOut}
-          onClick={() => setZoom((z) => Math.max(0.3, z / 1.2))}
+          onClick={() => zoomTo(zoomRef.current / ZOOM_STEP)}
         >
           −
         </button>
-        <button type="button" className="btn" onClick={() => setZoom(1)}>
+        <button type="button" className="btn" onClick={() => zoomTo(1)}>
           {s.fitWidth}
         </button>
         <button
@@ -719,7 +844,7 @@ export function PdfViewer(props: PdfViewerProps) {
           className="icon-btn"
           aria-label={s.zoomIn}
           title={s.zoomIn}
-          onClick={() => setZoom((z) => Math.min(5, z * 1.2))}
+          onClick={() => zoomTo(zoomRef.current * ZOOM_STEP)}
         >
           +
         </button>

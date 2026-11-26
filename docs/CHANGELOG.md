@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Zoom PDFs with your trackpad:** pinch to zoom in and out, around the spot under your fingers. Ctrl/⌘ + scroll wheel and ⌘/Ctrl + `+` / `−` / `0` work too.
 - **Installed with Nix, a .deb or an .rpm?** Your package manager keeps Paperlines up to date, so the app no longer checks for new versions by itself there (Help & About ▸ Check for updates still works).
 - Help & About shows where your API keys are kept again.
 

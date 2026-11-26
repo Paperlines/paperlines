@@ -370,3 +370,63 @@ test("reader: no title row; Export sits in the PDF toolbar", async ({ page }) =>
   await expect(reader.getByText("Attention Is All You Need", { exact: true })).toHaveCount(0);
   if (shots) await reader.getByRole("toolbar").screenshot({ path: `${shots}/reader-toolbar.png` });
 });
+
+test("reader: pinch, ctrl/⌘ + wheel and keys zoom the PDF around the pointer", async ({ page }) => {
+  await page.goto("/");
+  await list(page).getByText("Attention Is All You Need").dblclick();
+  const reader = page.locator(".reader");
+  await expect(reader.getByText("Page 1 of 3")).toBeVisible();
+  const first = page.locator('.pv-page[data-page="1"]');
+  const width = async () => (await first.boundingBox())?.width ?? 0;
+  const before = await width();
+  const box = await page.locator(".pv-scroll").boundingBox();
+  if (!box) throw new Error("no scroll box");
+  const x = box.x + box.width / 2;
+  const y = box.y + 200;
+
+  // Windows/Linux: a trackpad pinch arrives as ctrl + wheel; zooming in keeps the page under the
+  // pointer, so the point there moves by at most a few pixels
+  const pointAt = () =>
+    page.evaluate(
+      ([px, py]) => {
+        const el = document.querySelector('.pv-page[data-page="1"]') as HTMLElement;
+        const r = el.getBoundingClientRect();
+        return { fx: (px - r.left) / r.width, fy: (py - r.top) / r.height };
+      },
+      [x, y],
+    );
+  const at = await pointAt();
+  await page.mouse.move(x, y);
+  await page.keyboard.down("Control");
+  for (let i = 0; i < 6; i++) await page.mouse.wheel(0, -20);
+  await page.keyboard.up("Control");
+  await expect.poll(width).toBeGreaterThan(before * 1.5);
+  const after = await pointAt();
+  expect(Math.abs(after.fx * (await width()) - at.fx * (await width()))).toBeLessThan(40);
+
+  // macOS: WKWebView sends gesture events with the scale since the pinch began
+  const zoomed = await width();
+  await page.evaluate(
+    ([px, py]) => {
+      const sc = document.querySelector(".pv-scroll") as HTMLElement;
+      const fire = (type: string, scale: number) => {
+        const e = new Event(type, { bubbles: true, cancelable: true });
+        Object.assign(e, { scale, clientX: px, clientY: py });
+        sc.dispatchEvent(e);
+      };
+      fire("gesturestart", 1);
+      fire("gesturechange", 0.8);
+      fire("gesturechange", 0.6);
+      fire("gestureend", 0.6);
+    },
+    [x, y],
+  );
+  await expect.poll(width).toBeLessThan(zoomed * 0.7);
+
+  // ⌘/Ctrl 0 fits the width again; ⌘/Ctrl + zooms in one step
+  await first.click({ position: { x: 20, y: 20 } });
+  await page.keyboard.press(`${mod}+0`);
+  await expect.poll(width).toBeCloseTo(before, -1);
+  await page.keyboard.press(`${mod}+Equal`);
+  await expect.poll(width).toBeGreaterThan(before * 1.1);
+});
