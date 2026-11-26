@@ -18,11 +18,11 @@ tauri = { version = "2", features = [] }
 serde = { version = "1", features = ["derive"] }
 paperlines-core = { path = "../crates/core" }
 tauri-plugin-dialog = "2.8.4"
-paperlines-import = { version = "0.1.2", path = "../crates/import" }
-paperlines-search = { version = "0.1.2", path = "../crates/search" }
+paperlines-import = { version = "0.1.3", path = "../crates/import" }
+paperlines-search = { version = "0.1.3", path = "../crates/search" }
 tauri-plugin-opener = "2.7.3"
-paperlines-citations = { version = "0.1.2", path = "../crates/citations" }
-paperlines-ops = { version = "0.1.2", path = "../crates/ops" }
+paperlines-citations = { version = "0.1.3", path = "../crates/citations" }
+paperlines-ops = { version = "0.1.3", path = "../crates/ops" }
 paperlines-mcp = { path = "../crates/mcp" }
 paperlines-agent = { path = "../crates/agent" }
 tauri-plugin-single-instance = "2.5.5"

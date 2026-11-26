@@ -5,7 +5,7 @@ export const branding = {
   "cliCommand": "paperlines",
   "appId": "dev.example.paperlines",
   "description": "Local-first reference manager",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "summary": "Collect papers and their PDFs, read and highlight, take notes with links and formulas, map how papers cite and build on each other, and let your AI assistant work with it all, on your own computer.",
   "repository": "https://github.com/Paperlines/paperlines",
   "website": "",
