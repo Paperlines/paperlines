@@ -6,4 +6,3 @@ members = ["crates/*", "src-tauri"]
 edition = "2021"
 version = "0.1.2"
 license = "AGPL-3.0-or-later"
-repository = "https://github.com/Paperlines/paperlines"
