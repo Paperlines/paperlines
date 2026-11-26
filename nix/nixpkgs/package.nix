@@ -1,6 +1,5 @@
 {
   lib,
-  stdenv,
   rustPlatform,
   fetchFromGitHub,
   cargo-tauri,
@@ -30,16 +29,16 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "Paperlines";
     repo = "paperlines";
     tag = "v${finalAttrs.version}";
-    hash = lib.fakeHash;
+    hash = "sha256-0s6pA7B6RdBQ706quMzZ8eXQUvLclDpPZlAE1bYgFYY=";
   };
 
-  cargoHash = lib.fakeHash;
+  cargoHash = "sha256-QCg59o1aRwjWme1TPVbR8GJ66b8hPxjLgiMXpJOoNmI=";
 
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
     inherit pnpm;
     fetcherVersion = 5;
-    hash = lib.fakeHash;
+    hash = "sha256-1guHda1uUFCS4notWsOpn/rsMQMJ0d1sTFm2UHC9SfE=";
   };
 
   nativeBuildInputs = [

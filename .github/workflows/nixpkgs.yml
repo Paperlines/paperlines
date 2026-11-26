@@ -1,9 +1,10 @@
 name: nixpkgs package
 
-# Actions → nixpkgs package → Run workflow: builds nix/nixpkgs/package.nix (the file submitted to
-# NixOS/nixpkgs as pkgs/by-name/pa/paperlines/package.nix) against nixos-unstable for a released
+# Actions → nixpkgs package → Run workflow: builds nix/nixpkgs/package.nix (the same file as
+# pkgs/by-name/pa/paperlines/package.nix in NixOS/nixpkgs) against nixos-unstable for a released
 # version, fills in its source, Cargo and pnpm hashes, checks the result and saves the finished
-# file as an artifact.
+# file as an artifact. Version updates in nixpkgs itself come from its r-ryantm bot (the package's
+# passthru.updateScript); this workflow is for checking a recipe change before proposing it.
 on:
   workflow_dispatch:
     inputs:
@@ -30,7 +31,10 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/pkg"
           pkg="$RUNNER_TEMP/pkg/package.nix"
-          sed "s/version = \".*\";/version = \"$VERSION\";/" nix/nixpkgs/package.nix > "$pkg"
+          # start from placeholder hashes: each build failure prints the real one
+          sed -E -e "s/version = \".*\";/version = \"$VERSION\";/" \
+            -e 's/cargoHash = "sha256-[^"]+";/cargoHash = lib.fakeHash;/' \
+            -e 's/hash = "sha256-[^"]+";/hash = lib.fakeHash;/' nix/nixpkgs/package.nix > "$pkg"
           # the maintainer entry only exists in nixpkgs once the PR adds it
           sed 's/maintainers = with lib.maintainers; \[ yoav-yosifor \];/maintainers = [ ];/' "$pkg" > "$pkg.eval"
           expr="let pkgs = (builtins.getFlake \"github:NixOS/nixpkgs/nixos-unstable\").legacyPackages.x86_64-linux; in pkgs.callPackage $pkg.eval { }"

@@ -56,6 +56,15 @@ The in-app updater can be tried in the browser build with `/?update` (the fake b
 - Commit `flake.lock` (created by the first `nix build`); `nix flake update` moves nixpkgs forward.
 - The package names the desktop entry `<identifier>.desktop`, matching the Wayland app ID that `app.enableGTKAppId` sets, so docks pick up the icon.
 
+## nixpkgs
+
+Paperlines is packaged in NixOS/nixpkgs as `pkgs/by-name/pa/paperlines/package.nix` (maintainer: `yoav-yosifor`). The same file is kept here as `nix/nixpkgs/package.nix`.
+
+- New versions reach nixpkgs through its update bot, r-ryantm, which uses the package's `passthru.updateScript` (`nix-update`) to set the version and recompute the source, Cargo and pnpm hashes, and opens a pull request for the maintainer to review.
+- To check a change to the recipe before proposing it, run Actions → **nixpkgs package** with a released version: it builds the recipe against nixos-unstable, fills in the hashes, checks the binaries and the desktop entry, and saves the formatted file as an artifact.
+- nixpkgs' [automation/AI policy](https://github.com/NixOS/nixpkgs/blob/master/CONTRIBUTING.md#automationai-policy) applies to contributions there: a person reviews and answers for every change, commits made with an AI tool carry an `Assisted-by:` trailer, and pull request descriptions and comments are written by the contributor.
+- The app doesn't check for updates by itself when installed by Nix, deb or rpm (`platform::packaged()`): the package manager updates it.
+
 ## Linux desktop integration
 
 `src-tauri/src/linux.rs`:
