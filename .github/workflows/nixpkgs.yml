@@ -72,6 +72,8 @@ jobs:
           done
           test -e "$RUNNER_TEMP/result" || { echo "::error::Still not built after 5 attempts"; exit 1; }
           if grep -q fakeHash "$pkg"; then echo "::error::A hash is still a placeholder"; exit 1; fi
+          # nixpkgs' CI requires nixfmt formatting
+          nix run github:NixOS/nixpkgs/nixos-unstable#nixfmt -- "$pkg"
           echo "----- package.nix -----"
           cat "$pkg"
 
