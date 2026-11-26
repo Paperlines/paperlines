@@ -6,4 +6,4 @@ pub const APP_ID: &str = "dev.example.paperlines";
 pub const DATA_FOLDER: &str = "Paperlines";
 pub const DESCRIPTION: &str = "Local-first reference manager";
 /// Browser extensions allowed to talk to the native messaging host (Chrome-family IDs).
-pub const BROWSER_EXTENSION_IDS: &[&str] = &["nalppkjoajknnmhpgfbdinkjmgnggdnk"];
+pub const BROWSER_EXTENSION_IDS: &[&str] = &["nalppkjoajknnmhpgfbdinkjmgnggdnk", "ooldfogehieegmochobljichkajignkf"];

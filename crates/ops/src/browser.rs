@@ -775,10 +775,16 @@ mod tests {
         assert_eq!(m["name"], host_name());
         assert_eq!(m["path"], "/opt/paperlines/bin/paperlines");
         assert_eq!(m["type"], "stdio");
-        assert_eq!(
-            m["allowed_origins"][0],
-            format!("chrome-extension://{}/", branding::BROWSER_EXTENSION_IDS[0])
-        );
+        // every allowed extension: the zip's fixed ID and the Chrome Web Store's
+        let origins: Vec<_> = m["allowed_origins"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|o| o.as_str().unwrap())
+            .collect();
+        for id in branding::BROWSER_EXTENSION_IDS {
+            assert!(origins.contains(&format!("chrome-extension://{id}/").as_str()), "{id}");
+        }
         // macOS keeps them under Application Support; Arc is macOS-only
         let mac = tempfile::tempdir().unwrap();
         std::fs::create_dir_all(mac.path().join("Library/Application Support/Arc/User Data")).unwrap();
