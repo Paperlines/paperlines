@@ -46,13 +46,28 @@ jobs:
             [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr h);
           }
           "@
+          function Shot($name) {
+            Add-Type -AssemblyName System.Windows.Forms, System.Drawing
+            $b = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
+            $img = New-Object System.Drawing.Bitmap $b.Width, $b.Height
+            [System.Drawing.Graphics]::FromImage($img).CopyFromScreen($b.Location, [System.Drawing.Point]::Empty, $b.Size)
+            $img.Save("$env:RUNNER_TEMP\$name.png")
+          }
           $p = Start-Process -FilePath $env:APP -PassThru
           $hwnd = [IntPtr]::Zero
-          for ($i = 0; $i -lt 60 -and $hwnd -eq [IntPtr]::Zero; $i++) {
+          for ($i = 0; $i -lt 90 -and $hwnd -eq [IntPtr]::Zero; $i++) {
             Start-Sleep -Seconds 1
-            $hwnd = [W]::FindWindow($null, "Paperlines")
+            if ($p.HasExited) { break }
+            $p.Refresh()
+            $hwnd = $p.MainWindowHandle
           }
-          if ($hwnd -eq [IntPtr]::Zero) { throw "no Paperlines window after 60 s" }
+          if ($hwnd -eq [IntPtr]::Zero) {
+            Shot "paperlines-windows"
+            Get-Process | Where-Object { $_.ProcessName -like "*paperlines*" -or $_.ProcessName -like "msedgewebview2" } | Format-Table ProcessName, Id, MainWindowTitle
+            if ($p.HasExited) { throw "paperlines-app exited with code $($p.ExitCode)" }
+            throw "no window from paperlines-app after 90 s"
+          }
+          "window title: $($p.MainWindowTitle)"
           Start-Sleep -Seconds 10
           [W]::SetForegroundWindow($hwnd) | Out-Null
           $style = [W]::GetWindowLong($hwnd, -16)
@@ -60,11 +75,7 @@ jobs:
           $caption = ($style -band 0x00C00000) -eq 0x00C00000
           "menu bar:  $menu"
           "title bar: $caption"
-          Add-Type -AssemblyName System.Windows.Forms, System.Drawing
-          $b = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
-          $img = New-Object System.Drawing.Bitmap $b.Width, $b.Height
-          [System.Drawing.Graphics]::FromImage($img).CopyFromScreen($b.Location, [System.Drawing.Point]::Empty, $b.Size)
-          $img.Save("$env:RUNNER_TEMP\paperlines-windows.png")
+          Shot "paperlines-windows"
           Stop-Process -Id $p.Id -Force
           if ($menu -or $caption) {
             "::error::Paperlines $env:VERSION on Windows still has a system menu bar ($menu) or title bar ($caption)"
