@@ -1,0 +1,62 @@
+{
+  "name": {
+    "message": "Paperlines"
+  },
+  "description": {
+    "message": "Save the paper you're reading, and its PDF, to your Paperlines library."
+  },
+  "actionTitle": {
+    "message": "Save to Paperlines"
+  },
+  "reading": {
+    "message": "Looking for a paper on this page…"
+  },
+  "untitled": {
+    "message": "(no title found)"
+  },
+  "alreadyIn": {
+    "message": "Already in your library as @$1"
+  },
+  "noIds": {
+    "message": "No DOI, arXiv ID or PubMed ID on this page: it will be saved from the page's own details."
+  },
+  "includePdf": {
+    "message": "Include the PDF"
+  },
+  "save": {
+    "message": "Save to Paperlines"
+  },
+  "addPdf": {
+    "message": "Add the PDF to it"
+  },
+  "fetchingPdf": {
+    "message": "Downloading the PDF…"
+  },
+  "saving": {
+    "message": "Saving…"
+  },
+  "saved": {
+    "message": "Saved as @$1"
+  },
+  "savedWithPdf": {
+    "message": "Saved as @$1, with its PDF"
+  },
+  "pdfAdded": {
+    "message": "PDF added to @$1"
+  },
+  "pdfUnavailable": {
+    "message": "The PDF couldn't be downloaded (it may need a login), so the paper was saved without it."
+  },
+  "notConnected": {
+    "message": "This browser isn't connected to Paperlines yet."
+  },
+  "setupOpen": {
+    "message": "Open Paperlines and go to Settings ▸ Browser extension."
+  },
+  "setupConnect": {
+    "message": "Click Connect."
+  },
+  "setupReload": {
+    "message": "Open this popup again."
+  }
+}

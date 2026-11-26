@@ -1097,4 +1097,20 @@ export const ja: Catalog = {
   "window.minimize": "最小化",
   "window.maximize": "最大化または元に戻す",
   "window.close": "閉じる",
+  "settings.s.browser": "ブラウザ拡張機能",
+  "browser.intro":
+    "Chrome、Edge、Brave、Arc、Vivaldi で読んでいる論文とその PDF をワンクリックで保存できます。",
+  "browser.step1": "1. Paperlines をブラウザに接続",
+  "browser.connect": "接続",
+  "browser.connectAgain": "再接続",
+  "browser.connected": "接続済み",
+  "browser.notConnected": "未接続",
+  "browser.none":
+    "このコンピュータに Chrome、Edge、Brave、Arc、Vivaldi、Chromium が見つかりません。いずれかをインストールして一度開いてください。",
+  "browser.step2": "2. ブラウザに拡張機能を追加",
+  "browser.install":
+    "Chrome ウェブストアに公開されるまでは：拡張機能をダウンロードして展開し、ブラウザの拡張機能ページを開いてデベロッパーモードをオンにし、「パッケージ化されていない拡張機能を読み込む」で展開したフォルダを選びます。",
+  "browser.download": "拡張機能をダウンロード",
+  "help.browser":
+    "拡張機能はブラウザに Paperlines のコマンドラインツールを起動させ、そのツールが論文をライブラリに追加します。Paperlines を開いていなくても動作します。コンピュータ上でサーバーは動かず、どこにも何も送信されません。アプリを移動した場合は再接続してください。",
 };

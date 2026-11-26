@@ -242,5 +242,11 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v5
         with: { node-version: 26, package-manager-cache: false }
+      # the browser extension, under the same name every release so the app's "Download" link
+      # (releases/latest/download/…) always gets the current one
+      - name: Browser extension
+        run: |
+          (cd extension && zip -qr "$RUNNER_TEMP/paperlines-browser-extension.zip" . -x "*.test.*")
+          gh release upload "${{ needs.prepare.outputs.tag }}" "$RUNNER_TEMP/paperlines-browser-extension.zip" --clobber
       - name: latest.json, release notes with contributors, publish
         run: node scripts/release.mjs publish "${{ needs.prepare.outputs.tag }}"

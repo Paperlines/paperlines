@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_name__",
+  "short_name": "Paperlines",
+  "description": "__MSG_description__",
+  "version": "0.1.3",
+  "default_locale": "en",
+  "homepage_url": "https://github.com/Paperlines/paperlines",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_title": "__MSG_actionTitle__",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png"
+    }
+  },
+  "permissions": [
+    "nativeMessaging",
+    "activeTab",
+    "scripting"
+  ],
+  "optional_host_permissions": [
+    "https://*/*",
+    "http://*/*"
+  ],
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr8LCb0nCgFgwvQ8gjFN110Sd9XpAJUxuau1g3QCQl+LNYz+uko6Vkq+0N8z2ojQj7CP4OTHoOxVS05ErpZDFxb/cAUdfvZxxDjJY/ItBx7w2C3WlwIJORXCZF3nQL7/TmcuBMhQelCFl0l0Ez82CUK36ukXzr5MtbZ/t+JdHpih6QlER1Q5WzFjf4p0RuwNWtSoLNSZqXGZtMCZEbqK+aZqD+TkILJdukMJl/P5h2RedeRMW6BZN7r0t6+emx7tdBdM46PnQaxooo0Ue8jJaM4Q4ldFXiTC1v5Lexgo7gobwObga8iAE9AT0QUSe0dAB1Rt8GkCF3p/ZD3K4eTB6ZwIDAQAB"
+}

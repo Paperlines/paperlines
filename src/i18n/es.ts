@@ -1132,4 +1132,20 @@ export const es: Catalog = {
   "window.minimize": "Minimizar",
   "window.maximize": "Maximizar o restaurar",
   "window.close": "Cerrar",
+  "settings.s.browser": "Extensión del navegador",
+  "browser.intro":
+    "Guarda el artículo que estás leyendo, y su PDF, desde Chrome, Edge, Brave, Arc o Vivaldi con un clic.",
+  "browser.step1": "1. Conecta Paperlines con tus navegadores",
+  "browser.connect": "Conectar",
+  "browser.connectAgain": "Volver a conectar",
+  "browser.connected": "Conectado",
+  "browser.notConnected": "Sin conectar",
+  "browser.none":
+    "No se encontró Chrome, Edge, Brave, Arc, Vivaldi ni Chromium en este equipo. Instala uno y ábrelo una vez.",
+  "browser.step2": "2. Añade la extensión al navegador",
+  "browser.install":
+    "Hasta que esté en la Chrome Web Store: descarga la extensión y descomprímela, abre la página de Extensiones del navegador, activa el Modo de desarrollador y elige Cargar descomprimida con la carpeta descomprimida.",
+  "browser.download": "Descargar la extensión",
+  "help.browser":
+    "La extensión pide al navegador que inicie la herramienta de línea de comandos de Paperlines, que añade el artículo a tu biblioteca, aunque Paperlines no esté abierto. No se ejecuta ningún servidor en tu equipo y no se envía nada a ningún otro sitio. Vuelve a conectar si mueves la aplicación.",
 };

@@ -88,6 +88,26 @@ pub fn install_cli() -> Result<crate::platform::CliInstall> {
     crate::platform::install_cli().map_err(Error::Msg)
 }
 
+/// Which Chrome-family browsers are installed and know Paperlines (Settings ▸ Browser extension).
+#[tauri::command]
+pub fn browser_status(state: tauri::State<crate::AppState>) -> Vec<paperlines_ops::browser::BrowserStatus> {
+    use paperlines_ops::browser;
+    match browser::home() {
+        Some(home) => browser::status(&home, browser::os_name(), &state.dirs.config),
+        None => Vec::new(),
+    }
+}
+
+/// Registers the bundled command-line tool as the extension's native messaging host with every
+/// installed Chrome-family browser.
+#[tauri::command]
+pub fn browser_connect(state: tauri::State<crate::AppState>) -> Result<Vec<paperlines_ops::browser::BrowserStatus>> {
+    use paperlines_ops::browser;
+    let home = browser::home().ok_or_else(|| Error::msg("No home folder"))?;
+    let program = crate::platform::mcp_command().map_err(Error::Msg)?;
+    browser::install(&home, browser::os_name(), &state.dirs.config, &program)
+}
+
 /// Files the OS asked us to open before the UI was listening.
 #[derive(Default)]
 pub struct PendingOpens(pub Mutex<Vec<String>>);

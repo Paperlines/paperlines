@@ -514,6 +514,8 @@ pub fn run() {
             maintenance::restore_backup,
             maintenance::run_doctor,
             maintenance::install_cli,
+            maintenance::browser_status,
+            maintenance::browser_connect,
             agent::agent_info,
             agent::agent_save_config,
             agent::agent_send,

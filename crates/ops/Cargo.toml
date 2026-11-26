@@ -13,6 +13,8 @@ serde = { version = "1.0.229", features = ["derive"] }
 # preserve_order: other apps' config files keep their key order when we add our server
 serde_json = { version = "1.0.154", features = ["preserve_order"] }
 toml_edit = "0.25"
+# PDFs from the browser extension arrive base64-encoded in native messages
+base64 = "0.23"
 hayagriva = { version = "0.10.1", default-features = false, features = ["archive", "csl-json"] }
 
 [dev-dependencies]

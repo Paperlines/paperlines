@@ -163,6 +163,12 @@ export function createFakeBackend(opts: { seed?: boolean } = {}): BackendPort {
   const agentRuns = new Map<string, { stopped: boolean }>();
   const agentChats = new Map<string, AgentChat>();
   let agentClock = 0;
+  // Settings ▸ Browser extension: Chrome and Brave installed, Edge not
+  let browsers = [
+    { name: "Google Chrome", installed: true, connected: false },
+    { name: "Microsoft Edge", installed: false, connected: false },
+    { name: "Brave", installed: true, connected: false },
+  ];
   let items: Item[] = [];
   let settings: Settings = {
     offlineMode: false,
@@ -1907,6 +1913,13 @@ export function createFakeBackend(opts: { seed?: boolean } = {}): BackendPort {
         await new Promise((r) => setTimeout(r, 150));
       }
       // the real app restarts here
+    },
+    async browserStatus() {
+      return browsers;
+    },
+    async browserConnect() {
+      browsers = browsers.map((b) => ({ ...b, connected: b.installed }));
+      return browsers;
     },
     async windowControl(action) {
       // the browser has no window to move: record the click for the tests

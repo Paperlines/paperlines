@@ -296,3 +296,54 @@ fn a_projects_spine_from_the_command_line() {
     assert_ne!(code, 0);
     assert!(err.contains("No project called “Nope”"), "{err}");
 }
+
+/// What Chrome does: start the binary with the extension's origin and talk through a pipe.
+#[test]
+fn browser_extension_over_native_messaging() {
+    let dir = tempfile::tempdir().unwrap();
+    let lib = dir.path().join("lib");
+    let mut child = Command::new(BIN)
+        .arg("chrome-extension://nalppkjoajknnmhpgfbdinkjmgnggdnk/")
+        .env("PAPERLINES_LIBRARY", &lib)
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .spawn()
+        .unwrap();
+    let mut stdin = child.stdin.take().unwrap();
+    let send = |w: &mut std::process::ChildStdin, v: serde_json::Value| {
+        let body = serde_json::to_vec(&v).unwrap();
+        w.write_all(&(body.len() as u32).to_ne_bytes()).unwrap();
+        w.write_all(&body).unwrap();
+    };
+    // a page without identifiers, so nothing is looked up online
+    let page = serde_json::json!({
+        "title": "A Paper Found on the Web",
+        "authors": ["Ada Lovelace"],
+        "year": 1843,
+        "url": "https://example.org/notes"
+    });
+    send(&mut stdin, serde_json::json!({"type": "ping"}));
+    send(&mut stdin, serde_json::json!({"type": "lookup", "page": page}));
+    send(&mut stdin, serde_json::json!({"type": "save", "page": page}));
+    send(&mut stdin, serde_json::json!({"type": "lookup", "page": page}));
+    drop(stdin);
+    let out = child.wait_with_output().unwrap();
+    assert!(out.status.success());
+    let mut replies = Vec::new();
+    let mut rest = out.stdout.as_slice();
+    while rest.len() >= 4 {
+        let len = u32::from_ne_bytes(rest[..4].try_into().unwrap()) as usize;
+        replies.push(serde_json::from_slice::<serde_json::Value>(&rest[4..4 + len]).unwrap());
+        rest = &rest[4 + len..];
+    }
+    assert_eq!(replies.len(), 4, "{replies:?}");
+    assert_eq!(replies[0]["type"], "pong");
+    assert_eq!(replies[1], serde_json::json!({"type": "found", "item": null}));
+    assert_eq!(replies[2]["type"], "saved");
+    assert_eq!(replies[2]["added"], true);
+    assert_eq!(replies[2]["item"]["title"], "A Paper Found on the Web");
+    assert_eq!(replies[3]["item"]["citekey"], replies[2]["item"]["citekey"]);
+    // and it is in the library for the CLI (and the app) to see
+    let (_, out, _) = cli(&lib, &["--json", "search", "web"]);
+    assert!(out.contains("A Paper Found on the Web"), "{out}");
+}

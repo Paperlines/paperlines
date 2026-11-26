@@ -156,6 +156,12 @@ enum Cmd {
     },
     /// Run the MCP server on stdin/stdout (for Claude Code / Claude Desktop)
     Mcp,
+    /// The browser extension: show which browsers know Paperlines; --connect registers it with
+    /// every installed Chrome-family browser (Chrome, Edge, Brave, Arc, Vivaldi, Chromium)
+    Browser {
+        #[arg(long)]
+        connect: bool,
+    },
     /// Show where the library and config live; --set-library changes the default library folder
     Paths {
         #[arg(long, value_name = "DIR")]
@@ -317,6 +323,31 @@ fn run(cli: Cli) -> Result<ExitCode, String> {
         });
         return Ok(ExitCode::SUCCESS);
     }
+    if let Cmd::Browser { connect } = cli.cmd {
+        let home = ops::browser::home().ok_or("No home folder")?;
+        let os = ops::browser::os_name();
+        let config = config_dir();
+        let list = if connect {
+            let exe = std::env::current_exe().map_err(|e| e.to_string())?;
+            ops::browser::install(&home, os, &config, &ops::browser::stable_program(exe)).map_err(|e| e.to_string())?
+        } else {
+            ops::browser::status(&home, os, &config)
+        };
+        out(j, json!(list), || {
+            for b in list.iter().filter(|b| b.installed) {
+                let state = if b.connected {
+                    "connected"
+                } else {
+                    "not connected (run: browser --connect)"
+                };
+                println!("{:<16} {state}", b.name);
+            }
+            if !list.iter().any(|b| b.installed) {
+                println!("no Chrome-family browser found");
+            }
+        });
+        return Ok(ExitCode::SUCCESS);
+    }
     if let Cmd::Paths { set_library: Some(dir) } = &cli.cmd {
         let dirs = platform::app_dirs().ok_or("No home folder")?;
         let mut c = paperlines_core::config::load(&dirs.config);
@@ -350,7 +381,7 @@ fn run(cli: Cli) -> Result<ExitCode, String> {
     let mut lib = Library::open(cli.library.as_deref()).map_err(|e| e.to_string())?;
     let e = |x: paperlines_core::Error| x.to_string();
     match cli.cmd {
-        Cmd::Paths { .. } | Cmd::Styles => unreachable!(),
+        Cmd::Paths { .. } | Cmd::Styles | Cmd::Browser { .. } => unreachable!(),
         Cmd::Cite {
             keys,
             style,
@@ -1162,7 +1193,32 @@ fn run(cli: Cli) -> Result<ExitCode, String> {
     }
 }
 
+/// Started by the browser for the extension: answer its messages on stdin/stdout until it closes.
+fn browser_host() -> ExitCode {
+    let mut input = std::io::stdin().lock();
+    let mut output = std::io::stdout().lock();
+    let result = match Library::open(None) {
+        Ok(mut lib) => ops::browser::serve(&mut lib, &mut input, &mut output),
+        // no library: say so to each message, so the extension can show why
+        Err(e) => (|| {
+            while ops::browser::read_message(&mut input)?.is_some() {
+                let message = format!("Couldn't open the library: {e}");
+                ops::browser::write_message(&mut output, &ops::browser::Response::Error { message })?;
+            }
+            Ok(())
+        })(),
+    };
+    if let Err(e) = result {
+        eprintln!("error: {e}");
+        return ExitCode::from(1);
+    }
+    ExitCode::SUCCESS
+}
+
 fn main() -> ExitCode {
+    if ops::browser::is_host_invocation(&std::env::args().collect::<Vec<_>>()) {
+        return browser_host();
+    }
     let cli = Cli::parse();
     let library = cli.library.clone();
     let mutating = !matches!(
@@ -1177,6 +1233,7 @@ fn main() -> ExitCode {
             | Cmd::Paths { .. }
             | Cmd::Styles
             | Cmd::Cite { .. }
+            | Cmd::Browser { .. }
     );
     let result = run(cli);
     if mutating && result.is_ok() {

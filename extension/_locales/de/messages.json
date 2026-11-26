@@ -1,0 +1,62 @@
+{
+  "name": {
+    "message": "Paperlines"
+  },
+  "description": {
+    "message": "Speichern Sie das Paper, das Sie gerade lesen, samt PDF in Ihrer Paperlines-Bibliothek."
+  },
+  "actionTitle": {
+    "message": "In Paperlines speichern"
+  },
+  "reading": {
+    "message": "Suche nach einem Paper auf dieser Seite…"
+  },
+  "untitled": {
+    "message": "(kein Titel gefunden)"
+  },
+  "alreadyIn": {
+    "message": "Schon in Ihrer Bibliothek als @$1"
+  },
+  "noIds": {
+    "message": "Keine DOI, arXiv- oder PubMed-ID auf dieser Seite: Es wird mit den Angaben der Seite gespeichert."
+  },
+  "includePdf": {
+    "message": "PDF einschließen"
+  },
+  "save": {
+    "message": "In Paperlines speichern"
+  },
+  "addPdf": {
+    "message": "PDF hinzufügen"
+  },
+  "fetchingPdf": {
+    "message": "PDF wird geladen…"
+  },
+  "saving": {
+    "message": "Wird gespeichert…"
+  },
+  "saved": {
+    "message": "Gespeichert als @$1"
+  },
+  "savedWithPdf": {
+    "message": "Gespeichert als @$1, mit PDF"
+  },
+  "pdfAdded": {
+    "message": "PDF zu @$1 hinzugefügt"
+  },
+  "pdfUnavailable": {
+    "message": "Das PDF ließ sich nicht laden (vielleicht ist eine Anmeldung nötig), daher wurde das Paper ohne PDF gespeichert."
+  },
+  "notConnected": {
+    "message": "Dieser Browser ist noch nicht mit Paperlines verbunden."
+  },
+  "setupOpen": {
+    "message": "Öffnen Sie Paperlines und dort Einstellungen ▸ Browsererweiterung."
+  },
+  "setupConnect": {
+    "message": "Klicken Sie auf Verbinden."
+  },
+  "setupReload": {
+    "message": "Öffnen Sie dieses Fenster erneut."
+  }
+}

@@ -1,5 +1,5 @@
 use crate::Result;
-use rusqlite::Connection;
+use rusqlite::{Connection, TransactionBehavior};
 use std::path::Path;
 
 /// Ordered migrations. Never edit a shipped one; append a new file instead.
@@ -68,9 +68,18 @@ impl Db {
     }
 
     fn migrate(&mut self) -> Result<()> {
-        let current = self.schema_version()?;
-        for (i, sql) in MIGRATIONS.iter().enumerate().skip(current) {
-            let tx = self.conn.transaction()?;
+        if self.schema_version()? >= MIGRATIONS.len() {
+            return Ok(());
+        }
+        for (i, sql) in MIGRATIONS.iter().enumerate() {
+            // IMMEDIATE takes the write lock before reading the version, so two processes opening
+            // the same new library at once (the app and the browser extension's host, say) run
+            // each migration once: the second waits, sees the version the first wrote, and skips
+            let tx = self.conn.transaction_with_behavior(TransactionBehavior::Immediate)?;
+            let done: i64 = tx.pragma_query_value(None, "user_version", |r| r.get(0))?;
+            if done as usize > i {
+                continue;
+            }
             tx.execute_batch(sql)?;
             tx.pragma_update(None, "user_version", (i + 1) as i64)?;
             tx.commit()?;
@@ -95,6 +104,21 @@ pub fn latest_version() -> usize {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn concurrent_opens_of_a_new_library_migrate_once() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("library.sqlite");
+        let handles: Vec<_> = (0..4)
+            .map(|_| {
+                let p = path.clone();
+                std::thread::spawn(move || Db::open(&p).map(|d| d.schema_version().unwrap()))
+            })
+            .collect();
+        for h in handles {
+            assert_eq!(h.join().unwrap().unwrap(), latest_version());
+        }
+    }
 
     #[test]
     fn migrates_to_latest_and_is_idempotent() {

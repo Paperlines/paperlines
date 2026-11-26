@@ -1105,4 +1105,20 @@ export const hi: Catalog = {
   "window.minimize": "छोटा करें",
   "window.maximize": "बड़ा करें या पहले जैसा करें",
   "window.close": "बंद करें",
+  "settings.s.browser": "ब्राउज़र एक्सटेंशन",
+  "browser.intro":
+    "Chrome, Edge, Brave, Arc या Vivaldi से जो पेपर आप पढ़ रहे हैं, उसे उसकी PDF के साथ एक क्लिक में सहेजें।",
+  "browser.step1": "1. Paperlines को अपने ब्राउज़रों से जोड़ें",
+  "browser.connect": "कनेक्ट करें",
+  "browser.connectAgain": "फिर से कनेक्ट करें",
+  "browser.connected": "कनेक्ट है",
+  "browser.notConnected": "कनेक्ट नहीं है",
+  "browser.none":
+    "इस कंप्यूटर पर Chrome, Edge, Brave, Arc, Vivaldi या Chromium नहीं मिला। इनमें से कोई एक इंस्टॉल करें और उसे एक बार खोलें।",
+  "browser.step2": "2. ब्राउज़र में एक्सटेंशन जोड़ें",
+  "browser.install":
+    "जब तक यह Chrome Web Store पर नहीं आता: एक्सटेंशन डाउनलोड करके अनज़िप करें, ब्राउज़र का एक्सटेंशन पेज खोलें, डेवलपर मोड चालू करें और अनज़िप किए गए फ़ोल्डर के साथ “Load unpacked” चुनें।",
+  "browser.download": "एक्सटेंशन डाउनलोड करें",
+  "help.browser":
+    "एक्सटेंशन आपके ब्राउज़र से Paperlines का कमांड-लाइन टूल शुरू करवाता है, जो पेपर को आपकी लाइब्रेरी में जोड़ता है, भले ही Paperlines खुला न हो। आपके कंप्यूटर पर कोई सर्वर नहीं चलता और कुछ भी कहीं और नहीं भेजा जाता। ऐप को कहीं और ले जाने पर फिर से कनेक्ट करें।",
 };

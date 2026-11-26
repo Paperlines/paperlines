@@ -29,6 +29,11 @@ pub struct Candidate {
 }
 
 impl Candidate {
+    /// A candidate built from metadata found elsewhere (e.g. a web page), with no file yet.
+    pub fn from_input(input: ItemInput, source: &str) -> Self {
+        Self::new(input, source)
+    }
+
     fn new(input: ItemInput, source: &str) -> Self {
         Candidate {
             input,

@@ -32,6 +32,11 @@ export default defineConfig({
   define: { __BUILD__: JSON.stringify(buildInfo()) },
   test: {
     root: ".",
-    include: ["src/**/*.test.ts", "packages/**/*.test.ts", "scripts/**/*.test.ts"],
+    include: [
+      "src/**/*.test.ts",
+      "packages/**/*.test.ts",
+      "scripts/**/*.test.ts",
+      "extension/**/*.test.ts",
+    ],
   },
 });

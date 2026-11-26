@@ -20,6 +20,7 @@ use serde_json::{json, Value};
 use std::path::{Path, PathBuf};
 
 pub mod assistants;
+pub mod browser;
 pub mod cite;
 pub mod discover;
 pub mod manage;

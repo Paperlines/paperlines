@@ -1137,4 +1137,20 @@ export const de: Catalog = {
   "window.minimize": "Minimieren",
   "window.maximize": "Maximieren oder wiederherstellen",
   "window.close": "Schließen",
+  "settings.s.browser": "Browsererweiterung",
+  "browser.intro":
+    "Speichern Sie das Paper, das Sie gerade lesen, samt PDF mit einem Klick aus Chrome, Edge, Brave, Arc oder Vivaldi.",
+  "browser.step1": "1. Paperlines mit Ihren Browsern verbinden",
+  "browser.connect": "Verbinden",
+  "browser.connectAgain": "Erneut verbinden",
+  "browser.connected": "Verbunden",
+  "browser.notConnected": "Nicht verbunden",
+  "browser.none":
+    "Kein Chrome, Edge, Brave, Arc, Vivaldi oder Chromium auf diesem Computer gefunden. Installieren Sie einen und öffnen Sie ihn einmal.",
+  "browser.step2": "2. Erweiterung zum Browser hinzufügen",
+  "browser.install":
+    "Bis sie im Chrome Web Store ist: Laden Sie die Erweiterung herunter und entpacken Sie sie, öffnen Sie die Erweiterungsseite des Browsers, aktivieren Sie den Entwicklermodus und wählen Sie „Entpackte Erweiterung laden“ mit dem entpackten Ordner.",
+  "browser.download": "Erweiterung herunterladen",
+  "help.browser":
+    "Die Erweiterung lässt den Browser das Kommandozeilenwerkzeug von Paperlines starten, das das Paper zu Ihrer Bibliothek hinzufügt – auch wenn Paperlines nicht geöffnet ist. Auf Ihrem Computer läuft kein Server, und nichts wird anderswohin gesendet. Verbinden Sie erneut, wenn Sie die App verschieben.",
 };

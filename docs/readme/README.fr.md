@@ -88,6 +88,8 @@ La lecture scientifique se fait à trois endroits à la fois : un gestionnaire 
 
 Tous les fichiers sont sur la [page des versions](https://github.com/Paperlines/paperlines/releases/latest). Les paquets Linux nécessitent glibc 2.35 ou plus récent (Ubuntu 22.04, Debian 12, Fedora 36 et suivants).
 
+**Extension du navigateur (Chrome, Edge, Brave, Arc, Vivaldi) :** enregistrez l’article que vous lisez, et son PDF, en un clic. Téléchargez [paperlines-browser-extension.zip](https://github.com/Paperlines/paperlines/releases/latest/download/paperlines-browser-extension.zip), puis suivez **Paramètres → Extension du navigateur** dans l’application.
+
 ### Mises à jour, depuis l’app
 
 <p align="center">

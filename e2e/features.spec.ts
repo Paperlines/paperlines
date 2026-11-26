@@ -1054,3 +1054,27 @@ test("installed by a package manager (Nix, deb, rpm): no automatic update check"
   await expect(settings.getByText("Offline mode")).toBeVisible();
   await expect(settings.getByText("Check for updates when the app opens")).toHaveCount(0);
 });
+
+test("settings: connect Paperlines to the browsers for the extension", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Settings", exact: true }).first().click();
+  const dlg = page.getByRole("dialog", { name: "Settings" });
+  await dlg.getByRole("navigation").getByRole("button", { name: "Browser extension" }).click();
+  const step1 = dlg.getByRole("region", { name: "1. Connect Paperlines to your browsers" });
+  // installed browsers only (Edge isn't installed here)
+  await expect(step1.getByRole("listitem")).toHaveCount(2);
+  await expect(step1.getByRole("listitem").filter({ hasText: "Google Chrome" })).toContainText(
+    "Not connected",
+  );
+  await step1.getByRole("button", { name: "Connect" }).click();
+  await expect(step1.getByRole("listitem").filter({ hasText: "Google Chrome" })).toContainText(
+    "Connected",
+  );
+  await expect(step1.getByRole("listitem").filter({ hasText: "Brave" })).toContainText("Connected");
+  await expect(step1.getByRole("button", { name: "Connect again" })).toBeVisible();
+  // how to add the extension until it's in the Chrome Web Store
+  const step2 = dlg.getByRole("region", { name: "2. Add the extension to the browser" });
+  await expect(step2).toContainText("Load unpacked");
+  await expect(step2.getByRole("button", { name: "Download the extension" })).toBeVisible();
+  if (shots) await dlg.screenshot({ path: `${shots}/x-browser.png` });
+});

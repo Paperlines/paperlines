@@ -1,0 +1,62 @@
+{
+  "name": {
+    "message": "Paperlines"
+  },
+  "description": {
+    "message": "将正在阅读的论文及其 PDF 保存到你的 Paperlines 文献库。"
+  },
+  "actionTitle": {
+    "message": "保存到 Paperlines"
+  },
+  "reading": {
+    "message": "正在查找本页的论文…"
+  },
+  "untitled": {
+    "message": "（未找到标题）"
+  },
+  "alreadyIn": {
+    "message": "已在你的文献库中：@$1"
+  },
+  "noIds": {
+    "message": "本页没有 DOI、arXiv ID 或 PubMed ID：将根据页面信息保存。"
+  },
+  "includePdf": {
+    "message": "包含 PDF"
+  },
+  "save": {
+    "message": "保存到 Paperlines"
+  },
+  "addPdf": {
+    "message": "为其添加 PDF"
+  },
+  "fetchingPdf": {
+    "message": "正在下载 PDF…"
+  },
+  "saving": {
+    "message": "正在保存…"
+  },
+  "saved": {
+    "message": "已保存为 @$1"
+  },
+  "savedWithPdf": {
+    "message": "已保存为 @$1，含 PDF"
+  },
+  "pdfAdded": {
+    "message": "已为 @$1 添加 PDF"
+  },
+  "pdfUnavailable": {
+    "message": "无法下载 PDF（可能需要登录），论文已在不含 PDF 的情况下保存。"
+  },
+  "notConnected": {
+    "message": "此浏览器尚未连接到 Paperlines。"
+  },
+  "setupOpen": {
+    "message": "打开 Paperlines，进入 设置 ▸ 浏览器扩展。"
+  },
+  "setupConnect": {
+    "message": "点击“连接”。"
+  },
+  "setupReload": {
+    "message": "重新打开此窗口。"
+  }
+}

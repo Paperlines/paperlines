@@ -22,6 +22,8 @@ pub const CLI_COMMAND: &str = ${q(b.cliCommand)};
 pub const APP_ID: &str = ${q(b.appId)};
 pub const DATA_FOLDER: &str = ${q(b.dataFolder)};
 pub const DESCRIPTION: &str = ${q(b.description)};
+/// Browser extensions allowed to talk to the native messaging host (Chrome-family IDs).
+pub const BROWSER_EXTENSION_IDS: &[&str] = &[${(b.browserExtensionIds ?? []).map(q).join(", ")}];
 `,
 );
 

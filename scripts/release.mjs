@@ -49,6 +49,7 @@ function apply(version, notesFile) {
   if (from !== version) {
     setJsonVersion("branding/branding.json", version);
     setJsonVersion("package.json", version);
+    setJsonVersion("extension/manifest.json", version);
     for (const p of readdirSync(join(root, "packages"))) {
       setJsonVersion(`packages/${p}/package.json`, version);
     }

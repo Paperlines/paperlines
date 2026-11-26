@@ -1115,6 +1115,22 @@ export const en = {
   "window.minimize": "Minimize",
   "window.maximize": "Maximize or restore",
   "window.close": "Close",
+  "settings.s.browser": "Browser extension",
+  "browser.intro":
+    "Save the paper you're reading, and its PDF, from Chrome, Edge, Brave, Arc or Vivaldi with one click.",
+  "browser.step1": "1. Connect Paperlines to your browsers",
+  "browser.connect": "Connect",
+  "browser.connectAgain": "Connect again",
+  "browser.connected": "Connected",
+  "browser.notConnected": "Not connected",
+  "browser.none":
+    "No Chrome, Edge, Brave, Arc, Vivaldi or Chromium found on this computer. Install one and open it once.",
+  "browser.step2": "2. Add the extension to the browser",
+  "browser.install":
+    "Until it's in the Chrome Web Store: download the extension and unzip it, open your browser's Extensions page, turn on Developer mode, and choose Load unpacked with the unzipped folder.",
+  "browser.download": "Download the extension",
+  "help.browser":
+    "The extension asks your browser to start Paperlines' command-line tool, which adds the paper to your library, even when Paperlines isn't open. No server runs on your computer and nothing is sent anywhere else. Connect again if you move the app.",
 } as const;
 
 export type MessageKey = keyof typeof en;

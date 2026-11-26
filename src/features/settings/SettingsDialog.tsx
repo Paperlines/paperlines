@@ -14,6 +14,7 @@ import {
   LifeBuoy,
   NotebookPen,
   Palette,
+  Puzzle,
   SlidersHorizontal,
   SquareTerminal,
   X,
@@ -29,6 +30,7 @@ import { useUi } from "../../store/ui";
 import { AboutSettings } from "./AboutSettings";
 import { AppearanceSettings } from "./AppearanceSettings";
 import { AssistantsSettings } from "./AssistantsSettings";
+import { BrowserSettings } from "./BrowserSettings";
 import { EXTRA_COLORS, isBase } from "./highlightPalette";
 import { MaintenanceSettings } from "./MaintenanceSettings";
 import { ReferencesSettings } from "./ReferencesSettings";
@@ -49,6 +51,7 @@ type SectionId =
   | "library"
   | "assistants"
   | "cli"
+  | "browser"
   | "about";
 const SECTIONS: {
   id: SectionId;
@@ -62,6 +65,7 @@ const SECTIONS: {
   { id: "library", icon: FolderCog },
   { id: "assistants", icon: SparkIcon },
   { id: "cli", icon: SquareTerminal },
+  { id: "browser", icon: Puzzle },
   { id: "about", icon: LifeBuoy },
 ];
 
@@ -494,6 +498,7 @@ export function SettingsDialog({ settings, info, onChange, onClose }: Props) {
           )}
           {section === "assistants" && <AssistantsSettings />}
           {section === "cli" && <MaintenanceSettings part="cli" />}
+          {section === "browser" && <BrowserSettings />}
           {section === "about" && <AboutSettings info={info} />}
         </div>
       </div>

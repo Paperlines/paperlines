@@ -176,6 +176,13 @@ export interface Settings {
   checkForUpdates: boolean;
 }
 
+/** A Chrome-family browser and whether the Paperlines extension can reach the app through it. */
+export interface BrowserStatus {
+  name: string;
+  installed: boolean;
+  connected: boolean;
+}
+
 export interface Contributor {
   /** GitHub login, when the commits are linked to an account. */
   login: string | null;
@@ -865,6 +872,10 @@ export interface BackendPort {
   checkForUpdate(): Promise<AppUpdate | null>;
   /** Downloads and installs the update from the last check, then restarts the app. */
   installUpdate(): Promise<void>;
+  /** Chrome-family browsers on this computer, and which ones the extension can reach Paperlines from. */
+  browserStatus(): Promise<BrowserStatus[]>;
+  /** Registers Paperlines with every installed Chrome-family browser, for the extension. */
+  browserConnect(): Promise<BrowserStatus[]>;
   /** The window buttons the app draws itself where the system frame is off (Windows). */
   windowControl(action: "minimize" | "toggleMaximize" | "close"): Promise<void>;
   listSavedSearches(): Promise<SavedSearch[]>;

@@ -88,6 +88,8 @@ macOS, Windows और Linux के लिए एक मुफ़्त, ओप�
 
 हर फ़ाइल [Releases पेज](https://github.com/Paperlines/paperlines/releases/latest) पर है। Linux पैकेजों के लिए glibc 2.35 या नया चाहिए (Ubuntu 22.04, Debian 12, Fedora 36 और बाद के)।
 
+**ब्राउज़र एक्सटेंशन (Chrome, Edge, Brave, Arc, Vivaldi):** जो पेपर आप पढ़ रहे हैं, उसे उसकी PDF के साथ एक क्लिक में सहेजें। [paperlines-browser-extension.zip](https://github.com/Paperlines/paperlines/releases/latest/download/paperlines-browser-extension.zip) डाउनलोड करें, फिर ऐप में **सेटिंग्स → ब्राउज़र एक्सटेंशन** के निर्देशों का पालन करें।
+
 ### अपडेट, ऐप के अंदर से
 
 <p align="center">

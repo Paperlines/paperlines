@@ -1052,4 +1052,19 @@ export const zh: Catalog = {
   "window.minimize": "最小化",
   "window.maximize": "最大化或还原",
   "window.close": "关闭",
+  "settings.s.browser": "浏览器扩展",
+  "browser.intro": "在 Chrome、Edge、Brave、Arc 或 Vivaldi 中一键保存正在阅读的论文及其 PDF。",
+  "browser.step1": "1. 将 Paperlines 连接到浏览器",
+  "browser.connect": "连接",
+  "browser.connectAgain": "重新连接",
+  "browser.connected": "已连接",
+  "browser.notConnected": "未连接",
+  "browser.none":
+    "这台电脑上没有找到 Chrome、Edge、Brave、Arc、Vivaldi 或 Chromium。请安装其中一个并打开一次。",
+  "browser.step2": "2. 将扩展添加到浏览器",
+  "browser.install":
+    "在上架 Chrome 网上应用店之前：下载扩展并解压，打开浏览器的“扩展程序”页面，开启“开发者模式”，然后选择“加载已解压的扩展程序”并选中解压后的文件夹。",
+  "browser.download": "下载扩展",
+  "help.browser":
+    "扩展会让浏览器启动 Paperlines 的命令行工具，由它把论文添加到你的文献库，即使 Paperlines 没有打开也可以。你的电脑上不会运行任何服务器，也不会向其他地方发送任何内容。移动应用后请重新连接。",
 };

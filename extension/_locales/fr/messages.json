@@ -1,0 +1,62 @@
+{
+  "name": {
+    "message": "Paperlines"
+  },
+  "description": {
+    "message": "Enregistrez l’article que vous lisez, et son PDF, dans votre bibliothèque Paperlines."
+  },
+  "actionTitle": {
+    "message": "Enregistrer dans Paperlines"
+  },
+  "reading": {
+    "message": "Recherche d’un article sur cette page…"
+  },
+  "untitled": {
+    "message": "(sans titre)"
+  },
+  "alreadyIn": {
+    "message": "Déjà dans votre bibliothèque : @$1"
+  },
+  "noIds": {
+    "message": "Pas de DOI, d’ID arXiv ni PubMed sur cette page : l’article sera enregistré à partir des informations de la page."
+  },
+  "includePdf": {
+    "message": "Inclure le PDF"
+  },
+  "save": {
+    "message": "Enregistrer dans Paperlines"
+  },
+  "addPdf": {
+    "message": "Lui ajouter le PDF"
+  },
+  "fetchingPdf": {
+    "message": "Téléchargement du PDF…"
+  },
+  "saving": {
+    "message": "Enregistrement…"
+  },
+  "saved": {
+    "message": "Enregistré : @$1"
+  },
+  "savedWithPdf": {
+    "message": "Enregistré avec son PDF : @$1"
+  },
+  "pdfAdded": {
+    "message": "PDF ajouté à @$1"
+  },
+  "pdfUnavailable": {
+    "message": "Le PDF n’a pas pu être téléchargé (une connexion est peut-être nécessaire) ; l’article a été enregistré sans lui."
+  },
+  "notConnected": {
+    "message": "Ce navigateur n’est pas encore connecté à Paperlines."
+  },
+  "setupOpen": {
+    "message": "Ouvrez Paperlines, puis Paramètres ▸ Extension du navigateur."
+  },
+  "setupConnect": {
+    "message": "Cliquez sur Connecter."
+  },
+  "setupReload": {
+    "message": "Rouvrez cette fenêtre."
+  }
+}

@@ -1,0 +1,114 @@
+:root {
+  --bg: #ffffff;
+  --fg: #1f2328;
+  --muted: #646a73;
+  --border: #e5e7eb;
+  --subtle: #f6f7f9;
+  --accent: #0e7490;
+  --accent-fg: #ffffff;
+  --ok: #15803d;
+  --error: #b42318;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17191d;
+    --fg: #e6e8eb;
+    --muted: #9aa1ab;
+    --border: #2a2e35;
+    --subtle: #1f2228;
+    --accent: #22a3bd;
+    --accent-fg: #0b1214;
+    --ok: #4ade80;
+    --error: #f97066;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  width: 340px;
+  font: 13px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+}
+header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+}
+main {
+  padding: 12px 14px 14px;
+  display: grid;
+  gap: 10px;
+}
+.paper {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--subtle);
+}
+.paper .title {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.paper .meta {
+  color: var(--muted);
+  margin-top: 2px;
+  font-size: 12px;
+}
+.ids {
+  margin-top: 4px;
+  font: 11.5px ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.muted {
+  color: var(--muted);
+  margin: 0;
+}
+.status {
+  margin: 0;
+}
+.status.ok {
+  color: var(--ok);
+  font-weight: 600;
+}
+.status.error {
+  color: var(--error);
+}
+label.check {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+button {
+  width: 100%;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--accent);
+  color: var(--accent-fg);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+ol {
+  margin: 0;
+  padding-left: 18px;
+}
+code {
+  font: 11.5px ui-monospace, SFMono-Regular, Menlo, monospace;
+}

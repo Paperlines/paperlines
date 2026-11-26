@@ -1,0 +1,62 @@
+{
+  "name": {
+    "message": "Paperlines"
+  },
+  "description": {
+    "message": "Guarda el artículo que estás leyendo, y su PDF, en tu biblioteca de Paperlines."
+  },
+  "actionTitle": {
+    "message": "Guardar en Paperlines"
+  },
+  "reading": {
+    "message": "Buscando un artículo en esta página…"
+  },
+  "untitled": {
+    "message": "(sin título)"
+  },
+  "alreadyIn": {
+    "message": "Ya está en tu biblioteca como @$1"
+  },
+  "noIds": {
+    "message": "Esta página no tiene DOI, ID de arXiv ni de PubMed: se guardará con los datos de la propia página."
+  },
+  "includePdf": {
+    "message": "Incluir el PDF"
+  },
+  "save": {
+    "message": "Guardar en Paperlines"
+  },
+  "addPdf": {
+    "message": "Añadirle el PDF"
+  },
+  "fetchingPdf": {
+    "message": "Descargando el PDF…"
+  },
+  "saving": {
+    "message": "Guardando…"
+  },
+  "saved": {
+    "message": "Guardado como @$1"
+  },
+  "savedWithPdf": {
+    "message": "Guardado como @$1, con su PDF"
+  },
+  "pdfAdded": {
+    "message": "PDF añadido a @$1"
+  },
+  "pdfUnavailable": {
+    "message": "No se pudo descargar el PDF (quizá requiere iniciar sesión), así que el artículo se guardó sin él."
+  },
+  "notConnected": {
+    "message": "Este navegador aún no está conectado a Paperlines."
+  },
+  "setupOpen": {
+    "message": "Abre Paperlines y ve a Ajustes ▸ Extensión del navegador."
+  },
+  "setupConnect": {
+    "message": "Haz clic en Conectar."
+  },
+  "setupReload": {
+    "message": "Vuelve a abrir esta ventana."
+  }
+}

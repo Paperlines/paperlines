@@ -1,5 +1,10 @@
 # What's new
 
+## Unreleased
+
+- **Browser extension:** save the paper you're reading in Chrome, Edge, Brave, Arc or Vivaldi, and its PDF, with one click. It finds the DOI, arXiv or PubMed ID and the journal's details on the page, tells you when a paper is already in your library, and works even when Paperlines is closed. Set it up in Settings ▸ Browser extension.
+- A new library can no longer be set up twice at once (for example by the app and the extension on the very first launch).
+
 ## 0.1.3 (2026-11-26)
 
 - **Zoom PDFs with your trackpad:** pinch to zoom in and out, around the spot under your fingers. Ctrl/⌘ + scroll wheel and ⌘/Ctrl + `+` / `−` / `0` work too.

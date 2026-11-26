@@ -1,0 +1,62 @@
+{
+  "name": {
+    "message": "Paperlines"
+  },
+  "description": {
+    "message": "読んでいる論文とその PDF を Paperlines のライブラリに保存します。"
+  },
+  "actionTitle": {
+    "message": "Paperlines に保存"
+  },
+  "reading": {
+    "message": "このページの論文を探しています…"
+  },
+  "untitled": {
+    "message": "（タイトルが見つかりません）"
+  },
+  "alreadyIn": {
+    "message": "すでにライブラリにあります：@$1"
+  },
+  "noIds": {
+    "message": "このページには DOI、arXiv ID、PubMed ID がありません。ページの情報から保存します。"
+  },
+  "includePdf": {
+    "message": "PDF も保存"
+  },
+  "save": {
+    "message": "Paperlines に保存"
+  },
+  "addPdf": {
+    "message": "PDF を追加"
+  },
+  "fetchingPdf": {
+    "message": "PDF をダウンロードしています…"
+  },
+  "saving": {
+    "message": "保存しています…"
+  },
+  "saved": {
+    "message": "@$1 として保存しました"
+  },
+  "savedWithPdf": {
+    "message": "@$1 として PDF と一緒に保存しました"
+  },
+  "pdfAdded": {
+    "message": "@$1 に PDF を追加しました"
+  },
+  "pdfUnavailable": {
+    "message": "PDF をダウンロードできなかったため（ログインが必要かもしれません）、PDF なしで保存しました。"
+  },
+  "notConnected": {
+    "message": "このブラウザはまだ Paperlines に接続されていません。"
+  },
+  "setupOpen": {
+    "message": "Paperlines を開き、設定 ▸ ブラウザ拡張機能 に移動します。"
+  },
+  "setupConnect": {
+    "message": "「接続」をクリックします。"
+  },
+  "setupReload": {
+    "message": "このウィンドウをもう一度開きます。"
+  }
+}

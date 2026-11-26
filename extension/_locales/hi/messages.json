@@ -1,0 +1,62 @@
+{
+  "name": {
+    "message": "Paperlines"
+  },
+  "description": {
+    "message": "जो पेपर आप पढ़ रहे हैं, उसे उसकी PDF के साथ अपनी Paperlines लाइब्रेरी में सहेजें।"
+  },
+  "actionTitle": {
+    "message": "Paperlines में सहेजें"
+  },
+  "reading": {
+    "message": "इस पेज पर पेपर खोजा जा रहा है…"
+  },
+  "untitled": {
+    "message": "(कोई शीर्षक नहीं मिला)"
+  },
+  "alreadyIn": {
+    "message": "पहले से आपकी लाइब्रेरी में है: @$1"
+  },
+  "noIds": {
+    "message": "इस पेज पर कोई DOI, arXiv ID या PubMed ID नहीं है: इसे पेज की जानकारी से सहेजा जाएगा।"
+  },
+  "includePdf": {
+    "message": "PDF भी शामिल करें"
+  },
+  "save": {
+    "message": "Paperlines में सहेजें"
+  },
+  "addPdf": {
+    "message": "इसमें PDF जोड़ें"
+  },
+  "fetchingPdf": {
+    "message": "PDF डाउनलोड हो रही है…"
+  },
+  "saving": {
+    "message": "सहेजा जा रहा है…"
+  },
+  "saved": {
+    "message": "@$1 के रूप में सहेजा गया"
+  },
+  "savedWithPdf": {
+    "message": "@$1 के रूप में PDF के साथ सहेजा गया"
+  },
+  "pdfAdded": {
+    "message": "@$1 में PDF जोड़ी गई"
+  },
+  "pdfUnavailable": {
+    "message": "PDF डाउनलोड नहीं हो सकी (शायद लॉगिन ज़रूरी है), इसलिए पेपर बिना PDF के सहेजा गया।"
+  },
+  "notConnected": {
+    "message": "यह ब्राउज़र अभी Paperlines से जुड़ा नहीं है।"
+  },
+  "setupOpen": {
+    "message": "Paperlines खोलें और सेटिंग्स ▸ ब्राउज़र एक्सटेंशन पर जाएँ।"
+  },
+  "setupConnect": {
+    "message": "कनेक्ट करें पर क्लिक करें।"
+  },
+  "setupReload": {
+    "message": "यह विंडो फिर से खोलें।"
+  }
+}

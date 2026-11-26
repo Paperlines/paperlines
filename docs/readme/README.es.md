@@ -88,6 +88,8 @@ La lectura de investigación ocurre en tres sitios a la vez: un gestor de refere
 
 Todos los archivos están en la [página de versiones](https://github.com/Paperlines/paperlines/releases/latest). Los paquetes de Linux necesitan glibc 2.35 o posterior (Ubuntu 22.04, Debian 12, Fedora 36 y posteriores).
 
+**Extensión del navegador (Chrome, Edge, Brave, Arc, Vivaldi):** guarda el artículo que estás leyendo, y su PDF, con un clic. Descarga [paperlines-browser-extension.zip](https://github.com/Paperlines/paperlines/releases/latest/download/paperlines-browser-extension.zip) y sigue **Ajustes → Extensión del navegador** en la aplicación.
+
 ### Actualizaciones, desde la propia app
 
 <p align="center">

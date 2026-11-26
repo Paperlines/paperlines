@@ -56,6 +56,15 @@ The in-app updater can be tried in the browser build with `/?update` (the fake b
 - Commit `flake.lock` (created by the first `nix build`); `nix flake update` moves nixpkgs forward.
 - The package names the desktop entry `<identifier>.desktop`, matching the Wayland app ID that `app.enableGTKAppId` sets, so docks pick up the icon.
 
+## Browser extension
+
+`extension/` is a Manifest V3 extension for Chrome-family browsers. Its fixed ID (`branding.json` `browserExtensionIds`) comes from the public `key` in its manifest; a Chrome Web Store ID can be added to that list later.
+
+- The popup (`popup.js`) reads the page with `extract.js` (`citation_*` meta tags, Dublin Core, DOI/arXiv/PubMed URLs; tested in `extract.test.ts`), fetches the PDF with the user's own session when asked, and talks to Paperlines only through **native messaging**: the browser starts the `paperlines` binary with the extension's origin as its argument, and `ops::browser` answers `ping`, `lookup` and `save` messages over stdin/stdout. No port is opened, and the library is written directly, so it works with the app closed.
+- Settings ▸ Browser extension (or `paperlines browser --connect`) writes the host manifest into each installed browser's `NativeMessagingHosts` folder (macOS, Linux) or the registry (Windows), pointing at the CLI (`platform::mcp_command()`); reconnect after moving the app.
+- Releases attach `paperlines-browser-extension.zip` (same name every time). To try it: unzip, `chrome://extensions` → Developer mode → Load unpacked.
+- `CHROME_EXTENSION_TEST=1 pnpm test:e2e extension` runs the extension in real Chrome for Testing against the debug CLI and a temporary library (`pnpm exec playwright install chromium` and `cargo build -p paperlines-cli` first).
+
 ## nixpkgs
 
 Paperlines is packaged in NixOS/nixpkgs as `pkgs/by-name/pa/paperlines/package.nix` (maintainer: `yoav-yosifor`). The same file is kept here as `nix/nixpkgs/package.nix`.
