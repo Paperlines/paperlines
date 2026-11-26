@@ -44,6 +44,9 @@ jobs:
             [DllImport("user32.dll")] public static extern IntPtr GetMenu(IntPtr h);
             [DllImport("user32.dll")] public static extern int GetWindowLong(IntPtr h, int i);
             [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr h);
+            [StructLayout(LayoutKind.Sequential)] public struct RECT { public int L, T, R, B; }
+            [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr h, out RECT r);
+            [DllImport("user32.dll")] public static extern bool GetClientRect(IntPtr h, out RECT r);
           }
           "@
           function Shot($name) {
@@ -70,11 +73,18 @@ jobs:
           "window title: $($p.MainWindowTitle)"
           Start-Sleep -Seconds 10
           [W]::SetForegroundWindow($hwnd) | Out-Null
-          $style = [W]::GetWindowLong($hwnd, -16)
+          # a frameless window can keep the WS_CAPTION style (for snapping and animations) and still
+          # draw no title bar, so measure: a system title bar makes the window taller than its page
+          $win = New-Object W+RECT; $cli = New-Object W+RECT
+          [W]::GetWindowRect($hwnd, [ref]$win) | Out-Null
+          [W]::GetClientRect($hwnd, [ref]$cli) | Out-Null
+          $frame = ($win.B - $win.T) - ($cli.B - $cli.T)
           $menu = [W]::GetMenu($hwnd) -ne [IntPtr]::Zero
-          $caption = ($style -band 0x00C00000) -eq 0x00C00000
+          $caption = $frame -gt 16
+          "window:    $($win.R - $win.L) x $($win.B - $win.T) at ($($win.L), $($win.T))"
+          "page:      $($cli.R - $cli.L) x $($cli.B - $cli.T)"
           "menu bar:  $menu"
-          "title bar: $caption"
+          "title bar: $caption (frame $frame px)"
           Shot "paperlines-windows"
           Stop-Process -Id $p.Id -Force
           if ($menu -or $caption) {
