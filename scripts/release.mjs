@@ -59,7 +59,14 @@ function apply(version, notesFile) {
     ];
     for (const t of tomls) write(t, bumpCargoToml(read(t), from, version));
     write("Cargo.lock", bumpCargoLock(read("Cargo.lock"), b.cratePrefix, from, version));
-    write("README.md", bumpReadme(read("README.md"), from, version));
+    // the README and its translations (docs/readme/) link to this version's downloads
+    const readmes = [
+      "README.md",
+      ...readdirSync(join(root, "docs", "readme"))
+        .filter((f) => f.endsWith(".md"))
+        .map((f) => `docs/readme/${f}`),
+    ];
+    for (const r of readmes) write(r, bumpReadme(read(r), from, version));
     run("node", ["scripts/gen-branding.mjs"], { stdio: "inherit" });
   }
   write("docs/CHANGELOG.md", text);

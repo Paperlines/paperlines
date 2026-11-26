@@ -24,10 +24,7 @@ use paperlines_search::SearchResult;
 use serde::Serialize;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex, MutexGuard};
-use tauri::{Emitter, WindowEvent};
-// window lookups happen only in the macOS and Linux code paths
-#[cfg(any(target_os = "macos", target_os = "linux"))]
-use tauri::Manager;
+use tauri::{Emitter, Manager, WindowEvent};
 
 struct AppState {
     db: Arc<Mutex<Db>>,
@@ -423,13 +420,17 @@ pub fn run() {
                 apply(linux::color_scheme());
                 linux::watch_color_scheme(apply);
             }
+            if let Some(w) = app.get_webview_window("main") {
+                platform::fit_to_screen(&w);
+            }
             maintenance::start_daily_backups(app.handle());
             library::start_background(app.handle());
             Ok(())
         });
-    // Windows: no menu bar. Everything in it has a shortcut or a button in the app, and the window
-    // has no system frame there (tauri.windows.conf.json): the top bar draws the window buttons
-    #[cfg(not(target_os = "windows"))]
+    // only macOS gets a menu (its menu bar is part of the system). Windows and Linux have none:
+    // everything in it has a shortcut or a button in the app, and on Windows the window has no
+    // system frame either (tauri.windows.conf.json), so the top bar draws the window buttons
+    #[cfg(target_os = "macos")]
     let builder = builder.menu(platform::build_menu);
     let app = builder
         .on_menu_event(|app, ev| {

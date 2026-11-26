@@ -17,6 +17,8 @@ A free, open-source reference manager for macOS, Windows and Linux: a library li
 
 Free · Open source · No account · No cloud · No telemetry
 
+**English** · [Español](docs/readme/README.es.md) · [Français](docs/readme/README.fr.md) · [Deutsch](docs/readme/README.de.md) · [简体中文](docs/readme/README.zh.md) · [日本語](docs/readme/README.ja.md) · [हिन्दी](docs/readme/README.hi.md)
+
 </div>
 
 <p align="center">
@@ -121,7 +123,7 @@ This installs the app with its desktop entry and icon, and the `paperlines` comm
 - Light/dark follows the desktop setting (read from the XDG desktop portal, which COSMIC, GNOME and KDE use), including switching while the app is open. The **System** theme in Settings means this.
 - The window has a proper app ID, so the dock shows the right icon and groups the window with its launcher.
 - On NVIDIA's driver under Wayland, WebKitGTK's DMA-BUF renderer is turned off automatically (it shows a blank window there). Set `WEBKIT_DISABLE_DMABUF_RENDERER=0` to keep it on.
-- File dialogs are GTK's; the title bar is drawn by GTK too.
+- File dialogs are GTK's. The window has no system title bar or menu bar: Paperlines' own top bar has the window buttons, and you drag it to move the window.
 
 </details>
 

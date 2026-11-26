@@ -1,13 +1,14 @@
 //! Desktop-shell behavior that differs per OS. Shared crates never branch on the OS.
-#[cfg(not(target_os = "windows"))]
+#[cfg(target_os = "macos")]
 use tauri::menu::{Menu, MenuItem, PredefinedMenuItem, Submenu};
-#[cfg(not(target_os = "windows"))]
+#[cfg(target_os = "macos")]
 use tauri::{AppHandle, Runtime};
 
 pub const SETTINGS_MENU_ID: &str = "settings";
 
-/// The app menu (macOS) or window menu (Linux). Windows has none: see `run` in lib.rs.
-#[cfg(not(target_os = "windows"))]
+/// The macOS app menu. Windows and Linux have no menu bar: everything in it has a shortcut or a
+/// button in the app (see `run` in lib.rs).
+#[cfg(target_os = "macos")]
 pub fn build_menu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Menu<R>> {
     let name = paperlines_core::branding::DISPLAY_NAME;
     let settings = MenuItem::with_id(app, SETTINGS_MENU_ID, "Settings…", true, Some("CmdOrCtrl+,"))?;
@@ -35,38 +36,24 @@ pub fn build_menu<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Menu<R>> {
             &PredefinedMenuItem::close_window(app, None)?,
         ],
     )?;
-    if cfg!(target_os = "macos") {
-        let app_menu = Submenu::with_items(
-            app,
-            name,
-            true,
-            &[
-                &PredefinedMenuItem::about(app, Some(&format!("About {name}")), None)?,
-                &PredefinedMenuItem::separator(app)?,
-                &settings,
-                &PredefinedMenuItem::separator(app)?,
-                &PredefinedMenuItem::services(app, None)?,
-                &PredefinedMenuItem::separator(app)?,
-                &PredefinedMenuItem::hide(app, None)?,
-                &PredefinedMenuItem::hide_others(app, None)?,
-                &PredefinedMenuItem::separator(app)?,
-                &PredefinedMenuItem::quit(app, None)?,
-            ],
-        )?;
-        Menu::with_items(app, &[&app_menu, &edit, &view, &window])
-    } else {
-        let file = Submenu::with_items(
-            app,
-            "File",
-            true,
-            &[
-                &settings,
-                &PredefinedMenuItem::separator(app)?,
-                &PredefinedMenuItem::quit(app, None)?,
-            ],
-        )?;
-        Menu::with_items(app, &[&file, &edit, &view, &window])
-    }
+    let app_menu = Submenu::with_items(
+        app,
+        name,
+        true,
+        &[
+            &PredefinedMenuItem::about(app, Some(&format!("About {name}")), None)?,
+            &PredefinedMenuItem::separator(app)?,
+            &settings,
+            &PredefinedMenuItem::separator(app)?,
+            &PredefinedMenuItem::services(app, None)?,
+            &PredefinedMenuItem::separator(app)?,
+            &PredefinedMenuItem::hide(app, None)?,
+            &PredefinedMenuItem::hide_others(app, None)?,
+            &PredefinedMenuItem::separator(app)?,
+            &PredefinedMenuItem::quit(app, None)?,
+        ],
+    )?;
+    Menu::with_items(app, &[&app_menu, &edit, &view, &window])
 }
 
 /// macOS convention: closing the last window hides it; the app keeps running until Cmd+Q.
@@ -197,5 +184,42 @@ pub fn mcp_command() -> Result<std::path::PathBuf, String> {
             "The command-line tool was not found next to the app ({})",
             src.display()
         ))
+    }
+}
+
+/// The window's size so it fits the screen's usable area (without the taskbar or dock): unchanged
+/// when it already fits, otherwise at most 95% of the area each way. None when nothing changes.
+pub fn fit_size(window: (u32, u32), area: (u32, u32)) -> Option<(u32, u32)> {
+    if window.0 <= area.0 && window.1 <= area.1 {
+        return None;
+    }
+    Some((window.0.min(area.0 * 95 / 100), window.1.min(area.1 * 95 / 100)))
+}
+
+/// Shrinks and centers the main window when its default size (1360×860) is bigger than the screen,
+/// e.g. on a 1366×768 laptop, so its top bar and buttons are never off-screen.
+pub fn fit_to_screen<R: tauri::Runtime>(w: &tauri::WebviewWindow<R>) {
+    let (Ok(Some(monitor)), Ok(size)) = (w.current_monitor(), w.outer_size()) else {
+        return;
+    };
+    let area = monitor.work_area().size;
+    if let Some((width, height)) = fit_size((size.width, size.height), (area.width, area.height)) {
+        let _ = w.set_size(tauri::PhysicalSize::new(width, height));
+        let _ = w.center();
+    }
+}
+
+#[cfg(test)]
+mod fit_tests {
+    use super::fit_size;
+
+    #[test]
+    fn fits_the_window_to_the_screen() {
+        // already fits: untouched
+        assert_eq!(fit_size((1360, 860), (2560, 1400)), None);
+        // a 1366×768 laptop (taskbar leaves ~720): only the height shrinks
+        assert_eq!(fit_size((1360, 860), (1366, 720)), Some((1297, 684)));
+        // a small screen: both
+        assert_eq!(fit_size((1360, 860), (1024, 728)), Some((972, 691)));
     }
 }

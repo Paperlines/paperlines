@@ -1018,7 +1018,7 @@ test("a new version: offered when the app opens, with its changes and who made i
   await expect(dlg.getByRole("button", { name: "Later" })).toBeDisabled();
 });
 
-test("Windows: no system frame; the top bar has the window buttons", async ({ page }) => {
+test("Windows and Linux: no system frame; the top bar has the window buttons", async ({ page }) => {
   await page.goto("/?windows");
   const controls = page.getByRole("group", { name: "Window" });
   await expect(controls.getByRole("button")).toHaveCount(3);
@@ -1034,7 +1034,9 @@ test("Windows: no system frame; the top bar has the window buttons", async ({ pa
   const box = await controls.boundingBox();
   expect(Math.round((box?.x ?? 0) + (box?.width ?? 0))).toBe(page.viewportSize()?.width);
   await expect(page.locator("header.topbar[data-tauri-drag-region]")).toBeVisible();
-  // and nowhere else
-  await page.goto("/");
-  await expect(page.getByRole("group", { name: "Window" })).toHaveCount(0);
+  // macOS keeps its own window buttons (the browser build reports the system it runs on)
+  if (process.platform === "darwin") {
+    await page.goto("/");
+    await expect(page.getByRole("group", { name: "Window" })).toHaveCount(0);
+  }
 });

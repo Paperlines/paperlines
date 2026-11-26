@@ -59,7 +59,7 @@ The in-app updater can be tried in the browser build with `/?update` (the fake b
 ## Linux desktop integration
 
 `src-tauri/src/linux.rs`:
-- Reads `org.freedesktop.appearance color-scheme` from the XDG desktop portal and watches `SettingChanged`. GTK3 and WebKitGTK never read it, so on COSMIC and GNOME `prefers-color-scheme` would otherwise stay light. The UI gets it from `system_color_scheme` and the `system-theme` event, and the GTK title bar is themed to match.
+- Reads `org.freedesktop.appearance color-scheme` from the XDG desktop portal and watches `SettingChanged`. GTK3 and WebKitGTK never read it, so on COSMIC and GNOME `prefers-color-scheme` would otherwise stay light. The UI gets it from `system_color_scheme` and the `system-theme` event, and the window theme follows it (the window has no system frame: `tauri.linux.conf.json`).
 - Sets `WEBKIT_DISABLE_DMABUF_RENDERER=1` on NVIDIA + Wayland, unless the user set it.
 - `packaged()`: when the app runs from `/nix/store` or `/usr`, "Install command-line tool" reports the packaged CLI instead of linking a store path into `~/.local/bin`.
 

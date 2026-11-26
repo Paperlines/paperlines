@@ -23,7 +23,7 @@ import { backend } from "../../backend";
 import { Dialog } from "../../components/Dialog";
 import { InfoTip } from "../../components/InfoTip";
 import { SparkIcon } from "../../components/SparkIcon";
-import { t } from "../../i18n";
+import { LANGUAGES, type Language, languageSetting, setLanguage, t } from "../../i18n";
 import { useDialogs } from "../../store/dialogs";
 import { useUi } from "../../store/ui";
 import { AboutSettings } from "./AboutSettings";
@@ -311,6 +311,21 @@ export function SettingsDialog({ settings, info, onChange, onClose }: Props) {
         <div className="settings-body stack">
           {section === "general" && (
             <>
+              <Field label={t("settings.language")} help={t("help.language")}>
+                <select
+                  className="select"
+                  aria-label={t("settings.language")}
+                  defaultValue={languageSetting()}
+                  onChange={(e) => setLanguage(e.target.value as Language | "system")}
+                >
+                  <option value="system">{t("settings.languageSystem")}</option>
+                  {LANGUAGES.map((l) => (
+                    <option key={l.id} value={l.id} lang={l.id}>
+                      {l.name}
+                    </option>
+                  ))}
+                </select>
+              </Field>
               <Toggle
                 label={t("settings.offline")}
                 hint={t("settings.offlineHint")}

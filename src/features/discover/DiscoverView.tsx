@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { create } from "zustand";
 import { backend } from "../../backend";
 import { InfoTip } from "../../components/InfoTip";
-import { t } from "../../i18n";
+import { numberFormat, t } from "../../i18n";
 import { useDialogs } from "../../store/dialogs";
 import { useLibrary } from "../../store/library";
 import { usePanes } from "../../store/panes";
@@ -31,7 +31,7 @@ export const SOURCE_NAME: Record<SearchSource, string> = {
   doaj: "DOAJ",
 };
 type Sort = "relevance" | "cited" | "newest";
-const num = new Intl.NumberFormat("en");
+const num = numberFormat;
 
 /** The last search survives switching views. */
 const useDiscover = create<{

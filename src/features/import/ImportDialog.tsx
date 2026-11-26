@@ -405,7 +405,7 @@ export function ImportDialog({ start, offline, onClose }: Props) {
                 </div>
                 <select
                   className="select"
-                  aria-label="Action"
+                  aria-label={t("import.actionLabel")}
                   value={actions[i]}
                   onChange={(e) =>
                     setActions(

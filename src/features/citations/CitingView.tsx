@@ -3,7 +3,7 @@ import { ChevronRight, ExternalLink, FileText, Plus, RefreshCw } from "lucide-re
 import { useEffect, useMemo, useState } from "react";
 import { backend } from "../../backend";
 import { InfoTip } from "../../components/InfoTip";
-import { t } from "../../i18n";
+import { numberFormat, t } from "../../i18n";
 import { useDialogs } from "../../store/dialogs";
 import { useLibrary } from "../../store/library";
 import { usePanes } from "../../store/panes";
@@ -12,7 +12,7 @@ import { useUi } from "../../store/ui";
 
 type Sort = "cited" | "newest" | "connected";
 const PAGE = 100;
-const num = new Intl.NumberFormat("en");
+const num = numberFormat;
 
 /** What to look a citing paper up by when adding it: a DOI, else an arXiv ID. */
 const identifier = (r: CitingRow) => r.doi ?? r.arxivId ?? null;

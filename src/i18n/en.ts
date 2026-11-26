@@ -1106,6 +1106,11 @@ export const en = {
   "update.downloadingSize": "Downloading… {mb} MB",
   "update.installing": "Installing, then {name} restarts…",
   "update.failed": "The update couldn't be installed: {error}",
+  "settings.language": "Language",
+  "settings.languageSystem": "Same as the computer",
+  "help.language":
+    "The language of the app's menus, buttons and messages. Your papers and notes stay as they are. Some messages from the library itself (errors, check results) stay in English.",
+  "import.actionLabel": "Action",
   "window.controls": "Window",
   "window.minimize": "Minimize",
   "window.maximize": "Maximize or restore",

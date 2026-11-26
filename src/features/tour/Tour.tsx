@@ -18,18 +18,19 @@ export const STEPS: Step[] = [
   { target: ".pane-first", title: "tour.list.title", text: "tour.list.text" },
   { target: ".topbar .segmented.icons", title: "tour.layout.title", text: "tour.layout.text" },
   {
-    target: '.topbar [aria-label="Show citation graph"]',
+    // data-tour markers, not labels: labels change with the language
+    target: '.topbar [data-tour="graph"]',
     title: "tour.graph.title",
     text: "tour.graph.text",
   },
   { target: ".topbar .agent-toggle", title: "tour.assistant.title", text: "tour.assistant.text" },
   {
-    target: '.topbar [aria-label="Command palette"]',
+    target: '.topbar [data-tour="palette"]',
     title: "tour.palette.title",
     text: "tour.palette.text",
   },
   {
-    target: '.topbar [aria-label="Settings"]',
+    target: '.topbar [data-tour="settings"]',
     title: "tour.settings.title",
     text: "tour.settings.text",
   },

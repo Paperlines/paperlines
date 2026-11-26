@@ -32,7 +32,7 @@ Read [docs/architecture.md](../docs/architecture.md) before larger changes. It e
    4. `src/tauri.ts` and `src/fake-backend.ts`;
    5. the CLI or MCP server, when that's useful;
    6. an end-to-end test in `e2e/`.
-3. Keep explanations next to the setting in the UI (the ⓘ buttons, `components/InfoTip.tsx`), and user-facing text in `src/i18n/en.ts`.
+3. Keep explanations next to the setting in the UI (the ⓘ buttons, `components/InfoTip.tsx`), and user-facing text in `src/i18n/en.ts`. The app is also translated into Spanish, French, German, Simplified Chinese, Japanese and Hindi (`src/i18n/<lang>.ts`): a new or changed English string needs those too, and `src/i18n/i18n.test.ts` fails until every language has it with the same `{placeholders}`. A careful machine translation is fine; a native speaker can improve it later. The READMEs in `docs/readme/` are translations of `README.md`; update them when you change it.
 4. Add a line about your change to the `## Unreleased` section at the top of [`docs/CHANGELOG.md`](../docs/CHANGELOG.md), written for users. Create the section if it isn't there. These lines become the release notes and the "What's new" text in the update dialog.
 
 ### Rules worth knowing

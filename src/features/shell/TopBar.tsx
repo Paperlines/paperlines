@@ -210,6 +210,7 @@ export function TopBar() {
           className="icon-btn"
           title={t("cmd.graph")}
           aria-label={t("cmd.graph")}
+          data-tour="graph"
           onClick={() => usePanes.getState().openGraph()}
         >
           <Waypoints size={16} aria-hidden="true" />
@@ -231,6 +232,7 @@ export function TopBar() {
           className="icon-btn"
           title={t("cmd.palette") + hint("palette")}
           aria-label={t("cmd.palette")}
+          data-tour="palette"
           onClick={() => show("palette")}
         >
           <SquareSlash size={16} aria-hidden="true" />
@@ -253,6 +255,7 @@ export function TopBar() {
           className="icon-btn"
           title={t("settings.title") + hint("settings")}
           aria-label={t("settings.title")}
+          data-tour="settings"
           onClick={() => show("settings")}
         >
           <Cog size={16} aria-hidden="true" />
