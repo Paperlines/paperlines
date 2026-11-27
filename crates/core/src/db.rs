@@ -1,4 +1,4 @@
-use crate::Result;
+use crate::{Error, Result};
 use rusqlite::{Connection, TransactionBehavior};
 use std::path::Path;
 
@@ -28,7 +28,26 @@ impl Db {
     /// Opens a library database. If an existing database needs migrating, it is first
     /// copied to `backups/pre-migration-v<old>-<unix time>.sqlite`.
     pub fn open_with_backup(path: &Path, backups: Option<&Path>) -> Result<Db> {
+        // SQLite sometimes reports "busy" at once instead of waiting (switching a brand-new file
+        // to WAL while another process does the same), so retry the whole open for a while.
+        let deadline = std::time::Instant::now() + std::time::Duration::from_secs(10);
+        loop {
+            match Self::try_open(path, backups) {
+                Err(Error::Db(rusqlite::Error::SqliteFailure(e, _)))
+                    if e.code == rusqlite::ErrorCode::DatabaseBusy && std::time::Instant::now() < deadline =>
+                {
+                    std::thread::sleep(std::time::Duration::from_millis(20));
+                }
+                other => return other,
+            }
+        }
+    }
+
+    fn try_open(path: &Path, backups: Option<&Path>) -> Result<Db> {
         let conn = Connection::open(path)?;
+        // Wait for other processes before the first statement: switching a new file to WAL
+        // needs a lock too, and without a timeout a concurrent open fails at once.
+        conn.busy_timeout(std::time::Duration::from_secs(5))?;
         conn.pragma_update(None, "journal_mode", "WAL")?;
         let db = Self::configure(conn)?;
         let current = db.schema_version()?;
