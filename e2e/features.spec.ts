@@ -1074,7 +1074,9 @@ test("settings: connect Paperlines to the browsers for the extension", async ({ 
   await expect(step1.getByRole("button", { name: "Connect again" })).toBeVisible();
   // how to add the extension until it's in the Chrome Web Store
   const step2 = dlg.getByRole("region", { name: "2. Add the extension to the browser" });
+  await expect(step2.getByRole("button", { name: "Add to Chrome" })).toBeVisible();
+  // the zip stays for browsers without the store
+  await expect(step2.getByRole("button", { name: "Download the .zip instead" })).toBeVisible();
   await expect(step2).toContainText("Load unpacked");
-  await expect(step2.getByRole("button", { name: "Download the extension" })).toBeVisible();
   if (shots) await dlg.screenshot({ path: `${shots}/x-browser.png` });
 });

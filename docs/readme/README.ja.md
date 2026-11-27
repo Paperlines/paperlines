@@ -88,7 +88,7 @@ macOS、Windows、Linux 向けの無料・オープンソースの文献管理�
 
 すべてのファイルは[リリースページ](https://github.com/Paperlines/paperlines/releases/latest)にあります。Linux パッケージには glibc 2.35 以降が必要です（Ubuntu 22.04、Debian 12、Fedora 36 以降）。
 
-**ブラウザ拡張機能（Chrome、Edge、Brave、Arc、Vivaldi）：**読んでいる論文とその PDF をワンクリックで保存できます。[paperlines-browser-extension.zip](https://github.com/Paperlines/paperlines/releases/latest/download/paperlines-browser-extension.zip) をダウンロードし、アプリの **設定 → ブラウザ拡張機能** の手順に従ってください。
+**ブラウザ拡張機能（Chrome、Edge、Brave、Arc、Vivaldi）：**読んでいる論文とその PDF をワンクリックで保存できます。[Chrome ウェブストアから追加](https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf)し、アプリの **設定 → ブラウザ拡張機能** で **接続** をクリックしてください。ストアのないブラウザ向けに [.zip](https://github.com/Paperlines/paperlines/releases/latest/download/paperlines-browser-extension.zip) もあります。
 
 ### アプリ内からのアップデート
 

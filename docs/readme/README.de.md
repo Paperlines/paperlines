@@ -88,7 +88,7 @@ Wissenschaftliches Lesen findet an drei Orten gleichzeitig statt: in einer Liter
 
 Alle Dateien finden Sie auf der [Releases-Seite](https://github.com/Paperlines/paperlines/releases/latest). Linux-Pakete brauchen glibc 2.35 oder neuer (Ubuntu 22.04, Debian 12, Fedora 36 und neuer).
 
-**Browsererweiterung (Chrome, Edge, Brave, Arc, Vivaldi):** Speichern Sie das Paper, das Sie gerade lesen, samt PDF mit einem Klick. Laden Sie [paperlines-browser-extension.zip](https://github.com/Paperlines/paperlines/releases/latest/download/paperlines-browser-extension.zip) herunter und folgen Sie in der App **Einstellungen → Browsererweiterung**.
+**Browsererweiterung (Chrome, Edge, Brave, Arc, Vivaldi):** Speichern Sie das Paper, das Sie gerade lesen, samt PDF mit einem Klick. [Fügen Sie sie aus dem Chrome Web Store hinzu](https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf) und klicken Sie in der App unter **Einstellungen → Browsererweiterung** auf **Verbinden**. Für Browser ohne Store gibt es auch eine [.zip](https://github.com/Paperlines/paperlines/releases/latest/download/paperlines-browser-extension.zip).
 
 ### Updates, direkt in der App
 

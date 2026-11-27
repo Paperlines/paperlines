@@ -1117,8 +1117,11 @@ export const hi: Catalog = {
     "इस कंप्यूटर पर Chrome, Edge, Brave, Arc, Vivaldi या Chromium नहीं मिला। इनमें से कोई एक इंस्टॉल करें और उसे एक बार खोलें।",
   "browser.step2": "2. ब्राउज़र में एक्सटेंशन जोड़ें",
   "browser.install":
-    "जब तक यह Chrome Web Store पर नहीं आता: एक्सटेंशन डाउनलोड करके अनज़िप करें, ब्राउज़र का एक्सटेंशन पेज खोलें, डेवलपर मोड चालू करें और अनज़िप किए गए फ़ोल्डर के साथ “Load unpacked” चुनें।",
-  "browser.download": "एक्सटेंशन डाउनलोड करें",
+    "Chrome Web Store से Paperlines इंस्टॉल करें। यह Chrome, Edge, Brave, Arc और Vivaldi में काम करता है।",
+  "browser.download": "इसके बजाय .zip डाउनलोड करें",
   "help.browser":
     "एक्सटेंशन आपके ब्राउज़र से Paperlines का कमांड-लाइन टूल शुरू करवाता है, जो पेपर को आपकी लाइब्रेरी में जोड़ता है, भले ही Paperlines खुला न हो। आपके कंप्यूटर पर कोई सर्वर नहीं चलता और कुछ भी कहीं और नहीं भेजा जाता। ऐप को कहीं और ले जाने पर फिर से कनेक्ट करें।",
+  "browser.addToChrome": "Chrome में जोड़ें",
+  "browser.zipHint":
+    "Chrome Web Store के बिना: इसे अनज़िप करें, ब्राउज़र का एक्सटेंशन पेज खोलें, डेवलपर मोड चालू करें और “Load unpacked” चुनें।",
 };

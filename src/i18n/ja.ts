@@ -1109,8 +1109,11 @@ export const ja: Catalog = {
     "このコンピュータに Chrome、Edge、Brave、Arc、Vivaldi、Chromium が見つかりません。いずれかをインストールして一度開いてください。",
   "browser.step2": "2. ブラウザに拡張機能を追加",
   "browser.install":
-    "Chrome ウェブストアに公開されるまでは：拡張機能をダウンロードして展開し、ブラウザの拡張機能ページを開いてデベロッパーモードをオンにし、「パッケージ化されていない拡張機能を読み込む」で展開したフォルダを選びます。",
-  "browser.download": "拡張機能をダウンロード",
+    "Chrome ウェブストアから Paperlines をインストールしてください。Chrome、Edge、Brave、Arc、Vivaldi で使えます。",
+  "browser.download": ".zip をダウンロード",
   "help.browser":
     "拡張機能はブラウザに Paperlines のコマンドラインツールを起動させ、そのツールが論文をライブラリに追加します。Paperlines を開いていなくても動作します。コンピュータ上でサーバーは動かず、どこにも何も送信されません。アプリを移動した場合は再接続してください。",
+  "browser.addToChrome": "Chrome に追加",
+  "browser.zipHint":
+    "Chrome ウェブストアを使わない場合：展開してブラウザの拡張機能ページを開き、デベロッパーモードをオンにして「パッケージ化されていない拡張機能を読み込む」を選びます。",
 };

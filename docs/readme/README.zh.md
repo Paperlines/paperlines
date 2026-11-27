@@ -88,7 +88,7 @@
 
 所有文件都在 [Releases 页面](https://github.com/Paperlines/paperlines/releases/latest)。Linux 安装包需要 glibc 2.35 或更新版本（Ubuntu 22.04、Debian 12、Fedora 36 及更新版本）。
 
-**浏览器扩展（Chrome、Edge、Brave、Arc、Vivaldi）：**一键保存正在阅读的论文及其 PDF。下载 [paperlines-browser-extension.zip](https://github.com/Paperlines/paperlines/releases/latest/download/paperlines-browser-extension.zip)，然后按应用中 **设置 → 浏览器扩展** 的说明操作。
+**浏览器扩展（Chrome、Edge、Brave、Arc、Vivaldi）：**一键保存正在阅读的论文及其 PDF。[从 Chrome 网上应用店添加](https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf)，然后在应用的 **设置 → 浏览器扩展** 中点击 **连接**。没有应用店的浏览器也可以使用 [.zip](https://github.com/Paperlines/paperlines/releases/latest/download/paperlines-browser-extension.zip)。
 
 ### 在应用内更新
 

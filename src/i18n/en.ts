@@ -1127,10 +1127,13 @@ export const en = {
     "No Chrome, Edge, Brave, Arc, Vivaldi or Chromium found on this computer. Install one and open it once.",
   "browser.step2": "2. Add the extension to the browser",
   "browser.install":
-    "Until it's in the Chrome Web Store: download the extension and unzip it, open your browser's Extensions page, turn on Developer mode, and choose Load unpacked with the unzipped folder.",
-  "browser.download": "Download the extension",
+    "Install Paperlines from the Chrome Web Store. It works in Chrome, Edge, Brave, Arc and Vivaldi.",
+  "browser.download": "Download the .zip instead",
   "help.browser":
     "The extension asks your browser to start Paperlines' command-line tool, which adds the paper to your library, even when Paperlines isn't open. No server runs on your computer and nothing is sent anywhere else. Connect again if you move the app.",
+  "browser.addToChrome": "Add to Chrome",
+  "browser.zipHint":
+    "Without the Chrome Web Store: unzip it, open your browser's Extensions page, turn on Developer mode and choose Load unpacked.",
 } as const;
 
 export type MessageKey = keyof typeof en;

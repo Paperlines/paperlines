@@ -1151,8 +1151,11 @@ export const fr: Catalog = {
     "Aucun navigateur Chrome, Edge, Brave, Arc, Vivaldi ou Chromium trouvé sur cet ordinateur. Installez-en un et ouvrez-le une fois.",
   "browser.step2": "2. Ajouter l’extension au navigateur",
   "browser.install":
-    "En attendant qu’elle soit sur le Chrome Web Store : téléchargez l’extension et décompressez-la, ouvrez la page Extensions du navigateur, activez le mode développeur et choisissez « Charger l’extension non empaquetée » avec le dossier décompressé.",
-  "browser.download": "Télécharger l’extension",
+    "Installez Paperlines depuis le Chrome Web Store. Il fonctionne dans Chrome, Edge, Brave, Arc et Vivaldi.",
+  "browser.download": "Télécharger le .zip",
   "help.browser":
     "L’extension demande au navigateur de lancer l’outil en ligne de commande de Paperlines, qui ajoute l’article à votre bibliothèque, même si Paperlines n’est pas ouvert. Aucun serveur ne tourne sur votre ordinateur et rien n’est envoyé ailleurs. Reconnectez si vous déplacez l’application.",
+  "browser.addToChrome": "Ajouter à Chrome",
+  "browser.zipHint":
+    "Sans le Chrome Web Store : décompressez-le, ouvrez la page Extensions du navigateur, activez le mode développeur et choisissez « Charger l’extension non empaquetée ».",
 };

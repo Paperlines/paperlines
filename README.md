@@ -84,7 +84,7 @@ Research reading happens in three places at once: a reference manager, a notes a
 
 Every file is on the [Releases page](https://github.com/Paperlines/paperlines/releases/latest). Linux packages need glibc 2.35 or newer (Ubuntu 22.04, Debian 12, Fedora 36 and later).
 
-**Browser extension (Chrome, Edge, Brave, Arc, Vivaldi):** save the paper you're reading, and its PDF, with one click. Download [paperlines-browser-extension.zip](https://github.com/Paperlines/paperlines/releases/latest/download/paperlines-browser-extension.zip), then follow **Settings → Browser extension** in the app.
+**Browser extension (Chrome, Edge, Brave, Arc, Vivaldi):** save the paper you're reading, and its PDF, with one click. [Add it from the Chrome Web Store](https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf), then click **Connect** in the app's **Settings → Browser extension**. A [.zip](https://github.com/Paperlines/paperlines/releases/latest/download/paperlines-browser-extension.zip) is also available for browsers without the store.
 
 ### Updates, from inside the app
 

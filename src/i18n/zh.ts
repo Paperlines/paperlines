@@ -1063,8 +1063,11 @@ export const zh: Catalog = {
     "这台电脑上没有找到 Chrome、Edge、Brave、Arc、Vivaldi 或 Chromium。请安装其中一个并打开一次。",
   "browser.step2": "2. 将扩展添加到浏览器",
   "browser.install":
-    "在上架 Chrome 网上应用店之前：下载扩展并解压，打开浏览器的“扩展程序”页面，开启“开发者模式”，然后选择“加载已解压的扩展程序”并选中解压后的文件夹。",
-  "browser.download": "下载扩展",
+    "从 Chrome 网上应用店安装 Paperlines。它适用于 Chrome、Edge、Brave、Arc 和 Vivaldi。",
+  "browser.download": "改为下载 .zip",
   "help.browser":
     "扩展会让浏览器启动 Paperlines 的命令行工具，由它把论文添加到你的文献库，即使 Paperlines 没有打开也可以。你的电脑上不会运行任何服务器，也不会向其他地方发送任何内容。移动应用后请重新连接。",
+  "browser.addToChrome": "添加到 Chrome",
+  "browser.zipHint":
+    "不使用 Chrome 网上应用店：解压后打开浏览器的“扩展程序”页面，开启“开发者模式”，然后选择“加载已解压的扩展程序”。",
 };

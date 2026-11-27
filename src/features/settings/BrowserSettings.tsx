@@ -1,5 +1,5 @@
 import type { BrowserStatus } from "@paperlines/backend-port";
-import { Check, Download } from "lucide-react";
+import { Check, Download, ExternalLink } from "lucide-react";
 import { useEffect, useState } from "react";
 import { backend } from "../../backend";
 import { branding } from "../../branding.generated";
@@ -9,6 +9,9 @@ import { t } from "../../i18n";
 const REPO = branding.repository.replace(/\/$/, "");
 /** Stable name on every release, so "latest" always points at the current extension. */
 const DOWNLOAD = REPO ? `${REPO}/releases/latest/download/paperlines-browser-extension.zip` : null;
+/** The Chrome Web Store page (also used by Edge, Brave, Arc and Vivaldi). */
+const STORE =
+  "https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf";
 
 /** Settings → Browser extension: register Paperlines with Chrome-family browsers. */
 export function BrowserSettings() {
@@ -83,13 +86,26 @@ export function BrowserSettings() {
       <section className="stack" aria-label={t("browser.step2")}>
         <h3 className="field-label">{t("browser.step2")}</h3>
         <p className="muted">{t("browser.install")}</p>
-        {DOWNLOAD && (
-          <div className="row">
-            <button type="button" className="btn" onClick={() => backend.openExternal(DOWNLOAD)}>
+        <div className="row">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => backend.openExternal(STORE)}
+          >
+            <ExternalLink size={14} aria-hidden="true" /> {t("browser.addToChrome")}
+          </button>
+          {DOWNLOAD && (
+            <button
+              type="button"
+              className="btn"
+              title={t("browser.zipHint")}
+              onClick={() => backend.openExternal(DOWNLOAD)}
+            >
               <Download size={14} aria-hidden="true" /> {t("browser.download")}
             </button>
-          </div>
-        )}
+          )}
+        </div>
+        {DOWNLOAD && <p className="muted small">{t("browser.zipHint")}</p>}
       </section>
     </div>
   );
