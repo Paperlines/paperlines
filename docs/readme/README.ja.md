@@ -117,7 +117,9 @@ macOS、Windows、Linux 向けの無料・オープンソースの文献管理�
 
 **macOS インストーラ。** `.pkg` を開いて手順に従ってください。Paperlines を「アプリケーション」に、`paperlines` コマンドを `/usr/local/bin` にインストールします。アンインストールするには、アプリと `/usr/local/bin/paperlines` を削除します。ライブラリはそのまま残ります。
 
-**署名されていない macOS ビルド。** 初回はアプリを右クリックして**開く**を選び、確認してください。CI で署名されたビルド（[署名](../development.md#signing-and-notarization)を参照）は通常どおり開きます。
+**macOS で初めて開くとき。** macOS 版はまだ Apple の署名がないため、macOS は Paperlines を「検証できませんでした」と表示します。**完了**をクリックし、**システム設定 → プライバシーとセキュリティ**を開いて下までスクロールし、Paperlines の横の**このまま開く**をクリックして確認してください。これは一度だけで済みます。
+
+**Windows で初めて開くとき。** 「Windows によって PC が保護されました」と表示されたら、**詳細情報 → 実行**をクリックしてください。署名付きの Windows 版も準備中です（[コード署名ポリシー](../code-signing.md)）。
 
 **Linux。** `.deb` と `.rpm` パッケージは CLI を `paperlines` としてインストールします。AppImage の場合は、別ファイルの `paperlines-<triple>` を PATH に置くか、**設定 → コマンドライン → コマンドラインツールをインストール** を使ってください。
 

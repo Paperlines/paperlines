@@ -117,7 +117,9 @@
 
 **macOS 安装程序。** 打开 `.pkg` 并按步骤操作。它会将 Paperlines 安装到“应用程序”文件夹，并将 `paperlines` 命令安装到 `/usr/local/bin`。卸载时，删除应用和 `/usr/local/bin/paperlines` 即可；你的文献库保持原位。
 
-**未签名的 macOS 构建。** 首次打开时右键点击应用，选择**打开**，然后确认。在 CI 中签名的构建（见[签名](../development.md#signing-and-notarization)）可正常打开。
+**在 macOS 上首次打开。** macOS 版本尚未经过 Apple 签名，因此 macOS 会提示“无法验证”Paperlines。点击**完成**，打开**系统设置 → 隐私与安全性**，向下滚动，点击 Paperlines 旁的**仍要打开**并确认。只需操作一次。
+
+**在 Windows 上首次打开。** 如果 Windows 显示“Windows 已保护你的电脑”，请点击**更多信息 → 仍要运行**。已签名的 Windows 版本即将推出（[代码签名政策](../code-signing.md)）。
 
 **Linux。** `.deb` 和 `.rpm` 安装包会将 CLI 安装为 `paperlines`。对于 AppImage，请将单独的 `paperlines-<triple>` 文件放到 PATH 中，或使用**设置 → 命令行 → 安装命令行工具**。
 

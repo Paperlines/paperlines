@@ -117,7 +117,9 @@ macOS, Windows और Linux के लिए एक मुफ़्त, ओप�
 
 **macOS इंस्टॉलर।** `.pkg` खोलें और चरणों का पालन करें। यह Paperlines को Applications में और `paperlines` कमांड को `/usr/local/bin` में इंस्टॉल करता है। अनइंस्टॉल करने के लिए ऐप और `/usr/local/bin/paperlines` हटाएँ; आपकी लाइब्रेरी जहाँ है वहीं रहती है।
 
-**बिना साइन किए macOS बिल्ड।** पहली बार ऐप पर राइट-क्लिक करके **Open** चुनें, फिर पुष्टि करें। CI में साइन किए गए बिल्ड (देखें [Signing](../development.md#signing-and-notarization)) सामान्य रूप से खुलते हैं।
+**macOS पर पहली बार खोलना।** macOS डाउनलोड अभी Apple से साइन नहीं हैं, इसलिए macOS कहता है कि वह Paperlines को "सत्यापित नहीं कर सका"। **Done** पर क्लिक करें, **System Settings → Privacy & Security** खोलें, नीचे स्क्रॉल करें, Paperlines के पास **Open Anyway** पर क्लिक करें और पुष्टि करें। यह सिर्फ़ एक बार करना होता है।
+
+**Windows पर पहली बार खोलना।** अगर Windows "Windows protected your PC" दिखाए, तो **More info → Run anyway** पर क्लिक करें। साइन किए गए Windows बिल्ड जल्द आ रहे हैं ([कोड साइनिंग नीति](../code-signing.md))।
 
 **Linux।** `.deb` और `.rpm` पैकेज CLI को `paperlines` के रूप में इंस्टॉल करते हैं। AppImage के लिए, अलग `paperlines-<triple>` फ़ाइल को अपने PATH में रखें, या **सेटिंग्स → कमांड लाइन → कमांड-लाइन टूल इंस्टॉल करें** का उपयोग करें।
 

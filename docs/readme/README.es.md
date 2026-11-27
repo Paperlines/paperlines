@@ -117,7 +117,9 @@ Cuando sale una versión nueva, Paperlines te avisa la próxima vez que se abre:
 
 **Instalador de macOS.** Abre el `.pkg` y sigue los pasos. Instala Paperlines en Aplicaciones y el comando `paperlines` en `/usr/local/bin`. Para desinstalar, elimina la app y `/usr/local/bin/paperlines`; tu biblioteca se queda donde está.
 
-**Compilaciones de macOS sin firmar.** La primera vez, haz clic derecho en la app, elige **Abrir** y confirma. Las compilaciones firmadas en CI (consulta [Firma](../development.md#signing-and-notarization)) se abren con normalidad.
+**Primera apertura en macOS.** Las descargas para macOS aún no están firmadas por Apple, así que macOS dice que «no se ha podido verificar» Paperlines. Pulsa **OK**, abre **Ajustes del Sistema → Privacidad y seguridad**, desplázate hacia abajo, pulsa **Abrir igualmente** junto a Paperlines y confirma. Solo hace falta una vez.
+
+**Primera apertura en Windows.** Si Windows muestra «Windows protegió su PC», pulsa **Más información → Ejecutar de todas formas**. Las compilaciones firmadas para Windows están en camino ([política de firma de código](../code-signing.md)).
 
 **Linux.** Los paquetes `.deb` y `.rpm` instalan la CLI como `paperlines`. Con la AppImage, pon el archivo separado `paperlines-<triple>` en tu PATH, o usa **Ajustes → Línea de comandos → Instalar herramienta de línea de comandos**.
 

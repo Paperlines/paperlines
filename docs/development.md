@@ -105,6 +105,22 @@ Unsigned builds work everywhere; signing is optional and driven by environment v
 
 Locally, export them and run `pnpm tauri build`. The hardened runtime is enabled, as notarization requires. In CI, add them as repository secrets and the workflow picks them up. Linux packages are not signed.
 
+### Windows signing (SignPath Foundation)
+
+Windows releases are signed for free by [SignPath Foundation](https://signpath.org/) once the project is accepted ([policy](code-signing.md)). The release workflow uploads the installers and the CLI as the `windows-unsigned` artifact, SignPath signs them (each release signing request is approved by hand on signpath.io), and the signed files replace the unsigned ones on the release with fresh updater signatures. Nothing changes until this is configured:
+
+| Where | Name | Value |
+| --- | --- | --- |
+| Repository secret | `SIGNPATH_API_TOKEN` | API token of a SignPath CI user with submitter rights |
+| Repository variable | `SIGNPATH_ORGANIZATION_ID` | the organization ID on signpath.io (turns signing on) |
+| Repository variables (optional) | `SIGNPATH_PROJECT_SLUG`, `SIGNPATH_SIGNING_POLICY_SLUG`, `SIGNPATH_ARTIFACT_CONFIGURATION_SLUG` | default `paperlines`, `release-signing`, `initial` |
+
+On signpath.io, link the project to this GitHub repository (trusted build system: GitHub.com) and use [`packaging/signpath/artifact-configuration.xml`](../packaging/signpath/artifact-configuration.xml) as the artifact configuration. Try it first with the `test-signing` policy (`SIGNPATH_SIGNING_POLICY_SLUG=test-signing`) and `bump=rebuild`.
+
+### winget
+
+The package is `Paperlines.Paperlines` in [microsoft/winget-pkgs](https://github.com/microsoft/winget-pkgs/tree/master/manifests/p/Paperlines/Paperlines). [`packaging/winget`](../packaging/winget) holds the manifest of the current version; the [winget workflow](../.github/workflows/winget.yml) validates it and installs it on Windows. A new version is a pull request to winget-pkgs with the version, URL and SHA-256 changed.
+
 ## Renaming and icons
 
 All brand strings live in `branding/branding.json`.

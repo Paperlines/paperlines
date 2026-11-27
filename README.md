@@ -109,11 +109,13 @@ Every file is on the [Releases page](https://github.com/Paperlines/paperlines/re
 When a new version is out, Paperlines tells you the next time it opens: what's new, who worked on it, and **Update now** or **Later**. Updates are signed and checked before they're installed. The macOS app, the Windows installers and the AppImage update themselves; `.deb`, `.rpm` and Nix installs update through their package manager. Turn the check off in Settings → General; offline mode never checks.
 
 <details>
-<summary>Platform notes: macOS installer, Linux, NixOS, COSMIC/Wayland</summary>
+<summary>Platform notes: first open on macOS and Windows, Linux, NixOS, COSMIC/Wayland</summary>
 
 **macOS installer.** Open the `.pkg` and follow the steps. It installs Paperlines into Applications and the `paperlines` command into `/usr/local/bin`. To uninstall, delete the app and `/usr/local/bin/paperlines`; your library stays where it is.
 
-**Unsigned macOS builds.** Right-click the app and choose **Open** the first time, then confirm. Builds signed in CI (see [Signing](docs/development.md#signing-and-notarization)) open normally.
+**First open on macOS.** The macOS downloads are not yet signed by Apple, so macOS says it "could not verify" Paperlines. Click **Done**, open **System Settings → Privacy & Security**, scroll down and click **Open Anyway** next to Paperlines, then confirm. You only do this once.
+
+**First open on Windows.** If Windows shows "Windows protected your PC", click **More info → Run anyway**. Signed Windows builds are on the way ([code signing policy](docs/code-signing.md)).
 
 **Linux.** The `.deb` and `.rpm` packages install the CLI as `paperlines`. For the AppImage, put the separate `paperlines-<triple>` file on your PATH, or use **Settings → Command line → Install command-line tool**.
 
@@ -291,6 +293,7 @@ Checks, architecture and conventions are in [docs/development.md](docs/developme
 
 - [What's new](docs/CHANGELOG.md): every version's changes
 - [Development](docs/development.md): checks, releases, signing, Nix, Windows, renaming
+- [Code signing policy](docs/code-signing.md): what is signed, by whom
 - [Architecture](docs/architecture.md): how the code is organized and why
 - [Contributing](.github/CONTRIBUTING.md): how to help
 

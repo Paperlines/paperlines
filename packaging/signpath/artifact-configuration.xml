@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SignPath artifact configuration for the "windows-unsigned" artifact uploaded by
+     .github/workflows/release.yml: the NSIS installer, the MSI and the command-line tool. -->
+<artifact-configuration xmlns="http://signpath.io/artifact-configuration/v1">
+  <zip-file>
+    <pe-file-set>
+      <include path="**/*.exe" min-matches="1" max-matches="unbounded" />
+      <for-each>
+        <authenticode-sign />
+      </for-each>
+    </pe-file-set>
+    <msi-file-set>
+      <include path="**/*.msi" min-matches="1" max-matches="unbounded" />
+      <for-each>
+        <authenticode-sign />
+      </for-each>
+    </msi-file-set>
+  </zip-file>
+</artifact-configuration>
