@@ -1,6 +1,6 @@
 # What's new
 
-## Unreleased
+## 0.1.4 (2026-11-27)
 
 ### New: the Paperlines browser extension
 
