@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.9.0.schema.json
+PackageIdentifier: Paperlines.Paperlines
+PackageVersion: 0.1.4
+InstallerLocale: en-US
+InstallerType: nullsoft
+Scope: user
+UpgradeBehavior: install
+ReleaseDate: 2026-11-27
+FileExtensions:
+- pdf
+Installers:
+- Architecture: x64
+  InstallerUrl: https://github.com/Paperlines/paperlines/releases/download/v0.1.4/Paperlines_0.1.4_x64-setup.exe
+  InstallerSha256: E89E59559C8CC557A8AC788C98235CC4086BD9795A9CD42269FB97E688DC1473
+ManifestType: installer
+ManifestVersion: 1.9.0

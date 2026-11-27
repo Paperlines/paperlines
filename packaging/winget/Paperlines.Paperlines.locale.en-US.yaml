@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.9.0.schema.json
+PackageIdentifier: Paperlines.Paperlines
+PackageVersion: 0.1.4
+PackageLocale: en-US
+Publisher: Paperlines
+PublisherUrl: https://github.com/Paperlines
+PublisherSupportUrl: https://github.com/Paperlines/paperlines/issues
+PrivacyUrl: https://github.com/Paperlines/paperlines/blob/main/docs/privacy.md
+Author: Yoav Yosif-Or
+PackageName: Paperlines
+PackageUrl: https://github.com/Paperlines/paperlines
+License: AGPL-3.0-or-later
+LicenseUrl: https://github.com/Paperlines/paperlines/blob/main/LICENSE
+ShortDescription: A free, open-source reference manager with PDF notes and a live citation graph.
+Description: |-
+  Paperlines keeps your papers, your notes and a live map of how they cite each other in one app on your own computer.
+  Collect papers from PDFs, DOIs, arXiv, BibTeX, RIS or Zotero; highlight PDFs and write linked Markdown notes with LaTeX;
+  see which papers cite which, mark the key papers of a project, and find what to read next.
+  No account, no cloud, no tracking.
+Moniker: paperlines
+Tags:
+- bibliography
+- bibtex
+- citations
+- citation-graph
+- pdf
+- reference-manager
+- research
+- markdown
+- notes
+ReleaseNotesUrl: https://github.com/Paperlines/paperlines/releases/tag/v0.1.4
+ManifestType: defaultLocale
+ManifestVersion: 1.9.0
