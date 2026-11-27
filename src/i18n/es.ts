@@ -566,7 +566,7 @@ export const es: Catalog = {
   "help.libraryFolder":
     "Donde están la base de datos, los PDF y las copias de seguridad. Al moverla se copia todo a la nueva carpeta y la app se reinicia; la copia antigua se conserva hasta que la elimines.",
   "help.livePreview":
-    "Las notas se muestran con formato mientras escribes, como en Obsidian: los símbolos de Markdown se ocultan salvo en la línea que editas, y los enlaces, citas y fórmulas se ven en línea.",
+    "Las notas se muestran con formato mientras escribes: los símbolos de Markdown se ocultan salvo en la línea que editas, y los enlaces, citas y fórmulas se ven en línea.",
   "help.offline":
     "Ninguna petición de red: ni búsquedas de metadatos, ni listas de referencias, ni búsquedas de PDF. Todo lo demás funciona.",
   "help.paste":

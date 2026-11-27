@@ -555,7 +555,7 @@ export const en = {
   "help.libraryFolder":
     "Where the database, PDFs and backups live. Moving copies everything to the new folder and restarts; the old copy is kept until you delete it.",
   "help.livePreview":
-    "Notes render as you type, like Obsidian: Markdown symbols hide except on the line you are editing, and links, citations and math show inline.",
+    "Notes render as you type: Markdown symbols hide except on the line you are editing, and links, citations and math show inline.",
   "help.offline":
     "No network requests at all: no metadata lookups, reference lists or PDF searches. Everything else works.",
   "help.paste":

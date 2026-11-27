@@ -572,7 +572,7 @@ export const de: Catalog = {
   "help.libraryFolder":
     "Wo Datenbank, PDFs und Backups liegen. Beim Verschieben wird alles in den neuen Ordner kopiert und die App neu gestartet; die alte Kopie bleibt, bis Sie sie löschen.",
   "help.livePreview":
-    "Notizen werden beim Tippen gerendert, wie in Obsidian: Markdown-Zeichen sind ausgeblendet, außer in der Zeile, die Sie bearbeiten, und Links, Zitate und Formeln erscheinen direkt im Text.",
+    "Notizen werden beim Tippen gerendert: Markdown-Zeichen sind ausgeblendet, außer in der Zeile, die Sie bearbeiten, und Links, Zitate und Formeln erscheinen direkt im Text.",
   "help.offline":
     "Keinerlei Netzwerkzugriffe: keine Metadatenabfragen, Literaturlisten oder PDF-Suchen. Alles andere funktioniert.",
   "help.paste":

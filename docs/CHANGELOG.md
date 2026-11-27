@@ -58,7 +58,7 @@ The first version: everything below is new.
 - Tables: pick a size from the toolbar, move between cells with Tab and Shift-Tab (Tab in the last cell adds a row); tables render in the note and in live preview.
 
 ### Citation graph
-- Obsidian-style live graph: papers as boxes labelled "Author ’YY", coloured by project, bordered by read status.
+- Live graph: papers as boxes labelled "Author ’YY", coloured by project, bordered by read status.
 - **Key papers (spine)** in steps (drag to reorder papers within a step), with Tree and Circle layouts; Circle names each project's arc.
 - Typed connections between papers: extends, contradicts, replicates, applies the method of, and your own.
 - Papers citing this: who cites a paper across OpenAlex, with the most connected first.

@@ -570,7 +570,7 @@ export const fr: Catalog = {
   "help.libraryFolder":
     "L’emplacement de la base de données, des PDF et des sauvegardes. Le déplacement copie tout dans le nouveau dossier et redémarre l’app ; l’ancienne copie est conservée jusqu’à ce que vous la supprimiez.",
   "help.livePreview":
-    "Les notes s’affichent au fil de la frappe, comme dans Obsidian : les symboles Markdown sont masqués sauf sur la ligne en cours, et les liens, citations et formules s’affichent dans le texte.",
+    "Les notes s’affichent au fil de la frappe : les symboles Markdown sont masqués sauf sur la ligne en cours, et les liens, citations et formules s’affichent dans le texte.",
   "help.offline":
     "Aucune requête réseau : pas de recherche de métadonnées, de listes de références ni de PDF. Tout le reste fonctionne.",
   "help.paste":

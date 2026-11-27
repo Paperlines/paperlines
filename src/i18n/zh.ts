@@ -530,7 +530,7 @@ export const zh: Catalog = {
   "help.libraryFolder":
     "数据库、PDF 和备份的存放位置。移动时会将所有内容复制到新文件夹并重启；旧副本会保留，直到你将其删除。",
   "help.livePreview":
-    "笔记在输入时实时渲染，就像 Obsidian：除了正在编辑的那一行，Markdown 符号都会隐藏，链接、引用和公式直接内联显示。",
+    "笔记在输入时实时渲染：除了正在编辑的那一行，Markdown 符号都会隐藏，链接、引用和公式直接内联显示。",
   "help.offline":
     "完全不发出网络请求：不查询元数据、参考文献列表，也不搜索 PDF。其他功能照常可用。",
   "help.paste":

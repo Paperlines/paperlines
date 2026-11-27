@@ -89,7 +89,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   meta = {
     description = branding.description;
     longDescription = ''
-      A local-first reference manager: a Zotero-like library, Obsidian-like Markdown notes with
+      A local-first reference manager: a library, Markdown notes with
       wikilinks, and a citation graph, plus the `${branding.cliCommand}` command-line tool and an
       MCP server for Claude.
     '';
