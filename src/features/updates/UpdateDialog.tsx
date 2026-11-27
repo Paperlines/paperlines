@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { backend } from "../../backend";
 import { branding } from "../../branding.generated";
 import { Dialog } from "../../components/Dialog";
+import { openLinksExternally } from "../../components/externalLinks";
 import { t } from "../../i18n";
 
 const REPO = branding.repository.replace(/\/$/, "");
@@ -115,6 +116,7 @@ export function UpdateDialog({ update, onClose }: { update: AppUpdate; onClose()
           {notes ? (
             <article
               className="update-notes about-changelog"
+              onClick={openLinksExternally}
               dangerouslySetInnerHTML={{ __html: notes }}
             />
           ) : (

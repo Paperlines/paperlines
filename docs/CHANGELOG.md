@@ -2,8 +2,22 @@
 
 ## Unreleased
 
-- **Browser extension:** save the paper you're reading in Chrome, Edge, Brave, Arc or Vivaldi, and its PDF, with one click. It finds the DOI, arXiv or PubMed ID and the journal's details on the page, tells you when a paper is already in your library, and works even when Paperlines is closed. Get it from the [Chrome Web Store](https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf) and connect it in Settings ▸ Browser extension.
+### New: the Paperlines browser extension
+
+Save the paper you're reading, and its PDF, to your library with one click, right from the article's page.
+
+**👉 [Add Paperlines to your browser](https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf)** (Chrome Web Store)
+
+- **Works in** Google Chrome, Microsoft Edge, Brave, Arc, Vivaldi and Chromium.
+- **Set up once:** add the extension, then in Paperlines open Settings ▸ Browser extension and click **Connect**.
+- **Finds the paper by itself:** on journal pages, arXiv, PubMed and DOI links it reads the title, authors and identifiers, and tells you when a paper is already in your library.
+- **Brings the PDF:** downloaded with your own login, so papers from your subscriptions work too. Papers you already have get their missing PDF instead of a duplicate.
+- **Works even when Paperlines is closed.**
+
+### Also
+
 - A new library can no longer be set up twice at once (for example by the app and the extension on the very first launch).
+- Links in "What's new" and in the update window open in your browser.
 
 ## 0.1.3 (2026-11-26)
 

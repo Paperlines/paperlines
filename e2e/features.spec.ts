@@ -999,6 +999,15 @@ test("a new version: offered when the app opens, with its changes and who made i
   const notes = dlg.getByRole("region", { name: "What's new" });
   await expect(notes.getByRole("heading", { name: "Library" })).toBeVisible();
   await expect(notes).toContainText("Faster search");
+  // links in the notes open in the browser, and the app stays where it is
+  const [external] = await Promise.all([
+    page.waitForEvent("popup"),
+    notes.getByRole("link", { name: "Add the browser extension" }).click(),
+  ]);
+  expect(external.url()).toContain("chromewebstore.google.com/detail/paperlines/");
+  await external.close();
+  expect(page.url()).toContain("?update");
+  await expect(dlg).toBeVisible();
   const people = dlg.getByRole("region", { name: "Made by" });
   await expect(people.getByRole("link", { name: "Ada Lovelace" })).toBeVisible();
   await expect(people).toContainText("Grace Hopper");

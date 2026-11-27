@@ -60,6 +60,20 @@ Research reading happens in three places at once: a reference manager, a notes a
 - **Search online** across OpenAlex, Semantic Scholar, arXiv, PubMed, Crossref, Europe PMC, DataCite and DOAJ at once, merged into one list that marks what you already have. All free.
 - Duplicates are found and merged without losing a note or highlight.
 
+## Save papers from your browser
+
+<p align="center">
+  <a href="https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf"><img src="docs/assets/readme/extension.png" alt="The Paperlines extension on an article page, ready to save the paper and its PDF" width="100%" /></a>
+</p>
+
+- **One click from the article:** on a journal's page, arXiv, PubMed or a DOI link, the Paperlines button shows the paper it found (title, authors, year, journal, identifiers) and saves it, with its PDF.
+- **Knows what you have:** it tells you when a paper is already in your library; a paper you have without its PDF gets the PDF instead of a duplicate.
+- **Your subscriptions work:** the PDF is downloaded with your own browser login.
+- **Private:** it reads a page only when you click it, and hands what it finds to Paperlines on your computer, never to a server. It works even when the app is closed.
+- **Works in** Google Chrome, Microsoft Edge, Brave, Arc, Vivaldi and Chromium.
+
+**👉 [Add Paperlines to your browser](https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf)**, then click **Connect** in the app's **Settings → Browser extension**.
+
 ## Bring your own AI assistant
 
 <p align="center">

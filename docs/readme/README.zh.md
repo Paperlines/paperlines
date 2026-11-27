@@ -62,6 +62,20 @@
 - **在线搜索**：同时检索 OpenAlex、Semantic Scholar、arXiv、PubMed、Crossref、Europe PMC、DataCite 和 DOAJ，合并成一个列表，并标出你已有的论文。全部免费。
 - 自动发现并合并重复项，不会丢失任何笔记或高亮。
 
+## 从浏览器保存论文
+
+<p align="center">
+  <a href="https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf"><img src="../assets/readme/extension.png" alt="Paperlines 扩展在论文页面上，准备保存论文及其 PDF" width="100%" /></a>
+</p>
+
+- **在论文页面一键保存：**在期刊页面、arXiv、PubMed 或 DOI 链接上，Paperlines 按钮会显示找到的论文（标题、作者、年份、期刊、标识符），并连同 PDF 一起保存。
+- **了解你的文献库：**论文已在库中时会提示你；已有但缺少 PDF 的论文会补上 PDF，而不会重复添加。
+- **支持你的订阅：**PDF 使用你自己的浏览器登录状态下载。
+- **注重隐私：**只在你点击时读取页面，并把结果交给你电脑上的 Paperlines，从不发送到服务器。即使应用未打开也能使用。
+- **支持** Google Chrome、Microsoft Edge、Brave、Arc、Vivaldi 和 Chromium。
+
+**👉 [将 Paperlines 添加到浏览器](https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf)**，然后在应用的 **设置 → 浏览器扩展** 中点击 **连接**。
+
 ## 使用你自己的 AI 助手
 
 <p align="center">

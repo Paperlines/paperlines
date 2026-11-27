@@ -62,6 +62,20 @@ Wissenschaftliches Lesen findet an drei Orten gleichzeitig statt: in einer Liter
 - **Onlinesuche** in OpenAlex, Semantic Scholar, arXiv, PubMed, Crossref, Europe PMC, DataCite und DOAJ auf einmal, zusammengeführt in eine Liste, die markiert, was Sie schon haben. Alles kostenlos.
 - Duplikate werden gefunden und zusammengeführt, ohne eine Notiz oder Markierung zu verlieren.
 
+## Paper aus dem Browser speichern
+
+<p align="center">
+  <a href="https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf"><img src="../assets/readme/extension.png" alt="Die Paperlines-Erweiterung auf einer Artikelseite, bereit, das Paper samt PDF zu speichern" width="100%" /></a>
+</p>
+
+- **Ein Klick vom Artikel aus:** Auf der Seite einer Zeitschrift, bei arXiv, PubMed oder einem DOI-Link zeigt der Paperlines-Button das gefundene Paper (Titel, Autoren, Jahr, Zeitschrift, Kennungen) und speichert es samt PDF.
+- **Kennt Ihre Bibliothek:** Er meldet, wenn ein Paper schon vorhanden ist; ein Paper ohne PDF bekommt das PDF statt eines Duplikats.
+- **Ihre Abonnements funktionieren:** Das PDF wird mit Ihrer eigenen Browser-Anmeldung geladen.
+- **Privat:** Er liest eine Seite nur, wenn Sie klicken, und gibt das Gefundene an Paperlines auf Ihrem Computer weiter, nie an einen Server. Er funktioniert auch bei geschlossener App.
+- **Funktioniert in** Google Chrome, Microsoft Edge, Brave, Arc, Vivaldi und Chromium.
+
+**👉 [Paperlines zum Browser hinzufügen](https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf)** und dann in der App unter **Einstellungen → Browsererweiterung** auf **Verbinden** klicken.
+
 ## Ihr eigener KI-Assistent
 
 <p align="center">

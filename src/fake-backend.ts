@@ -1896,7 +1896,7 @@ export function createFakeBackend(opts: { seed?: boolean } = {}): BackendPort {
         currentVersion: branding.version,
         date: "2026-12-01T10:00:00Z",
         notes:
-          "### Library\n- **Faster search** across big libraries.\n- Drag papers between projects.\n\n### Fixes\n- The graph keeps its zoom after a filter changes.",
+          "### Library\n- **Faster search** across big libraries.\n- Drag papers between projects.\n- [Add the browser extension](https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf).\n\n### Fixes\n- The graph keeps its zoom after a filter changes.",
         contributors: [
           { login: "ada-l", name: "Ada Lovelace" },
           { login: null, name: "Grace Hopper" },

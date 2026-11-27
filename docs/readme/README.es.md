@@ -62,6 +62,20 @@ La lectura de investigación ocurre en tres sitios a la vez: un gestor de refere
 - **Busca en línea** en OpenAlex, Semantic Scholar, arXiv, PubMed, Crossref, Europe PMC, DataCite y DOAJ a la vez, en una sola lista que marca lo que ya tienes. Todo gratis.
 - Los duplicados se encuentran y se fusionan sin perder ni una nota ni un resaltado.
 
+## Guarda artículos desde el navegador
+
+<p align="center">
+  <a href="https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf"><img src="../assets/readme/extension.png" alt="La extensión de Paperlines en la página de un artículo, lista para guardar el artículo y su PDF" width="100%" /></a>
+</p>
+
+- **Un clic desde el artículo:** en la página de una revista, arXiv, PubMed o un enlace DOI, el botón de Paperlines muestra el artículo que encontró (título, autores, año, revista, identificadores) y lo guarda con su PDF.
+- **Sabe lo que ya tienes:** te avisa cuando un artículo ya está en tu biblioteca; si lo tienes sin PDF, recibe el PDF en lugar de duplicarse.
+- **Tus suscripciones funcionan:** el PDF se descarga con tu propia sesión del navegador.
+- **Privada:** solo lee una página cuando haces clic, y entrega lo que encuentra a Paperlines en tu equipo, nunca a un servidor. Funciona incluso con la aplicación cerrada.
+- **Funciona en** Google Chrome, Microsoft Edge, Brave, Arc, Vivaldi y Chromium.
+
+**👉 [Añade Paperlines a tu navegador](https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf)** y haz clic en **Conectar** en **Ajustes → Extensión del navegador** de la aplicación.
+
 ## Trae tu propio asistente de IA
 
 <p align="center">

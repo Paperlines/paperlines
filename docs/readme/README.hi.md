@@ -62,6 +62,20 @@ macOS, Windows और Linux के लिए एक मुफ़्त, ओप�
 - **ऑनलाइन खोज** OpenAlex, Semantic Scholar, arXiv, PubMed, Crossref, Europe PMC, DataCite और DOAJ में एक साथ, एक ही सूची में मिलाकर, जिसमें चिह्नित होता है कि आपके पास पहले से क्या है। सब मुफ़्त।
 - डुप्लिकेट खोजे और मिलाए जाते हैं, बिना कोई नोट या हाइलाइट खोए।
 
+## ब्राउज़र से पेपर सहेजें
+
+<p align="center">
+  <a href="https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf"><img src="../assets/readme/extension.png" alt="किसी लेख के पेज पर Paperlines एक्सटेंशन, पेपर और उसकी PDF सहेजने के लिए तैयार" width="100%" /></a>
+</p>
+
+- **लेख से एक क्लिक में:** किसी जर्नल के पेज, arXiv, PubMed या DOI लिंक पर Paperlines बटन मिला हुआ पेपर (शीर्षक, लेखक, वर्ष, जर्नल, पहचानकर्ता) दिखाता है और उसे उसकी PDF के साथ सहेजता है।
+- **आपकी लाइब्रेरी जानता है:** पेपर पहले से लाइब्रेरी में होने पर बताता है; बिना PDF वाले पेपर को डुप्लिकेट के बजाय PDF मिल जाती है।
+- **आपकी सदस्यताएँ काम करती हैं:** PDF आपके अपने ब्राउज़र लॉगिन से डाउनलोड होती है।
+- **निजी:** यह पेज तभी पढ़ता है जब आप क्लिक करते हैं, और जो मिलता है उसे आपके कंप्यूटर पर Paperlines को देता है, कभी किसी सर्वर को नहीं। ऐप बंद होने पर भी काम करता है।
+- **इनमें काम करता है:** Google Chrome, Microsoft Edge, Brave, Arc, Vivaldi और Chromium।
+
+**👉 [Paperlines को अपने ब्राउज़र में जोड़ें](https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf)**, फिर ऐप में **सेटिंग्स → ब्राउज़र एक्सटेंशन** में **कनेक्ट करें** पर क्लिक करें।
+
 ## अपना AI असिस्टेंट साथ लाएँ
 
 <p align="center">

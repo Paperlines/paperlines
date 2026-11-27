@@ -22,6 +22,7 @@ import changelog from "../../../docs/CHANGELOG.md?raw";
 import logo2x from "../../assets/logo-128.png";
 import { backend } from "../../backend";
 import { branding } from "../../branding.generated";
+import { openLinksExternally } from "../../components/externalLinks";
 import { t } from "../../i18n";
 import { useDialogs } from "../../store/dialogs";
 import { useTour } from "../../store/tour";
@@ -239,6 +240,7 @@ export function AboutSettings({ info }: { info: PlatformInfo }) {
         <article
           className="about-changelog md-preview"
           aria-label={t("about.whatsNew")}
+          onClick={openLinksExternally}
           dangerouslySetInnerHTML={{ __html: changes }}
         />
       </div>

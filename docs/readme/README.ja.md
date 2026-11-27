@@ -62,6 +62,20 @@ macOS、Windows、Linux 向けの無料・オープンソースの文献管理�
 - **オンライン検索**で OpenAlex、Semantic Scholar、arXiv、PubMed、Crossref、Europe PMC、DataCite、DOAJ を一度に検索し、1 つのリストにまとめて、すでに持っている論文には印を付けます。すべて無料です。
 - 重複は、ノートやハイライトを失うことなく検出・統合されます。
 
+## ブラウザから論文を保存
+
+<p align="center">
+  <a href="https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf"><img src="../assets/readme/extension.png" alt="論文ページ上の Paperlines 拡張機能。論文と PDF を保存する準備ができています" width="100%" /></a>
+</p>
+
+- **論文ページからワンクリック：**ジャーナルのページ、arXiv、PubMed、DOI リンクで、Paperlines ボタンが見つけた論文（タイトル、著者、年、誌名、識別子）を表示し、PDF と一緒に保存します。
+- **ライブラリを把握：**すでにある論文はそう知らせます。PDF のない論文には、重複ではなく PDF が追加されます。
+- **購読も使えます：**PDF はご自身のブラウザのログインでダウンロードされます。
+- **プライバシー重視：**クリックしたときだけページを読み、見つけた情報はサーバーではなくお使いのコンピュータの Paperlines に渡します。アプリを閉じていても動作します。
+- **対応ブラウザ：** Google Chrome、Microsoft Edge、Brave、Arc、Vivaldi、Chromium。
+
+**👉 [Paperlines をブラウザに追加](https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf)**し、アプリの **設定 → ブラウザ拡張機能** で **接続** をクリックしてください。
+
 ## お手持ちの AI アシスタントを使う
 
 <p align="center">

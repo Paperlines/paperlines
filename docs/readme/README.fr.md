@@ -62,6 +62,20 @@ La lecture scientifique se fait à trois endroits à la fois : un gestionnaire 
 - **Recherche en ligne** dans OpenAlex, Semantic Scholar, arXiv, PubMed, Crossref, Europe PMC, DataCite et DOAJ à la fois, fusionnée en une seule liste qui signale ce que vous avez déjà. Entièrement gratuit.
 - Les doublons sont détectés et fusionnés sans perdre une note ni un surlignage.
 
+## Enregistrer des articles depuis le navigateur
+
+<p align="center">
+  <a href="https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf"><img src="../assets/readme/extension.png" alt="L’extension Paperlines sur la page d’un article, prête à enregistrer l’article et son PDF" width="100%" /></a>
+</p>
+
+- **Un clic depuis l’article :** sur la page d’une revue, arXiv, PubMed ou un lien DOI, le bouton Paperlines affiche l’article trouvé (titre, auteurs, année, revue, identifiants) et l’enregistre avec son PDF.
+- **Sait ce que vous avez déjà :** il vous signale quand un article est déjà dans votre bibliothèque ; un article sans PDF reçoit le PDF au lieu d’un doublon.
+- **Vos abonnements fonctionnent :** le PDF est téléchargé avec votre propre session du navigateur.
+- **Respect de la vie privée :** il ne lit une page que lorsque vous cliquez, et transmet ce qu’il trouve à Paperlines sur votre ordinateur, jamais à un serveur. Il fonctionne même application fermée.
+- **Fonctionne dans** Google Chrome, Microsoft Edge, Brave, Arc, Vivaldi et Chromium.
+
+**👉 [Ajoutez Paperlines à votre navigateur](https://chromewebstore.google.com/detail/paperlines/ooldfogehieegmochobljichkajignkf)**, puis cliquez sur **Connecter** dans **Paramètres → Extension du navigateur** de l’application.
+
 ## Apportez votre propre assistant IA
 
 <p align="center">
