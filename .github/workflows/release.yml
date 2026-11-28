@@ -198,6 +198,21 @@ jobs:
           # latest.json is written once, by the publish job, from every platform's signature
           includeUpdaterJson: false
 
+      - name: Notarize the .dmg
+        if: runner.os == 'macOS'
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          TARGET: ${{ matrix.target }}
+        run: |
+          [ -n "$APPLE_ID" ] || { echo "no notarization credentials: the .dmg stays as built"; exit 0; }
+          for f in target/${TARGET:+$TARGET/}release/bundle/dmg/*.dmg; do
+            xcrun notarytool submit "$f" --apple-id "$APPLE_ID" --password "$APPLE_PASSWORD" --team-id "$APPLE_TEAM_ID" --wait
+            xcrun stapler staple "$f"
+            gh release upload "$TAG" "$f" --clobber
+          done
+
       - name: macOS installer package
         if: runner.os == 'macOS'
         env:

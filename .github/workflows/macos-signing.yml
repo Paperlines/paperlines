@@ -35,6 +35,17 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         run: pnpm tauri build --config src-tauri/release.conf.json --target $TARGET
 
+      - name: Notarize the .dmg
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          for f in target/$TARGET/release/bundle/dmg/*.dmg; do
+            xcrun notarytool submit "$f" --apple-id "$APPLE_ID" --password "$APPLE_PASSWORD" --team-id "$APPLE_TEAM_ID" --wait
+            xcrun stapler staple "$f"
+          done
+
       - name: Build, sign and notarize the .pkg
         env:
           APPLE_INSTALLER_CERTIFICATE: ${{ secrets.APPLE_INSTALLER_CERTIFICATE }}
@@ -59,7 +70,7 @@ jobs:
           codesign --verify --deep --strict --verbose=2 "$APP"
           spctl -a -vv -t exec "$APP"
           xcrun stapler validate "$APP"
-          for f in target/$TARGET/release/bundle/dmg/*.dmg; do spctl -a -vv -t open --context context:primary-signature "$f" || true; xcrun stapler validate "$f" || true; done
+          for f in target/$TARGET/release/bundle/dmg/*.dmg; do spctl -a -vv -t open --context context:primary-signature "$f"; xcrun stapler validate "$f"; done
           for f in target/release/bundle/pkg/*.pkg; do pkgutil --check-signature "$f"; spctl -a -vv -t install "$f"; xcrun stapler validate "$f"; done
 
       - uses: actions/upload-artifact@v4
