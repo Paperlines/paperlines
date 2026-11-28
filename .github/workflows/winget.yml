@@ -40,6 +40,20 @@ jobs:
           }
           if (-not $p.HasExited) { Get-CimInstance Win32_Process | Where-Object { $_.ParentProcessId -eq $p.Id } | Format-Table Name, ProcessId, CommandLine -AutoSize | Out-String -Width 300; Stop-Process -Id $p.Id -Force; Get-Process paperlines* -ErrorAction SilentlyContinue | Stop-Process -Force }
           Get-ChildItem "$env:LOCALAPPDATA\Paperlines" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 20 FullName
+      - name: Same installer, marked as downloaded from the internet
+        shell: pwsh
+        run: |
+          & "$env:LOCALAPPDATA\Paperlines\uninstall.exe" /S; Start-Sleep 5
+          Set-Content -Path "$env:RUNNER_TEMP\setup.exe" -Stream Zone.Identifier -Value "[ZoneTransfer]`r`nZoneId=3"
+          Get-Content "$env:RUNNER_TEMP\setup.exe" -Stream Zone.Identifier
+          $p = Start-Process "$env:RUNNER_TEMP\setup.exe" -ArgumentList '/S' -PassThru
+          for ($i = 0; $i -lt 12; $i++) {
+            Start-Sleep 5
+            $procs = Get-CimInstance Win32_Process | Where-Object { $_.Name -match 'setup|paperlines|smartscreen|consent|Au_' } | ForEach-Object { "$($_.Name)[$($_.ProcessId) <- $($_.ParentProcessId)]" }
+            "t=$(($i+1)*5)s exited=$($p.HasExited) procs=$($procs -join ' ')"
+            if ($p.HasExited) { "exit code $($p.ExitCode)"; break }
+          }
+          if (-not $p.HasExited) { "STILL RUNNING: the internet mark makes it wait"; Stop-Process -Id $p.Id -Force }
       - name: Install from the manifest
         timeout-minutes: 8
         run: |
