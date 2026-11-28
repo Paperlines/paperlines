@@ -3394,7 +3394,7 @@ dependencies = [
 
 [[package]]
 name = "paperlines-agent"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "paperlines-core",
  "paperlines-mcp",
@@ -3406,7 +3406,7 @@ dependencies = [
 
 [[package]]
 name = "paperlines-app"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "paperlines-agent",
  "paperlines-citations",
@@ -3429,7 +3429,7 @@ dependencies = [
 
 [[package]]
 name = "paperlines-citations"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "paperlines-core",
  "paperlines-import",
@@ -3442,7 +3442,7 @@ dependencies = [
 
 [[package]]
 name = "paperlines-cli"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "clap",
  "paperlines-core",
@@ -3455,7 +3455,7 @@ dependencies = [
 
 [[package]]
 name = "paperlines-core"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "chacha20poly1305",
  "keyring",
@@ -3471,7 +3471,7 @@ dependencies = [
 
 [[package]]
 name = "paperlines-import"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "lopdf",
  "paperlines-core",
@@ -3486,7 +3486,7 @@ dependencies = [
 
 [[package]]
 name = "paperlines-mcp"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "paperlines-core",
  "paperlines-ops",
@@ -3496,7 +3496,7 @@ dependencies = [
 
 [[package]]
 name = "paperlines-ops"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "base64 0.23.1",
  "hayagriva",
@@ -3512,7 +3512,7 @@ dependencies = [
 
 [[package]]
 name = "paperlines-search"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "paperlines-core",
  "serde",

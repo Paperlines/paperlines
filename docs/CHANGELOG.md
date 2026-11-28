@@ -1,6 +1,6 @@
 # What's new
 
-## Unreleased
+## 0.1.5 (2026-11-28)
 
 ### Signed and notarized for macOS
 
