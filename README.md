@@ -109,11 +109,9 @@ Every file is on the [Releases page](https://github.com/Paperlines/paperlines/re
 When a new version is out, Paperlines tells you the next time it opens: what's new, who worked on it, and **Update now** or **Later**. Updates are signed and checked before they're installed. The macOS app, the Windows installers and the AppImage update themselves; `.deb`, `.rpm` and Nix installs update through their package manager. Turn the check off in Settings → General; offline mode never checks.
 
 <details>
-<summary>Platform notes: first open on macOS and Windows, Linux, NixOS, COSMIC/Wayland</summary>
+<summary>Platform notes: macOS, first open on Windows, Linux, NixOS, COSMIC/Wayland</summary>
 
-**macOS installer.** Open the `.pkg` and follow the steps. It installs Paperlines into Applications and the `paperlines` command into `/usr/local/bin`. To uninstall, delete the app and `/usr/local/bin/paperlines`; your library stays where it is.
-
-**First open on macOS.** The macOS downloads are not yet signed by Apple, so macOS says it "could not verify" Paperlines. Click **Done**, open **System Settings → Privacy & Security**, scroll down and click **Open Anyway** next to Paperlines, then confirm. You only do this once.
+**macOS.** Open the `.dmg` and drag Paperlines into Applications. The downloads are signed and notarized by Apple, so they open without a warning. For the `paperlines` command, use **Settings → Command line**, or install the `.pkg` instead: it puts the app into Applications and the command into `/usr/local/bin`. To uninstall, delete the app (and `/usr/local/bin/paperlines`); your library stays where it is.
 
 **First open on Windows.** If Windows shows "Windows protected your PC", click **More info → Run anyway**. Signed Windows builds are on the way ([code signing policy](docs/code-signing.md)).
 

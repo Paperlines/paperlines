@@ -1,5 +1,15 @@
 # What's new
 
+## Unreleased
+
+### Signed and notarized for macOS
+
+Paperlines for Mac is now signed with an Apple Developer ID and checked by Apple, so it opens like any other app: no more "Apple could not verify…" message and no trip to Privacy & Security.
+
+- **Drag to install:** the main Mac download is now the `.dmg`. Open it and drag Paperlines into Applications.
+- The `.pkg` is still there if you also want the `paperlines` command installed in one step.
+- Updates from inside the app stay signed too.
+
 ## 0.1.4 (2026-11-27)
 
 ### New: the Paperlines browser extension
