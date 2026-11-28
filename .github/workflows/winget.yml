@@ -25,6 +25,21 @@ jobs:
           $keys = 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}',
                   'HKCU:\Software\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}'
           foreach ($k in $keys) { if (Test-Path $k) { "${k} -> $((Get-ItemProperty $k).pv)" } else { "${k}: missing" } }
+      - name: Run the installer silently and watch it
+        shell: pwsh
+        run: |
+          $url = (Select-String -Path packaging/winget/Paperlines.Paperlines.installer.yaml -Pattern 'InstallerUrl: (.+)').Matches[0].Groups[1].Value.Trim()
+          Invoke-WebRequest $url -OutFile "$env:RUNNER_TEMP\setup.exe"
+          $p = Start-Process "$env:RUNNER_TEMP\setup.exe" -ArgumentList '/S' -PassThru
+          for ($i = 0; $i -lt 24; $i++) {
+            Start-Sleep 5
+            $procs = Get-CimInstance Win32_Process | Where-Object { $_.Name -match 'setup|paperlines|webview|msiexec|Au_' } | ForEach-Object { "$($_.Name)[$($_.ProcessId) <- $($_.ParentProcessId)]" }
+            $files = (Get-ChildItem "$env:LOCALAPPDATA\Paperlines" -ErrorAction SilentlyContinue | ForEach-Object Name) -join ','
+            "t=$(($i+1)*5)s exited=$($p.HasExited) procs=$($procs -join ' ') files=$files"
+            if ($p.HasExited) { "exit code $($p.ExitCode)"; break }
+          }
+          if (-not $p.HasExited) { Get-CimInstance Win32_Process | Where-Object { $_.ParentProcessId -eq $p.Id } | Format-Table Name, ProcessId, CommandLine -AutoSize | Out-String -Width 300; Stop-Process -Id $p.Id -Force; Get-Process paperlines* -ErrorAction SilentlyContinue | Stop-Process -Force }
+          Get-ChildItem "$env:LOCALAPPDATA\Paperlines" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 20 FullName
       - name: Install from the manifest
         timeout-minutes: 8
         run: |
