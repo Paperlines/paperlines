@@ -19,10 +19,24 @@ jobs:
         run: winget --version
       - name: Validate
         run: winget validate --manifest packaging/winget
+      - name: WebView2 on this machine
+        shell: pwsh
+        run: |
+          $keys = 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}',
+                  'HKCU:\Software\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}'
+          foreach ($k in $keys) { if (Test-Path $k) { "$k -> $((Get-ItemProperty $k).pv)" } else { "$k: missing" } }
       - name: Install from the manifest
+        timeout-minutes: 8
         run: |
           winget settings --enable LocalManifestFiles
           winget install --manifest packaging/winget --silent --accept-package-agreements --accept-source-agreements --disable-interactivity
+      - name: Processes and winget logs (if the install failed or hung)
+        if: failure() || cancelled()
+        shell: pwsh
+        run: |
+          Get-Process | Where-Object { $_.ProcessName -match 'paperlines|setup|webview|msedge|nsis|Au_' } | Format-Table ProcessName, Id, StartTime -AutoSize | Out-String -Width 200
+          $dir = "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\DiagOutputDir"
+          Get-ChildItem $dir -ErrorAction SilentlyContinue | Sort-Object LastWriteTime | Select-Object -Last 1 | ForEach-Object { Get-Content $_.FullName -Tail 60 }
       - name: Installed
         shell: pwsh
         run: |
