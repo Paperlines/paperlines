@@ -1,0 +1,71 @@
+# Builds the Apple Silicon app, .dmg and .pkg with the release's signing and notarization secrets,
+# without making a release, and keeps them as a workflow artifact for checking (spctl, stapler).
+name: macOS signing check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-15-intel
+    env:
+      TARGET: aarch64-apple-darwin
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 26, cache: pnpm }
+      - name: Rust toolchain (from rust-toolchain.toml)
+        run: rustup show && rustup target add $TARGET
+      - uses: Swatinem/rust-cache@v2
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build, sign and notarize the app and .dmg
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        run: pnpm tauri build --config src-tauri/release.conf.json --target $TARGET
+
+      - name: Build, sign and notarize the .pkg
+        env:
+          APPLE_INSTALLER_CERTIFICATE: ${{ secrets.APPLE_INSTALLER_CERTIFICATE }}
+          APPLE_INSTALLER_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_INSTALLER_CERTIFICATE_PASSWORD }}
+          APPLE_INSTALLER_IDENTITY: ${{ secrets.APPLE_INSTALLER_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          KC="$RUNNER_TEMP/installer.keychain-db"
+          security create-keychain -p ci "$KC"
+          security set-keychain-settings -lut 3600 "$KC"
+          security unlock-keychain -p ci "$KC"
+          echo "$APPLE_INSTALLER_CERTIFICATE" | base64 --decode > "$RUNNER_TEMP/installer.p12"
+          security import "$RUNNER_TEMP/installer.p12" -k "$KC" -P "$APPLE_INSTALLER_CERTIFICATE_PASSWORD" -T /usr/bin/productbuild
+          security list-keychains -d user -s "$KC" $(security list-keychains -d user | tr -d '"')
+          pnpm build:pkg --app "target/$TARGET/release/bundle/macos/$(jq -r .displayName branding/branding.json).app" --arch aarch64
+
+      - name: Check signatures
+        run: |
+          APP="target/$TARGET/release/bundle/macos/$(jq -r .displayName branding/branding.json).app"
+          codesign --verify --deep --strict --verbose=2 "$APP"
+          spctl -a -vv -t exec "$APP"
+          xcrun stapler validate "$APP"
+          for f in target/$TARGET/release/bundle/dmg/*.dmg; do spctl -a -vv -t open --context context:primary-signature "$f" || true; xcrun stapler validate "$f" || true; done
+          for f in target/release/bundle/pkg/*.pkg; do pkgutil --check-signature "$f"; spctl -a -vv -t install "$f"; xcrun stapler validate "$f"; done
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-signed
+          path: |
+            target/${{ env.TARGET }}/release/bundle/dmg/*.dmg
+            target/release/bundle/pkg/*.pkg
+          retention-days: 7
