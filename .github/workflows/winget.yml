@@ -24,7 +24,7 @@ jobs:
         run: |
           $keys = 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}',
                   'HKCU:\Software\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}'
-          foreach ($k in $keys) { if (Test-Path $k) { "$k -> $((Get-ItemProperty $k).pv)" } else { "$k: missing" } }
+          foreach ($k in $keys) { if (Test-Path $k) { "${k} -> $((Get-ItemProperty $k).pv)" } else { "${k}: missing" } }
       - name: Install from the manifest
         timeout-minutes: 8
         run: |
